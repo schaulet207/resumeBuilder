@@ -34,9 +34,9 @@ function EducationInfo() {
 
   return (
     <div className="education-info">
-      <h2>Education Information</h2>
+      <h2 className="innerH2">Education Information</h2>
       <div className="input-field">
-        <label htmlFor="degree">Degree:</label>
+        <label htmlFor="degree" className="input-text">Degree:</label>
         <input
           type="text"
           id="degree"
@@ -46,7 +46,7 @@ function EducationInfo() {
         />
       </div>
       <div className="input-field">
-        <label htmlFor="school">School:</label>
+        <label htmlFor="school" className="input-text">School:</label>
         <input
           type="text"
           id="school"
@@ -56,7 +56,7 @@ function EducationInfo() {
         />
       </div>
       <div className="input-field">
-        <label htmlFor="city">City:</label>
+        <label htmlFor="city" className="input-text">City:</label>
         <input
           type="text"
           id="city"
@@ -66,7 +66,7 @@ function EducationInfo() {
         />
       </div>
       <div className="input-field">
-        <label htmlFor="country">Country:</label>
+        <label htmlFor="country" className="input-text">Country:</label>
         <input
           type="text"
           id="country"
@@ -76,7 +76,7 @@ function EducationInfo() {
         />
       </div>
       <div className="input-field">
-        <label htmlFor="startDate">Start Date:</label>
+        <label htmlFor="startDate" className="input-text">Start Date:</label>
         <input
           type="date"
           id="startDate"
@@ -86,7 +86,7 @@ function EducationInfo() {
         />
       </div>
       <div className="input-field">
-        <label htmlFor="endDate">End Date:</label>
+        <label htmlFor="endDate" className="input-text">End Date:</label>
         <input
           type="date"
           id="endDate"

@@ -40,3 +40,64 @@
 .read-the-docs {
   color: #888;
 }
+
+.App {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  gap: 15em;
+}
+
+.left-half {
+  background-color: rgb(29, 29, 32);
+  border-radius: 12px;
+  padding: 18px;
+  box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.075);
+  width: 30rem;
+}
+
+.right-half {
+  background-color: white;
+}
+
+.innerH2 {
+  font-size: 1.25rem;
+  color: var(--purple);
+}
+
+.project-title h2 {
+  color: var(--txt);
+}
+
+.input-text {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  color: var(--txt);
+  margin-left: 8px;
+}
+
+.input-field {
+  border-width: 1px;
+  padding: 10px;
+  font-size: 1rem;
+  gap: 8px;
+}
+
+#fullName, #jobTitle, #email, #phoneNumber, #address, #employer, #city, #country, #startDate, #endDate, #degree, #school, #city {
+  border-radius: 10px;
+  background-color: rgb(61, 61, 64);
+  border-color: rgb(61, 61, 64);
+  color: white;
+  font-size: 20px;
+  padding: 10px;
+}
+
+#fullName:focus, #jobTitle:focus, #email:focus, #phoneNumber:focus, #address:focus, #employer:focus, #city:focus, #country:focus, #startDate:focus, #endDate:focus, #degree:focus, #school:focus, #city:focus {
+  color: rgb(117, 117, 117);
+  background-color: black;
+  font-family: 'Quicksand', sans-serif;
+  border: 2px solid var(--purple);
+  transition-duration: .3s;
+  color: white;
+}

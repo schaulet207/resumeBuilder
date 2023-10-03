@@ -29,9 +29,9 @@ function PersonalInfo() {
 
   return (
     <div className="personal-info">
-      <h2>Personal Information</h2>
+      <h2 className="innerH2">Personal Information</h2>
       <div className="input-field">
-        <label htmlFor="fullName">Full Name:</label>
+        <label htmlFor="fullName" className="input-text">Full Name:</label>
         <input
           type="text"
           id="fullName"
@@ -41,7 +41,7 @@ function PersonalInfo() {
         />
       </div>
       <div className="input-field">
-        <label htmlFor="jobTitle">Job Title:</label>
+        <label htmlFor="jobTitle" className="input-text">Job Title:</label>
         <input
           type="text"
           id="jobTitle"
@@ -51,7 +51,7 @@ function PersonalInfo() {
         />
       </div>
       <div className="input-field">
-        <label htmlFor="email">Email:</label>
+        <label htmlFor="email" className="input-text">Email:</label>
         <input
           type="email"
           id="email"
@@ -61,7 +61,7 @@ function PersonalInfo() {
         />
       </div>
       <div className="input-field">
-        <label htmlFor="phoneNumber">Phone Number:</label>
+        <label htmlFor="phoneNumber" className="input-text">Phone Number:</label>
         <input
           type="tel"
           id="phoneNumber"
@@ -71,7 +71,7 @@ function PersonalInfo() {
         />
       </div>
       <div className="input-field">
-        <label htmlFor="address">Address:</label>
+        <label htmlFor="address" className="input-text">Address:</label>
         <textarea
           id="address"
           name="address"

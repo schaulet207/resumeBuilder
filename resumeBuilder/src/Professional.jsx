@@ -39,9 +39,9 @@ function ProfessionalInfo() {
 
   return (
     <div className="professional-info">
-      <h2>Professional Information</h2>
+      <h2 className="innerH2">Professional Information</h2>
       <div className="input-field">
-        <label htmlFor="jobTitle">Job Title:</label>
+        <label htmlFor="jobTitle" className="input-text">Job Title:</label>
         <input
           type="text"
           id="jobTitle"
@@ -51,7 +51,7 @@ function ProfessionalInfo() {
         />
       </div>
       <div className="input-field">
-        <label htmlFor="employer">Employer:</label>
+        <label htmlFor="employer" className="input-text">Employer:</label>
         <input
           type="text"
           id="employer"
@@ -61,7 +61,7 @@ function ProfessionalInfo() {
         />
       </div>
       <div className="input-field">
-        <label htmlFor="city">City:</label>
+        <label htmlFor="city" className="input-text">City:</label>
         <input
           type="text"
           id="city"
@@ -71,7 +71,7 @@ function ProfessionalInfo() {
         />
       </div>
       <div className="input-field">
-        <label htmlFor="country">Country:</label>
+        <label htmlFor="country" className="input-text">Country:</label>
         <input
           type="text"
           id="country"
@@ -81,7 +81,7 @@ function ProfessionalInfo() {
         />
       </div>
       <div className="input-field">
-        <label htmlFor="startDate">Start Date:</label>
+        <label htmlFor="startDate" className="input-text">Start Date:</label>
         <input
           type="date"
           id="startDate"
@@ -91,7 +91,7 @@ function ProfessionalInfo() {
         />
       </div>
       <div className="input-field">
-        <label htmlFor="endDate">End Date:</label>
+        <label htmlFor="endDate" className="input-text">End Date:</label>
         <input
           type="date"
           id="endDate"
@@ -101,7 +101,7 @@ function ProfessionalInfo() {
         />
       </div>
       <div className="input-field">
-        <label>Present:</label>
+        <label className="input-text">Present:</label>
         <input
           type="checkbox"
           id="isPresent"
