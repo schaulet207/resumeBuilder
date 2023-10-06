@@ -1,86 +1,61 @@
-import React, { useState } from 'react';
+import React from 'react';
 
-function PersonalInfo() {
-  const [fullName, setFullName] = useState('');
-  const [jobTitle, setJobTitle] = useState('');
-  const [email, setEmail] = useState('');
-  const [phoneNumber, setPhoneNumber] = useState('');
-  const [address, setAddress] = useState('');
-
-  const handleFullNameChange = (e) => {
-    setFullName(e.target.value);
-  };
-
-  const handleJobTitleChange = (e) => {
-    setJobTitle(e.target.value);
-  };
-
-  const handleEmailChange = (e) => {
-    setEmail(e.target.value);
-  };
-
-  const handlePhoneNumberChange = (e) => {
-    setPhoneNumber(e.target.value);
-  };
-
-  const handleAddressChange = (e) => {
-    setAddress(e.target.value);
-  };
-
+export function FullNameInput({ fullName, onFullNameChange }) {
   return (
-    <div className="personal-info">
-      <h2 className="innerH2">Personal Information</h2>
-      <div className="input-field">
-        <label htmlFor="fullName" className="input-text">Full Name:</label>
-        <input
-          type="text"
-          id="fullName"
-          name="fullName"
-          value={fullName}
-          onChange={handleFullNameChange}
-        />
-      </div>
-      <div className="input-field">
-        <label htmlFor="jobTitle" className="input-text">Job Title:</label>
-        <input
-          type="text"
-          id="jobTitle"
-          name="jobTitle"
-          value={jobTitle}
-          onChange={handleJobTitleChange}
-        />
-      </div>
-      <div className="input-field">
-        <label htmlFor="email" className="input-text">Email:</label>
-        <input
-          type="email"
-          id="email"
-          name="email"
-          value={email}
-          onChange={handleEmailChange}
-        />
-      </div>
-      <div className="input-field">
-        <label htmlFor="phoneNumber" className="input-text">Phone Number:</label>
-        <input
-          type="tel"
-          id="phoneNumber"
-          name="phoneNumber"
-          value={phoneNumber}
-          onChange={handlePhoneNumberChange}
-        />
-      </div>
-      <div className="input-field">
-        <label htmlFor="address" className="input-text">Address:</label>
-        <textarea
-          id="address"
-          name="address"
-          value={address}
-          onChange={handleAddressChange}
-        />
-      </div>
-    </div>
+    <input 
+      className="inputs"
+      type="text"
+      placeholder="Enter your title, first and last name"
+      value={fullName}
+      onChange={(e) => onFullNameChange(e.target.value)}
+    />
   );
 }
 
-export default PersonalInfo;
+export function JobInput({ jobTitle, onJobTitleChange }) {
+  return (
+    <input
+    className="inputs"  
+    type="text"
+      placeholder="Enter Job Title"
+      value={jobTitle}
+      onChange={(e) => onJobTitleChange(e.target.value)}
+    />
+  );
+}
+
+export function EmailInput({ email, onEmailChange }) {
+  return (
+    <input
+      className="inputs"
+      type="text"
+      placeholder="Enter email"
+      value={email}
+      onChange={(e) => onEmailChange(e.target.value)}
+    />
+  );
+}
+
+export function PhoneInput({ phoneNumber, onPhoneChange }) {
+  return (
+    <input
+    className="inputs"
+      type="text"
+      placeholder="Enter phone"
+      value={phoneNumber}
+      onChange={(e) => onPhoneChange(e.target.value)}
+    />
+  );
+}
+
+export function AddressInput({ address, onAddressChange }) {
+  return (
+    <input
+    className="inputs"
+      type="text"
+      placeholder="City, Country"
+      value={address}
+      onChange={(e) => onAddressChange(e.target.value)}
+    />
+  );
+}

@@ -1,117 +1,82 @@
-import React, { useState } from 'react';
+import React from 'react';
 
-function ProfessionalInfo() {
-  const [jobTitle, setJobTitle] = useState('');
-  const [employer, setEmployer] = useState('');
-  const [city, setCity] = useState('');
-  const [country, setCountry] = useState('');
-  const [startDate, setStartDate] = useState('');
-  const [endDate, setEndDate] = useState('');
-  const [isPresent, setIsPresent] = useState(false);
-
-  const handleJobTitleChange = (e) => {
-    setJobTitle(e.target.value);
-  };
-
-  const handleEmployerChange = (e) => {
-    setEmployer(e.target.value);
-  };
-
-  const handleCityChange = (e) => {
-    setCity(e.target.value);
-  };
-
-  const handleCountryChange = (e) => {
-    setCountry(e.target.value);
-  };
-
-  const handleStartDateChange = (e) => {
-    setStartDate(e.target.value);
-  };
-
-  const handleEndDateChange = (e) => {
-    setEndDate(e.target.value);
-  };
-
-  const handlePresentChange = (e) => {
-    setIsPresent(e.target.checked);
-  };
-
+export function PositionInput({ position, onPositionChange }) {
   return (
-    <div className="professional-info">
-      <h2 className="innerH2">Professional Information</h2>
-      <div className="input-field">
-        <label htmlFor="jobTitle" className="input-text">Job Title:</label>
-        <input
-          type="text"
-          id="jobTitle"
-          name="jobTitle"
-          value={jobTitle}
-          onChange={handleJobTitleChange}
-        />
-      </div>
-      <div className="input-field">
-        <label htmlFor="employer" className="input-text">Employer:</label>
-        <input
-          type="text"
-          id="employer"
-          name="employer"
-          value={employer}
-          onChange={handleEmployerChange}
-        />
-      </div>
-      <div className="input-field">
-        <label htmlFor="city" className="input-text">City:</label>
-        <input
-          type="text"
-          id="city"
-          name="city"
-          value={city}
-          onChange={handleCityChange}
-        />
-      </div>
-      <div className="input-field">
-        <label htmlFor="country" className="input-text">Country:</label>
-        <input
-          type="text"
-          id="country"
-          name="country"
-          value={country}
-          onChange={handleCountryChange}
-        />
-      </div>
-      <div className="input-field">
-        <label htmlFor="startDate" className="input-text">Start Date:</label>
-        <input
-          type="date"
-          id="startDate"
-          name="startDate"
-          value={startDate}
-          onChange={handleStartDateChange}
-        />
-      </div>
-      <div className="input-field">
-        <label htmlFor="endDate" className="input-text">End Date:</label>
-        <input
-          type="date"
-          id="endDate"
-          name="endDate"
-          value={endDate}
-          onChange={handleEndDateChange}
-        />
-      </div>
-      <div className="input-field">
-        <label className="input-text">Present:</label>
-        <input
-          type="checkbox"
-          id="isPresent"
-          name="isPresent"
-          checked={isPresent}
-          onChange={handlePresentChange}
-        />
-      </div>
-    </div>
+    <input 
+      className="inputs"
+      type="text"
+      placeholder="Enter Position Title"
+      value={position}
+      onChange={(e) => onPositionChange(e.target.value)}
+    />
   );
 }
 
-export default ProfessionalInfo;
+export function EmployerInput({ employer, onEmployerChange }) {
+  return (
+    <input 
+      className="inputs"
+      type="text"
+      placeholder="Enter employer"
+      value={employer}
+      onChange={(e) => onEmployerChange(e.target.value)}
+    />
+  );
+}
+
+export function CityInput({ city, onCityChange }) {
+  return (
+    <input 
+      className="inputs"
+      type="text"
+      placeholder="Enter City"
+      value={city}
+      onChange={(e) => onCityChange(e.target.value)}
+    />
+  );
+}
+
+export function CountryInput({ country, onCountryChange }) {
+  return (
+    <input 
+      className="inputs"
+      type="text"
+      placeholder="Enter Country"
+      value={country}
+      onChange={(e) => onCountryChange(e.target.value)}
+    />
+  );
+}
+
+export function StartDateInput({ startDate, onStartChange }) {
+  return (
+    <input 
+      className="inputs"
+      type="date"
+      value={startDate}
+      onChange={(e) => onStartChange(e.target.value)}
+    />
+  );
+}
+
+export function EndDateInput({ endDate, onEndChange }) {
+  return (
+    <input 
+      className="inputs"
+      type="date"
+      value={endDate}
+      onChange={(e) => onEndChange(e.target.value)}
+    />
+  );
+}
+
+export function PresentInput({ present, onPresentChange }) {
+  return (
+    <input 
+      className="inputs"
+      type="checkbox"
+      value={present}
+      onChange={(e) => onPresentChange(e.target.value)}
+    />
+  );
+}

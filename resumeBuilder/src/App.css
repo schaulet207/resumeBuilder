@@ -75,6 +75,7 @@
   align-items: flex-start;
   color: var(--txt);
   margin-left: 8px;
+  font-size: 17px;
 }
 
 .input-field {
@@ -84,20 +85,24 @@
   gap: 8px;
 }
 
-#fullName, #jobTitle, #email, #phoneNumber, #address, #employer, #city, #country, #startDate, #endDate, #degree, #school, #city {
+.inputs {
   border-radius: 10px;
   background-color: rgb(61, 61, 64);
   border-color: rgb(61, 61, 64);
   color: white;
-  font-size: 20px;
+  font-size: 17px;
   padding: 10px;
 }
 
-#fullName:focus, #jobTitle:focus, #email:focus, #phoneNumber:focus, #address:focus, #employer:focus, #city:focus, #country:focus, #startDate:focus, #endDate:focus, #degree:focus, #school:focus, #city:focus {
+.inputs:focus {
   color: rgb(117, 117, 117);
   background-color: black;
   font-family: 'Quicksand', sans-serif;
   border: 2px solid var(--purple);
   transition-duration: .3s;
   color: white;
+}
+
+.personal, .professional, .education {
+  gap: 12px;
 }
