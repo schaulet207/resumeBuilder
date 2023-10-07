@@ -3,6 +3,7 @@ import './App.css';
 import { FullNameInput, JobInput, EmailInput, PhoneInput, AddressInput } from './Personal';
 import { PositionInput, EmployerInput, CityInput, CountryInput, StartDateInput, EndDateInput, PresentInput } from './Professional';
 import { DegreeInput, SchoolInput, SchoolCityInput, SchoolCountryInput, SchoolStartDateInput, SchoolEndDateInput } from './Education';
+import expandImage from '/expand.svg';
 
 function App() {
 
@@ -130,17 +131,20 @@ function App() {
   function AccordionSection({ title, isOpen, onClick, children }) {
     return (
       <div className={`accordion-section ${isOpen ? 'open' : ''}`}>
-        <h2 onClick={onClick}>{title}</h2>
+        <h2 onClick={onClick}>
+          <img src={expandImage} alt="Expand" className="expand-icon" /> {title}
+        </h2>
         <div className="accordion-content">{isOpen && <div>{children}</div>}</div>
       </div>
     );
   }
+  
 
   return (
     <div className="App">
       <div className="left-half">
       <Accordion>
-        <AccordionSection title="Personal Information">
+        <AccordionSection title="Personal Details">
         <div className="personal">
           <label className="input-text">Full Name</label>
           <FullNameInput fullName={fullName} onFullNameChange={handleFullNameChange} />

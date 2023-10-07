@@ -130,7 +130,8 @@ html {
 .accordion-section {
   background-color: rgb(29, 29, 32);
   border-radius: 12px;
-  padding: 18px;
+  padding: 8px;
+  padding-left: 12px;
   box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.075);
   margin-bottom: 10px; /* Adds a gap between sections */
   overflow: hidden;
@@ -148,4 +149,11 @@ html {
 
 .accordion-content {
   padding: 10px;
+}
+
+.left-half h2 {
+  display: flex;
+  flex-direction: row-reverse;
+  justify-content: space-between;
+  font-size: 24px;
 }
