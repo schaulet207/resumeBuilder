@@ -109,8 +109,9 @@ div {
 
 .sidebar {
   position: fixed;
+  z-index: 1;
   top: 75px;
-  min-width: 200px;
+  min-width: 240px;
   max-width: 250px;
   height: 100vh;
   background-color: rgb(29, 29, 32);

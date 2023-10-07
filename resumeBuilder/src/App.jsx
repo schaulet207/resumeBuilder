@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import './App.css';
-import Preview from './Preview';
 import { FullNameInput, JobInput, EmailInput, PhoneInput, AddressInput } from './Personal';
 import { PositionInput, EmployerInput, CityInput, CountryInput, StartDateInput, EndDateInput, PresentInput } from './Professional';
 import { DegreeInput, SchoolInput, SchoolCityInput, SchoolCountryInput, SchoolStartDateInput, SchoolEndDateInput } from './Education';
@@ -98,11 +97,51 @@ function App() {
     setSchoolEndDate(newSchoolEndDate);
   };
 
+  function Preview() {
+    // Hard-coded HTML content
+    const htmlContent = `
+    
+     `;
+  
+    return (
+      <div dangerouslySetInnerHTML={{ __html: htmlContent }}></div>
+    );
+  }
+
+  function Accordion({ children }) {
+    const [activeSection, setActiveSection] = useState(0); // Set the initial active section to 0 (section 1).
+  
+    const toggleSection = (index) => {
+      setActiveSection(index === activeSection ? null : index);
+    };
+  
+    return (
+      <div className="accordion">
+        {React.Children.map(children, (child, index) =>
+          React.cloneElement(child, {
+            isOpen: activeSection === index,
+            onClick: () => toggleSection(index),
+          })
+        )}
+      </div>
+    );
+  }
+  
+  function AccordionSection({ title, isOpen, onClick, children }) {
+    return (
+      <div className={`accordion-section ${isOpen ? 'open' : ''}`}>
+        <h2 onClick={onClick}>{title}</h2>
+        <div className="accordion-content">{isOpen && <div>{children}</div>}</div>
+      </div>
+    );
+  }
+
   return (
     <div className="App">
       <div className="left-half">
+      <Accordion>
+        <AccordionSection title="Personal Information">
         <div className="personal">
-          <h2 className="innerH2">Personal Information</h2>
           <label className="input-text">Full Name</label>
           <FullNameInput fullName={fullName} onFullNameChange={handleFullNameChange} />
           <label className="input-text">Job title</label>
@@ -112,10 +151,11 @@ function App() {
           <label className="input-text">Phone</label>
           <PhoneInput phoneNumber={phoneNumber} onPhoneChange={handlePhoneChange} />
           <label className="input-text">Address</label>
+          <AddressInput address={address} onAddressChange={handleAddressChange} />
         </div>
+        </AccordionSection>
+        <AccordionSection title="Professional">
         <div className="professional">
-        <AddressInput address={address} onAddressChange={handleAddressChange} />
-        <h2 className="innerH2">Personal Information</h2>
         <label className="input-text">Position</label>
         <PositionInput position={position} onPositionChange={handlePositionChange} />
         <label className="input-text">Employer</label>
@@ -131,7 +171,9 @@ function App() {
         <label className="input-text">Present (Current)</label>
         <PresentInput present={present} onPresentChange={handlePresentChange} />
         </div>
-        <div className="education"></div>
+        </AccordionSection>
+        <AccordionSection title="Education">
+        <div className="education">
         <label className="input-text">Education</label>
         <DegreeInput degree={degree} onDegreeChange={handleDegreeChange} />
         <label className="input-text">School</label>
@@ -144,6 +186,9 @@ function App() {
         <SchoolStartDateInput schoolStartDate={schoolStartDate} onSchoolStartChange={handleSchoolStartDateChange} />
         <label className="input-text">End Date</label>
         <SchoolEndDateInput schoolEndDate={schoolEndDate} onSchoolEndChange={handleSchoolEndDateChange} />
+        </div>
+        </AccordionSection>
+      </Accordion>
       </div>
       <div className="right-half">
         <Preview />
