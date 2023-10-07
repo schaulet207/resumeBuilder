@@ -7,6 +7,14 @@ html {
   padding: 0;
 }
 
+html, body {
+  margin: 0;
+  padding: 0;
+  font-family: 'Montserrat', sans-serif;
+  background-color: var(--dark-bg); /* Define your background color variable */
+  height: 100%; /* Ensure the body takes the full height of the viewport */
+}
+
 :root {
   --txt: #f6fff8b7;
   --txt2: font-family: 'Outfit', sans-serif;
@@ -14,7 +22,6 @@ html {
   --purple: rgb(161, 114, 247);
   --gray-bg: rgba(169, 169, 169, 0.486);
   --dark-bg: rgb(17, 16, 17);
-
 }
 
 .material-symbols-rounded {
@@ -44,8 +51,9 @@ div {
 }
 
 .header {
-  grid-column: 1 / 4;
-  grid-row: 1 / 2;
+  position: fixed;
+  z-index: 1;
+  width: 99vw;
   background-color: rgb(24, 23, 25);
   border-bottom: 2px solid black;
   color: var(--txt);
@@ -100,10 +108,11 @@ div {
 }
 
 .sidebar {
-  grid-column: 1 / 2;
-  grid-row: 2 / all;
+  position: fixed;
+  top: 75px;
   min-width: 200px;
   max-width: 250px;
+  height: 100vh;
   background-color: rgb(29, 29, 32);
 }
 
@@ -152,7 +161,6 @@ color: var(--txt);
 
 #mainlayout {
   gap: 55px;
-  padding-left: 40px;
 }
 
 .info {

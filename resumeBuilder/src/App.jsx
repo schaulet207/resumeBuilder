@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import './App.css';
+import Preview from './Preview';
 import { FullNameInput, JobInput, EmailInput, PhoneInput, AddressInput } from './Personal';
 import { PositionInput, EmployerInput, CityInput, CountryInput, StartDateInput, EndDateInput, PresentInput } from './Professional';
 import { DegreeInput, SchoolInput, SchoolCityInput, SchoolCountryInput, SchoolStartDateInput, SchoolEndDateInput } from './Education';
@@ -145,7 +146,8 @@ function App() {
         <SchoolEndDateInput schoolEndDate={schoolEndDate} onSchoolEndChange={handleSchoolEndDateChange} />
       </div>
       <div className="right-half">
-        <h2>Preview</h2>
+        <Preview />
+        {/* <h2>Preview</h2>
         <p>{fullName}</p>
         <p>{jobTitle}</p>
         <p>{email}</p>
@@ -163,7 +165,7 @@ function App() {
         <p>{schoolCity}</p>
         <p>{schoolCountry}</p>
         <p>{schoolStartDate}</p>
-        <p>{schoolEndDate}</p>
+        <p>{schoolEndDate}</p> */}
       </div>
     </div>
   );

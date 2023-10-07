@@ -37,15 +37,23 @@
   padding: 2em;
 }
 
+#mainlayout {
+  padding-left: 0px;
+}
+
 .read-the-docs {
   color: #888;
 }
 
 .App {
+  position: absolute;
+  top: 120px;
+  left: 20vw;
   display: flex;
   flex-direction: row;
-  justify-content: space-between;
+  justify-content: space-around;
   gap: 15em;
+  padding-right: 50px;
 }
 
 .left-half {
@@ -57,6 +65,7 @@
 }
 
 .right-half {
+  width: 60rem;
   background-color: white;
 }
 
@@ -105,4 +114,8 @@
 
 .personal, .professional, .education {
   gap: 12px;
+}
+
+html {
+  height: 100vh;
 }
