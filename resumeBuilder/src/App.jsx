@@ -3,7 +3,8 @@ import './App.css';
 import { FullNameInput, JobInput, EmailInput, PhoneInput, AddressInput } from './Personal';
 import { PositionInput, EmployerInput, CityInput, CountryInput, StartDateInput, EndDateInput, PresentInput } from './Professional';
 import { DegreeInput, SchoolInput, SchoolCityInput, SchoolCountryInput, SchoolStartDateInput, SchoolEndDateInput } from './Education';
-import expandImage from '/expand.svg';
+import { Accordion, AccordionSection } from './Accordion';
+import ResumeComponent from './Resume';
 
 function App() {
 
@@ -107,38 +108,7 @@ function App() {
     return (
       <div dangerouslySetInnerHTML={{ __html: htmlContent }}></div>
     );
-  }
-
-  function Accordion({ children }) {
-    const [activeSection, setActiveSection] = useState(0); // Set the initial active section to 0 (section 1).
-  
-    const toggleSection = (index) => {
-      setActiveSection(index === activeSection ? null : index);
-    };
-  
-    return (
-      <div className="accordion">
-        {React.Children.map(children, (child, index) =>
-          React.cloneElement(child, {
-            isOpen: activeSection === index,
-            onClick: () => toggleSection(index),
-          })
-        )}
-      </div>
-    );
-  }
-  
-  function AccordionSection({ title, isOpen, onClick, children }) {
-    return (
-      <div className={`accordion-section ${isOpen ? 'open' : ''}`}>
-        <h2 onClick={onClick}>
-          <img src={expandImage} alt="Expand" className="expand-icon" /> {title}
-        </h2>
-        <div className="accordion-content">{isOpen && <div>{children}</div>}</div>
-      </div>
-    );
-  }
-  
+  }  
 
   return (
     <div className="App">
@@ -150,10 +120,16 @@ function App() {
           <FullNameInput fullName={fullName} onFullNameChange={handleFullNameChange} />
           <label className="input-text">Job title</label>
           <JobInput jobTitle={jobTitle} onJobTitleChange={handleJobTitleChange} />
-          <label className="input-text">Email</label>
-          <EmailInput email={email} onEmailChange={handleEmailChange} />
-          <label className="input-text">Phone</label>
-          <PhoneInput phoneNumber={phoneNumber} onPhoneChange={handlePhoneChange} />
+          <div className="personal emailNumber">
+            <div className="personal" id="email">
+            <label className="input-text">Email</label>
+            <EmailInput email={email} onEmailChange={handleEmailChange} />
+            </div>
+            <div className="personal" id="phoneNumber">
+            <label className="input-text">Phone</label>
+            <PhoneInput phoneNumber={phoneNumber} onPhoneChange={handlePhoneChange} />
+            </div>
+          </div>
           <label className="input-text">Address</label>
           <AddressInput address={address} onAddressChange={handleAddressChange} />
         </div>
@@ -164,57 +140,64 @@ function App() {
         <PositionInput position={position} onPositionChange={handlePositionChange} />
         <label className="input-text">Employer</label>
         <EmployerInput employer={employer} onEmployerChange={handleEmployerChange} />
-        <label className="input-text">City</label>
-        <CityInput city={city} onCityChange={handleCityChange} />
-        <label className="input-text">Country</label>
-        <CountryInput country={country} onCountryChange={handleCountryChange} />
-        <label className="input-text">Start Date</label>
-        <StartDateInput startDate={startDate} onStartChange={handleStartDateChange} />
-        <label className="input-text">End Date</label>
-        <EndDateInput endDate={endDate} onEndChange={handleEndDateChange} />
+        <div className="professional emailNumber">
+          <div className="professional" id="city">
+          <label className="input-text">City</label>
+          <CityInput city={city} onCityChange={handleCityChange} />
+          </div>
+          <div className="professional" id="country">
+          <label className="input-text">Country</label>
+          <CountryInput country={country} onCountryChange={handleCountryChange} />
+          </div>
+        </div>
+        <div className="professional emailNumber">
+          <div className="professional" id="startDate">
+          <label className="input-text">Start Date</label>
+          <StartDateInput startDate={startDate} onStartChange={handleStartDateChange} />
+          </div>
+          <div className="professional" id="endDate">
+          <label className="input-text">End Date</label>
+          <EndDateInput endDate={endDate} onEndChange={handleEndDateChange} />
+          </div>
+        </div>
+        <div className="professional emailNumber" id="presentBox">
         <label className="input-text">Present (Current)</label>
         <PresentInput present={present} onPresentChange={handlePresentChange} />
         </div>
+        </div>
         </AccordionSection>
         <AccordionSection title="Education">
-        <div className="education">
-        <label className="input-text">Education</label>
-        <DegreeInput degree={degree} onDegreeChange={handleDegreeChange} />
-        <label className="input-text">School</label>
-        <SchoolInput school={school} onSchoolChange={handleSchoolChange} />
-        <label className="input-text">City</label>
-        <SchoolCityInput schoolCity={schoolCity} onSchoolCityChange={handleSchoolCityChange} />
-        <label className="input-text">Country</label>
-        <SchoolCountryInput schoolCountry={schoolCountry} onSchoolCountryChange={handleSchoolCountryChange} />
-        <label className="input-text">Start Date</label>
-        <SchoolStartDateInput schoolStartDate={schoolStartDate} onSchoolStartChange={handleSchoolStartDateChange} />
-        <label className="input-text">End Date</label>
-        <SchoolEndDateInput schoolEndDate={schoolEndDate} onSchoolEndChange={handleSchoolEndDateChange} />
+          <div className="education">
+          <label className="input-text">Education</label>
+          <DegreeInput degree={degree} onDegreeChange={handleDegreeChange} />
+          <label className="input-text">School</label>
+          <SchoolInput school={school} onSchoolChange={handleSchoolChange} />
+          <div className="education emailNumber">
+          <div className="education" id="city">
+          <label className="input-text">City</label>
+          <SchoolCityInput schoolCity={schoolCity} onSchoolCityChange={handleSchoolCityChange} />
+          </div>
+          <div className="education" id="country">
+          <label className="input-text">Country</label>
+          <SchoolCountryInput schoolCountry={schoolCountry} onSchoolCountryChange={handleSchoolCountryChange} />
+          </div>
+          </div>
+          <div className="education emailNumber">
+          <div className="education" id="startDate">
+          <label className="input-text">Start Date</label>
+          <SchoolStartDateInput schoolStartDate={schoolStartDate} onSchoolStartChange={handleSchoolStartDateChange} />
+          </div>
+          <div className="education" id="endDate">
+          <label className="input-text">End Date</label>
+          <SchoolEndDateInput schoolEndDate={schoolEndDate} onSchoolEndChange={handleSchoolEndDateChange} />
+          </div>
+          </div>
         </div>
         </AccordionSection>
       </Accordion>
       </div>
       <div className="right-half">
-        <Preview />
-        {/* <h2>Preview</h2>
-        <p>{fullName}</p>
-        <p>{jobTitle}</p>
-        <p>{email}</p>
-        <p>{phoneNumber}</p>
-        <p>{address}</p>
-        <p>{position}</p>
-        <p>{employer}</p>
-        <p>{city}</p>
-        <p>{country}</p>
-        <p>{startDate}</p>
-        <p>{endDate}</p>
-        <p>{present}</p>
-        <p>{degree}</p>
-        <p>{school}</p>
-        <p>{schoolCity}</p>
-        <p>{schoolCountry}</p>
-        <p>{schoolStartDate}</p>
-        <p>{schoolEndDate}</p> */}
+        <ResumeComponent />
       </div>
     </div>
   );

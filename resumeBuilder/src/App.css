@@ -66,6 +66,12 @@
   height: 90vh;
   width: 40rem;
   background-color: white;
+  overflow: hidden;
+}
+
+figure {
+  height: 85vh;
+  width: 37rem;
 }
 
 .innerH2 {
@@ -115,6 +121,16 @@
   gap: 12px;
 }
 
+.emailNumber {
+  display: flex;
+  flex-direction: row;
+  width: f
+}
+
+#city, #country, #startDate, #endDate, #email, #phone {
+  width: 100%;
+}
+
 html {
   height: 100vh;
 }
@@ -156,4 +172,28 @@ html {
   flex-direction: row-reverse;
   justify-content: space-between;
   font-size: 24px;
+}
+
+.expand-icon {
+  transition: transform 0.3s ease; /* Apply a 0.3s transition to the transform property */
+}
+
+.open .expand-icon {
+  transform: rotate(180deg); /* Rotate the icon 180 degrees when the section is open */
+}
+
+.checkbox {
+  height: 25px;
+  width: 25px;
+}
+
+.checkbox:hover {
+  cursor: pointer;
+}
+
+#presentBox {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  align-items: center;
 }

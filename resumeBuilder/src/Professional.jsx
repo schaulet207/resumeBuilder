@@ -73,7 +73,7 @@ export function EndDateInput({ endDate, onEndChange }) {
 export function PresentInput({ present, onPresentChange }) {
   return (
     <input 
-      className="inputs"
+      className="checkbox"
       type="checkbox"
       value={present}
       onChange={(e) => onPresentChange(e.target.value)}
