@@ -64,14 +64,11 @@
 
 .right-half {
   height: 90vh;
-  width: 40rem;
+  width: 50rem;
   background-color: white;
-  overflow: hidden;
-}
-
-figure {
-  height: 85vh;
-  width: 37rem;
+  overflow: auto; /* Add scrollbars if content overflows */
+  border-radius: 6px;
+  border: none;
 }
 
 .innerH2 {
@@ -196,4 +193,9 @@ html {
   flex-direction: row;
   justify-content: flex-end;
   align-items: center;
+}
+
+figure {
+  max-width: 100%; /* Adjust as needed to control the width */
+  max-height: 100%; /* Adjust as needed to control the height */
 }

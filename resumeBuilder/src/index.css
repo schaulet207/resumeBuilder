@@ -469,9 +469,3 @@ h4{
 .bottom-border {
   color: white;
 }
-
-.resume {
-  max-width: 100%; /* Adjust as needed to control the width */
-  max-height: 100%; /* Adjust as needed to control the height */
-  overflow: auto; /* Add scrollbars if content overflows */
-}

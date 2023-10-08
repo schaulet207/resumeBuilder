@@ -4,7 +4,7 @@ import { FullNameInput, JobInput, EmailInput, PhoneInput, AddressInput } from '.
 import { PositionInput, EmployerInput, CityInput, CountryInput, StartDateInput, EndDateInput, PresentInput } from './Professional';
 import { DegreeInput, SchoolInput, SchoolCityInput, SchoolCountryInput, SchoolStartDateInput, SchoolEndDateInput } from './Education';
 import { Accordion, AccordionSection } from './Accordion';
-import ResumeComponent from './Resume';
+import ResumeTemplate from './ResumeTemplate';
 
 function App() {
 
@@ -197,7 +197,9 @@ function App() {
       </Accordion>
       </div>
       <div className="right-half">
-        <ResumeComponent />
+        <figure>
+          <ResumeTemplate />
+        </figure>
       </div>
     </div>
   );
