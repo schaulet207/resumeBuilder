@@ -6,59 +6,58 @@ import { DegreeInput, SchoolInput, SchoolCityInput, SchoolCountryInput, SchoolSt
 import { Accordion, AccordionSection } from './Accordion';
 
 function App() {
-
   // Create state variables for each input
-  const [fullName, setFullName] = useState('');
+  const [fullName, setFullName] = useState("");
   const handleFullNameChange = (newFullName) => {
     setFullName(newFullName);
   };
 
-  const [careerSummary, setCareerSummary] = useState('');
+  const [careerSummary, setCareerSummary] = useState("");
   const handleCareerSummaryChange = (newCareerSummary) => {
     setCareerSummary(newCareerSummary);
   };
 
-  const [email, setEmail] = useState('');
+  const [email, setEmail] = useState("");
   const handleEmailChange = (newEmail) => {
     setEmail(newEmail);
   };
 
-  const [phoneNumber, setPhoneNumber] = useState('');
+  const [phoneNumber, setPhoneNumber] = useState("");
   const handlePhoneChange = (newPhoneNumber) => {
     setPhoneNumber(newPhoneNumber);
   };
 
-  const [address, setAddress] = useState('');
+  const [address, setAddress] = useState("");
   const handleAddressChange = (newAddress) => {
     setAddress(newAddress);
   };
 
-  const [position, setPosition] = useState('');
+  const [position, setPosition] = useState("");
   const handlePositionChange = (newPosition) => {
     setPosition(newPosition);
   };
 
-  const [employer, setEmployer] = useState('');
+  const [employer, setEmployer] = useState("");
   const handleEmployerChange = (newEmployer) => {
     setEmployer(newEmployer);
   };
 
-  const [city, setCity] = useState('');
+  const [city, setCity] = useState("");
   const handleCityChange = (newCity) => {
     setCity(newCity);
   };
 
-  const [country, setCountry] = useState('');
+  const [country, setCountry] = useState("");
   const handleCountryChange = (newCountry) => {
     setCountry(newCountry);
   };
 
-  const [startDate, setStartDate] = useState('');
+  const [startDate, setStartDate] = useState("");
   const handleStartDateChange = (newStartDate) => {
     setStartDate(newStartDate);
   };
 
-  const [endDate, setEndDate] = useState('');
+  const [endDate, setEndDate] = useState("");
   const handleEndDateChange = (newEndDate) => {
     setEndDate(newEndDate);
   };
@@ -68,34 +67,44 @@ function App() {
     setPresent(newPresent);
   };
 
-  const [degree, setDegree] = useState('');
+  const [degree, setDegree] = useState("");
   const handleDegreeChange = (newDegree) => {
     setDegree(newDegree);
   };
 
-  const [school, setSchool] = useState('');
+  const [school, setSchool] = useState("");
   const handleSchoolChange = (newSchool) => {
     setSchool(newSchool);
   };
 
-  const [schoolCity, setSchoolCity] = useState('');
+  const [schoolCity, setSchoolCity] = useState("");
   const handleSchoolCityChange = (newSchoolCity) => {
     setSchoolCity(newSchoolCity);
   };
 
-  const [schoolCountry, setSchoolCountry] = useState('');
+  const [schoolCountry, setSchoolCountry] = useState("");
   const handleSchoolCountryChange = (newSchoolCountry) => {
     setSchoolCountry(newSchoolCountry);
   };
 
-  const [schoolStartDate, setSchoolStartDate] = useState('');
+  const [schoolStartDate, setSchoolStartDate] = useState("");
   const handleSchoolStartDateChange = (newSchoolStartDate) => {
     setSchoolStartDate(newSchoolStartDate);
   };
 
-  const [schoolEndDate, setSchoolEndDate] = useState('');
+  const [schoolEndDate, setSchoolEndDate] = useState("");
   const handleSchoolEndDateChange = (newSchoolEndDate) => {
     setSchoolEndDate(newSchoolEndDate);
+  };
+
+  // Create empty arrays
+  const [positions, setPositions] = useState([]); // An array to store positions
+  const [currentPosition, setCurrentPosition] = useState(""); // A state variable for the current position input field
+
+  // Create functions to save inputs to arrays
+  const handleSavePosition = (newPosition) => {
+    setPositions([...positions, { position: newPosition }]);
+    setCurrentPosition('');
   };
 
   function Preview() {
@@ -103,11 +112,9 @@ function App() {
     const htmlContent = `
     
      `;
-  
-    return (
-      <div dangerouslySetInnerHTML={{ __html: htmlContent }}></div>
-    );
-  }  
+
+    return <div dangerouslySetInnerHTML={{ __html: htmlContent }}></div>;
+  }
 
   return (
     <div className="App">
@@ -146,6 +153,19 @@ function App() {
             </div>
           </AccordionSection>
           <AccordionSection title="Professional">
+            {positions.map((savedPosition, index) => (
+              <div key={index}>
+                <p>Position: {savedPosition.position}</p>
+              </div>
+            ))}
+            <PositionInput
+              currentPosition={currentPosition}
+              onPositionChange={setCurrentPosition} // Pass the setter function directly
+              onSavePosition={handleSavePosition}
+            />
+          </AccordionSection>
+
+          {/* <AccordionSection title="Professional">
             <div className="professional">
               <label className="input-text">Position</label>
               <PositionInput
@@ -198,7 +218,7 @@ function App() {
                 <button id="deleteButton">Delete</button>
               </div>
               </div>
-          </AccordionSection>
+          </AccordionSection> */}
           <AccordionSection title="Education">
             <div className="education">
               <label className="input-text">Education</label>
@@ -314,7 +334,13 @@ function App() {
               <span className="c3 c0">Hermosa Beach, CA</span>
             </p>
             <p className="c8">
-              <span className="c0 c5">Technical Project Manager</span>
+              <span className="c0 c5">
+                {positions.length > 0 && (
+                  <div>
+                    <p>Position: {positions[0].position}</p>
+                  </div>
+                )}
+              </span>
               <span className="c0">
                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;November 2022 -{" "}
               </span>

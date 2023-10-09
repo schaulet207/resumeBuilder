@@ -1,14 +1,22 @@
 import React from 'react';
 
-export function PositionInput({ position, onPositionChange }) {
+export function PositionInput({ currentPosition, onPositionChange, onSavePosition }) {
+  const handleSavePosition = () => {
+    onSavePosition(currentPosition);
+    // You can clear the input field here if needed
+  };
+
   return (
-    <input 
-      className="inputs"
-      type="text"
-      placeholder="Enter Position Title"
-      value={position}
-      onChange={(e) => onPositionChange(e.target.value)}
-    />
+    <div>
+      <input
+        className="inputs"
+        type="text"
+        placeholder="Enter Position Title"
+        value={currentPosition}
+        onChange={(e) => onPositionChange(e.target.value)}
+      />
+      <button onClick={handleSavePosition}>Save</button>
+    </div>
   );
 }
 
