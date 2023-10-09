@@ -12,14 +12,13 @@ export function FullNameInput({ fullName, onFullNameChange }) {
   );
 }
 
-export function JobInput({ jobTitle, onJobTitleChange }) {
+export function CareerInput({ careerSummary, onCareerSummaryChange }) {
   return (
-    <input
-    className="inputs"  
-    type="text"
-      placeholder="Enter Job Title"
-      value={jobTitle}
-      onChange={(e) => onJobTitleChange(e.target.value)}
+    <textarea
+      className="inputs"
+      placeholder="Enter Career Summary"
+      value={careerSummary}
+      onChange={(e) => onCareerSummaryChange(e.target.value)}
     />
   );
 }
