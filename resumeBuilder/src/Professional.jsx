@@ -1,6 +1,10 @@
-import React from 'react';
+import React from "react";
 
-export function PositionInput({ currentPosition, onPositionChange, onSavePosition }) {
+export function PositionInput({
+  currentPosition,
+  onPositionChange,
+  onSavePosition,
+}) {
   const handleSavePosition = () => {
     onSavePosition(currentPosition);
     // You can clear the input field here if needed
@@ -11,21 +15,20 @@ export function PositionInput({ currentPosition, onPositionChange, onSavePositio
       <input
         className="inputs"
         type="text"
-        placeholder="Enter Position Title"
+        placeholder="Enter Title"
         value={currentPosition}
         onChange={(e) => onPositionChange(e.target.value)}
       />
-      <button onClick={handleSavePosition}>Save</button>
     </div>
   );
 }
 
 export function EmployerInput({ employer, onEmployerChange }) {
   return (
-    <input 
+    <input
       className="inputs"
       type="text"
-      placeholder="Enter employer"
+      placeholder="Enter Employer"
       value={employer}
       onChange={(e) => onEmployerChange(e.target.value)}
     />
@@ -34,7 +37,7 @@ export function EmployerInput({ employer, onEmployerChange }) {
 
 export function CityInput({ city, onCityChange }) {
   return (
-    <input 
+    <input
       className="inputs"
       type="text"
       placeholder="Enter City"
@@ -46,7 +49,7 @@ export function CityInput({ city, onCityChange }) {
 
 export function CountryInput({ country, onCountryChange }) {
   return (
-    <input 
+    <input
       className="inputs"
       type="text"
       placeholder="Enter Country"
@@ -58,7 +61,7 @@ export function CountryInput({ country, onCountryChange }) {
 
 export function StartDateInput({ startDate, onStartChange }) {
   return (
-    <input 
+    <input
       className="inputs"
       type="date"
       value={startDate}
@@ -69,7 +72,7 @@ export function StartDateInput({ startDate, onStartChange }) {
 
 export function EndDateInput({ endDate, onEndChange }) {
   return (
-    <input 
+    <input
       className="inputs"
       type="date"
       value={endDate}
@@ -80,7 +83,7 @@ export function EndDateInput({ endDate, onEndChange }) {
 
 export function PresentInput({ present, onPresentChange }) {
   return (
-    <input 
+    <input
       className="checkbox"
       type="checkbox"
       value={present}

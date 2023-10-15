@@ -1,9 +1,30 @@
-import React, { useState } from 'react';
-import './App.css';
-import { FullNameInput, CareerInput, EmailInput, PhoneInput, AddressInput } from './Personal';
-import { PositionInput, EmployerInput, CityInput, CountryInput, StartDateInput, EndDateInput, PresentInput } from './Professional';
-import { DegreeInput, SchoolInput, SchoolCityInput, SchoolCountryInput, SchoolStartDateInput, SchoolEndDateInput } from './Education';
-import { Accordion, AccordionSection } from './Accordion';
+import React, { useState } from "react";
+import "./App.css";
+import {
+  FullNameInput,
+  CareerInput,
+  EmailInput,
+  PhoneInput,
+  AddressInput,
+} from "./Personal";
+import {
+  PositionInput,
+  EmployerInput,
+  CityInput,
+  CountryInput,
+  StartDateInput,
+  EndDateInput,
+  PresentInput,
+} from "./Professional";
+import {
+  DegreeInput,
+  SchoolInput,
+  SchoolCityInput,
+  SchoolCountryInput,
+  SchoolStartDateInput,
+  SchoolEndDateInput,
+} from "./Education";
+import { Accordion, AccordionSection } from "./Accordion";
 
 function App() {
   // Create state variables for each input
@@ -97,24 +118,117 @@ function App() {
     setSchoolEndDate(newSchoolEndDate);
   };
 
+  // Set index key to 0
+  const index = 0;
+
   // Create empty arrays
   const [positions, setPositions] = useState([]); // An array to store positions
-  const [currentPosition, setCurrentPosition] = useState(""); // A state variable for the current position input field
+  const [employers, setEmployers] = useState([]); // An array to store employers
+  const [cities, setCities] = useState([]); // An array to store cities
+  const [countries, setCountries] = useState([]); // An array to store countries
+  const [startDates, setStartDates] = useState([]); // An array to store start dates
+  const [endDates, setEndDates] = useState([]); // An array to store end dates
+  const [presents, setPresents] = useState([]); // An array to store presents  
 
-  // Create functions to save inputs to arrays
   const handleSavePosition = (newPosition) => {
-    setPositions([...positions, { position: newPosition }]);
-    setCurrentPosition('');
+    setPositions((prevPositions) => {
+      const updatedPositions = [...prevPositions, { position: newPosition }];
+      return updatedPositions;
+    });
+    setPosition(""); // Clear the input field if needed
   };
 
-  function Preview() {
-    // Hard-coded HTML content
-    const htmlContent = `
-    
-     `;
+  const handleSaveEmployer = (newEmployer) => {
+    setEmployers((prevEmployers) => {
+      const updatedEmployers = [...prevEmployers, { employer: newEmployer }];
+      return updatedEmployers;
+    });
+    setEmployer(""); // Clear the input field if needed
+  };  
 
-    return <div dangerouslySetInnerHTML={{ __html: htmlContent }}></div>;
-  }
+  const handleSaveCity = (newCity) => {
+    setCities((prevCities) => {
+      const updatedCities = [...prevCities, { city: newCity }];
+      return updatedCities;
+    });
+    setCity(""); // Clear the input field if needed
+  };
+
+  const handleSaveCountry = (newCountry) => {
+    setCountries((prevCountries) => {
+      const updatedCountries = [...prevCountries, { country: newCountry }];
+      return updatedCountries;
+    });
+    setCountry(""); // Clear the input field if needed
+  };
+
+  const handleSaveStartDate = (newStartDate) => {
+    setStartDates((prevStartDates) => {
+      const updatedStartDates = [
+        ...prevStartDates,
+        { startDate: newStartDate },
+      ];
+      return updatedStartDates;
+    });
+    setStartDate(""); // Clear the input field if needed
+  };
+
+  const handleSaveEndDate = (newEndDate) => {
+    setEndDates((prevEndDates) => {
+      const updatedEndDates = [...prevEndDates, { endDate: newEndDate }];
+      return updatedEndDates;
+    });
+    setEndDate(""); // Clear the input field if needed
+  };
+
+  const handleSavePresent = (newPresent) => {
+    setPresents((prevPresents) => {
+      const updatedPresents = [...prevPresents, { present: newPresent }];
+      return updatedPresents;
+    });
+    // You can handle the checkbox value here if needed
+  };
+
+  const handleSaveAll = () => {
+    // Create an object to store professional section data
+    const profSection = {};
+
+    // Create an object with state arrays and their corresponding functions
+    const stateArrays = {
+      positions: [positions, setPositions, position],
+      employers: [employers, setEmployers, employer],
+      cities: [cities, setCities, city],
+      countries: [countries, setCountries, country],
+      startDates: [startDates, setStartDates, startDate],
+      endDates: [endDates, setEndDates, endDate],
+      presents: [presents, setPresents, present],
+    };
+
+    // Loop through the stateArrays object and update the arrays and log their values
+    Object.entries(stateArrays).forEach(
+      ([stateName, [stateArray, setState, value]]) => {
+        const updatedStateArray = [...stateArray, { [stateName]: value }];
+        setState(updatedStateArray);
+        profSection[stateName] = updatedStateArray;
+        console.log(stateName, updatedStateArray);
+      }
+    );
+
+    // Clear the input fields
+    setPosition("");
+    setEmployer("");
+    setCity("");
+    setCountry("");
+    setStartDate("");
+    setEndDate("");
+    setPresent("");
+
+    // Now, profSection contains the updated data for each array
+    console.log("profSection:", profSection);
+    console.log("profSection:", profSection.employers[index].value);
+    index++;
+  };
+  
 
   return (
     <div className="App">
@@ -155,14 +269,63 @@ function App() {
           <AccordionSection title="Professional">
             {positions.map((savedPosition, index) => (
               <div key={index}>
-                <p>Position: {savedPosition.position}</p>
+                <p>Position: {savedPosition.positions}</p>
+                <p>Employer: {employers[index].employer}</p>
+                <p>Start Date: {startDates[index].startDate}</p>
+                <p>End Date: {endDates[index].endDate}</p>
               </div>
             ))}
             <PositionInput
-              currentPosition={currentPosition}
-              onPositionChange={setCurrentPosition} // Pass the setter function directly
+              currentPosition={position}
+              onPositionChange={(newPosition) => setPosition(newPosition)}
               onSavePosition={handleSavePosition}
             />
+
+            <EmployerInput
+              employer={employer}
+              onEmployerChange={(newEmployer) => setEmployer(newEmployer)}
+            />
+
+            <CityInput
+              city={city}
+              onCityChange={(newCity) => setCity(newCity)}
+            />
+
+            <CountryInput
+              country={country}
+              onCountryChange={(newCountry) => setCountry(newCountry)}
+            />
+
+            <StartDateInput
+              startDate={startDate}
+              onStartChange={(newStartDate) => setStartDate(newStartDate)}
+            />
+
+            <EndDateInput
+              endDate={endDate}
+              onEndChange={(newEndDate) => setEndDate(newEndDate)}
+            />
+
+            <PresentInput
+              present={present}
+              onPresentChange={(newPresent) => setPresent(newPresent)}
+            />
+
+            <button
+              onClick={() =>
+                handleSaveAll(
+                  positions,
+                  employers,
+                  cities,
+                  countries,
+                  startDates,
+                  endDates,
+                  presents
+                )
+              }
+            >
+              Save
+            </button>
           </AccordionSection>
 
           {/* <AccordionSection title="Professional">
@@ -278,24 +441,20 @@ function App() {
                   '@import url(https://themes.googleusercontent.com/fonts/css?kit=-lTUqgJg2dxbe4D7B5DEIA3jn2WilaVUapNOYl4762s);.lst-kix_wgli50ijih94-8>li:before{content:"\\0025a0   "}.lst-kix_wgli50ijih94-5>li:before{content:"\\0025a0   "}.lst-kix_oz2sfjwt9xlu-8>li:before{content:"\\0025a0   "}.lst-kix_wgli50ijih94-6>li:before{content:"\\0025cf   "}.lst-kix_wgli50ijih94-7>li:before{content:"\\0025cb   "}.lst-kix_oz2sfjwt9xlu-7>li:before{content:"\\0025cb   "}.lst-kix_wgli50ijih94-1>li:before{content:"\\0025cb   "}.lst-kix_wgli50ijih94-0>li:before{content:"\\0025cf   "}.lst-kix_wgli50ijih94-2>li:before{content:"\\0025a0   "}.lst-kix_wgli50ijih94-4>li:before{content:"\\0025cb   "}.lst-kix_wgli50ijih94-3>li:before{content:"\\0025cf   "}ul.lst-kix_oz2sfjwt9xlu-0{list-style-type:none}ul.lst-kix_wgli50ijih94-8{list-style-type:none}ul.lst-kix_oz2sfjwt9xlu-1{list-style-type:none}ul.lst-kix_oz2sfjwt9xlu-2{list-style-type:none}ul.lst-kix_wgli50ijih94-6{list-style-type:none}ul.lst-kix_oz2sfjwt9xlu-3{list-style-type:none}ul.lst-kix_wgli50ijih94-7{list-style-type:none}.lst-kix_yogqjw9c8tuq-3>li:before{content:"\\0025cf   "}.lst-kix_yogqjw9c8tuq-5>li:before{content:"\\0025a0   "}.lst-kix_yogqjw9c8tuq-4>li:before{content:"\\0025cb   "}ul.lst-kix_oz2sfjwt9xlu-8{list-style-type:none}ul.lst-kix_wgli50ijih94-0{list-style-type:none}.lst-kix_oz2sfjwt9xlu-0>li:before{content:"\\0025cf   "}.lst-kix_oz2sfjwt9xlu-1>li:before{content:"\\0025cb   "}ul.lst-kix_wgli50ijih94-1{list-style-type:none}.lst-kix_yogqjw9c8tuq-7>li:before{content:"\\0025cb   "}ul.lst-kix_oz2sfjwt9xlu-4{list-style-type:none}ul.lst-kix_wgli50ijih94-4{list-style-type:none}ul.lst-kix_oz2sfjwt9xlu-5{list-style-type:none}ul.lst-kix_wgli50ijih94-5{list-style-type:none}ul.lst-kix_oz2sfjwt9xlu-6{list-style-type:none}ul.lst-kix_wgli50ijih94-2{list-style-type:none}ul.lst-kix_oz2sfjwt9xlu-7{list-style-type:none}ul.lst-kix_wgli50ijih94-3{list-style-type:none}.lst-kix_yogqjw9c8tuq-6>li:before{content:"\\0025cf   "}.lst-kix_oz2sfjwt9xlu-4>li:before{content:"\\0025cb   "}.lst-kix_oz2sfjwt9xlu-5>li:before{content:"\\0025a0   "}.lst-kix_bm5i44a1j1vy-2>li:before{content:"\\0025a0   "}.lst-kix_bm5i44a1j1vy-4>li:before{content:"\\0025cb   "}.lst-kix_oz2sfjwt9xlu-2>li:before{content:"\\0025a0   "}.lst-kix_oz2sfjwt9xlu-6>li:before{content:"\\0025cf   "}.lst-kix_bm5i44a1j1vy-3>li:before{content:"\\0025cf   "}.lst-kix_yogqjw9c8tuq-8>li:before{content:"\\0025a0   "}.lst-kix_bm5i44a1j1vy-0>li:before{content:"\\0025cf   "}ul.lst-kix_bm5i44a1j1vy-6{list-style-type:none}ul.lst-kix_bm5i44a1j1vy-7{list-style-type:none}ul.lst-kix_bm5i44a1j1vy-4{list-style-type:none}ul.lst-kix_bm5i44a1j1vy-5{list-style-type:none}ul.lst-kix_bm5i44a1j1vy-2{list-style-type:none}.lst-kix_oz2sfjwt9xlu-3>li:before{content:"\\0025cf   "}ul.lst-kix_bm5i44a1j1vy-3{list-style-type:none}ul.lst-kix_bm5i44a1j1vy-0{list-style-type:none}.lst-kix_bm5i44a1j1vy-1>li:before{content:"\\0025cb   "}ul.lst-kix_bm5i44a1j1vy-1{list-style-type:none}ul.lst-kix_bm5i44a1j1vy-8{list-style-type:none}ul.lst-kix_yogqjw9c8tuq-8{list-style-type:none}ul.lst-kix_yogqjw9c8tuq-6{list-style-type:none}.lst-kix_bm5i44a1j1vy-6>li:before{content:"\\0025cf   "}ul.lst-kix_yogqjw9c8tuq-7{list-style-type:none}ul.lst-kix_yogqjw9c8tuq-4{list-style-type:none}ul.lst-kix_yogqjw9c8tuq-5{list-style-type:none}ul.lst-kix_yogqjw9c8tuq-2{list-style-type:none}.lst-kix_bm5i44a1j1vy-5>li:before{content:"\\0025a0   "}ul.lst-kix_yogqjw9c8tuq-3{list-style-type:none}ul.lst-kix_yogqjw9c8tuq-0{list-style-type:none}ul.lst-kix_yogqjw9c8tuq-1{list-style-type:none}.lst-kix_bm5i44a1j1vy-7>li:before{content:"\\0025cb   "}.lst-kix_bm5i44a1j1vy-8>li:before{content:"\\0025a0   "}.lst-kix_yogqjw9c8tuq-1>li:before{content:"\\0025cb   "}.lst-kix_yogqjw9c8tuq-2>li:before{content:"\\0025a0   "}.lst-kix_yogqjw9c8tuq-0>li:before{content:"\\0025cf   "}li.li-bullet-0:before{margin-left:-18pt;white-space:nowrap;display:inline-block;min-width:18pt}ol{margin:0;padding:0}table td,table th{padding:0}.c22{margin-left:36pt;padding-top:0.5pt;padding-left:0pt;padding-bottom:0pt;line-height:1.05;orphans:2;widows:2;text-align:left}.c4{margin-left:36pt;padding-top:0pt;padding-left:0pt;padding-bottom:0pt;line-height:1.05;orphans:2;widows:2;text-align:left}.c9{padding-top:0pt;padding-bottom:0pt;line-height:1.05;orphans:2;widows:2;text-align:right;height:11pt}.c6{padding-top:0pt;padding-bottom:0pt;line-height:1.05;orphans:2;widows:2;text-align:left;height:11pt}.c18{padding-top:0pt;padding-bottom:0pt;line-height:1.1500000000000001;orphans:2;widows:2;text-align:left;height:11pt}.c14{color:#000000;font-weight:400;text-decoration:none;vertical-align:baseline;font-size:11pt;font-family:"Arial"}.c8{padding-top:0pt;padding-bottom:0pt;line-height:1.05;orphans:2;widows:2;text-align:left}.c19{padding-top:0pt;padding-bottom:0.5pt;line-height:1.05;orphans:2;widows:2;text-align:left}.c3{color:#000000;text-decoration:none;vertical-align:baseline;font-size:10pt;font-style:normal}.c7{color:#000000;text-decoration:none;vertical-align:baseline;font-size:12pt;font-style:normal}.c1{color:#000000;text-decoration:none;vertical-align:baseline;font-size:11pt;font-style:normal}.c15{color:#000000;text-decoration:none;vertical-align:baseline;font-size:11pt}.c17{background-color:#ffffff;max-width:504pt;padding:12pt 12pt 12pt 12pt}.c10{text-decoration-skip-ink:none;-webkit-text-decoration-skip:none;text-decoration:underline}.c0{font-weight:400;font-family:"Montserrat"}.c21{color:inherit;text-decoration:inherit}.c12{padding:0;margin:0}.c2{font-weight:700;font-family:"Montserrat"}.c16{color:#1155cc}.c5{font-style:italic}.c11{font-size:12pt}.c13{font-size:14pt}.c20{font-size:10pt}.title{padding-top:0pt;color:#000000;font-size:26pt;padding-bottom:3pt;font-family:"Arial";line-height:1.1500000000000001;page-break-after:avoid;orphans:2;widows:2;text-align:left}.subtitle{padding-top:0pt;color:#666666;font-size:15pt;padding-bottom:16pt;font-family:"Arial";line-height:1.1500000000000001;page-break-after:avoid;orphans:2;widows:2;text-align:left}li{color:#000000;font-size:11pt;font-family:"Arial"}p{margin:0;color:#000000;font-size:11pt;font-family:"Arial"}h1{padding-top:20pt;color:#000000;font-size:20pt;padding-bottom:6pt;font-family:"Arial";line-height:1.1500000000000001;page-break-after:avoid;orphans:2;widows:2;text-align:left}h2{padding-top:18pt;color:#000000;font-size:16pt;padding-bottom:6pt;font-family:"Arial";line-height:1.1500000000000001;page-break-after:avoid;orphans:2;widows:2;text-align:left}h3{padding-top:16pt;color:#434343;font-size:14pt;padding-bottom:4pt;font-family:"Arial";line-height:1.1500000000000001;page-break-after:avoid;orphans:2;widows:2;text-align:left}h4{padding-top:14pt;color:#666666;font-size:12pt;padding-bottom:4pt;font-family:"Arial";line-height:1.1500000000000001;page-break-after:avoid;orphans:2;widows:2;text-align:left}h5{padding-top:12pt;color:#666666;font-size:11pt;padding-bottom:4pt;font-family:"Arial";line-height:1.1500000000000001;page-break-after:avoid;orphans:2;widows:2;text-align:left}h6{padding-top:12pt;color:#666666;font-size:11pt;padding-bottom:4pt;font-family:"Arial";line-height:1.1500000000000001;page-break-after:avoid;font-style:italic;orphans:2;widows:2;text-align:left}',
               }}
             />
-            <div>
-              <p className="c18">
-                <span className="c5 c14" />
-              </p>
-            </div>
-            <p className="c8">
+            <p className="c18">
+              <span className="c5 c14" />
+            </p>
+            <p className="c8" id="oneLine">
               <span className="c0">
                 {address} • {phoneNumber} •{" "}
               </span>
               <span className="c10 c0 c16">
-                <a className="c21" href="mailto:shannon.chaulet@gmail.com">
-                  {email}
-                </a>
+                <a className="c21">{email}</a>
               </span>
-              <span className="c2 c13">
-                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+              <span className="c2 c13"></span>
+              <span className="c2 c13" id="begin">
+                {fullName}
               </span>
-              <span className="c2 c13">{fullName}</span>
               <span className="c1 c0">&nbsp;</span>
             </p>
             <hr />
@@ -329,22 +488,16 @@ function App() {
               <span className="c1 c2" />
             </p>
             <p className="c8">
-              <span className="c2">SprintFWD</span>
+              <span className="c2">{employer}</span>
               <span className="c0">&nbsp;- </span>
-              <span className="c3 c0">Hermosa Beach, CA</span>
+              <span className="c3 c0">{city}</span>
             </p>
             <p className="c8">
-              <span className="c0 c5">
-                {positions.length > 0 && (
-                  <div>
-                    <p>Position: {positions[0].position}</p>
-                  </div>
-                )}
-              </span>
+              <span className="c0 c5">{position}</span>
               <span className="c0">
-                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;November 2022 -{" "}
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{startDate} -{" "}
               </span>
-              <span className="c1 c2">Present</span>
+              <span className="c1 c2">{endDate}</span>
             </p>
             <p className="c19">
               <span className="c3 c0">

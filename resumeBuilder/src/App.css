@@ -225,3 +225,17 @@ button {
 button:hover {
   cursor: pointer;
 }
+
+#userInfo {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+#begin {
+  float: right;
+  white-space: nowrap;
+}
+
+#oneLine {
+}
