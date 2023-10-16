@@ -11,9 +11,10 @@ import {
   PositionInput,
   EmployerInput,
   CityInput,
-  CountryInput,
-  StartDateInput,
-  EndDateInput,
+  StartMonthInput,
+  StartYearInput,
+  EndMonthInput,
+  EndYearInput,
   PresentInput,
 } from "./Professional";
 import {
@@ -68,20 +69,25 @@ function App() {
     setCity(newCity);
   };
 
-  const [country, setCountry] = useState("");
-  const handleCountryChange = (newCountry) => {
-    setCountry(newCountry);
+  const [startMonth, setStartMonth] = useState(""); // Updated from startDate
+  const handleStartMonthChange = (newStartMonth) => {
+    setStartMonth(newStartMonth);
   };
 
-  const [startDate, setStartDate] = useState("");
-  const handleStartDateChange = (newStartDate) => {
-    setStartDate(newStartDate);
+  const [startYear, setStartYear] = useState(""); // Updated from Start Year
+  const handleStartYearChange = (newStartYear) => {
+    setStartYear(newStartYear);
   };
 
-  const [endDate, setEndDate] = useState("");
-  const handleEndDateChange = (newEndDate) => {
-    setEndDate(newEndDate);
-  };
+  const [endMonth, setEndMonth] = useState(""); // New state for end month
+const handleEndMonthChange = (newEndMonth) => {
+  setEndMonth(newEndMonth);
+};
+
+const [endYear, setEndYear] = useState(""); // New state for end year
+const handleEndYearChange = (newEndYear) => {
+  setEndYear(newEndYear);
+};
 
   const [present, setPresent] = useState(false);
   const handlePresentChange = (newPresent) => {
@@ -118,16 +124,15 @@ function App() {
     setSchoolEndDate(newSchoolEndDate);
   };
 
-  // Set index key to 0
-  const index = 0;
-
   // Create empty arrays
   const [positions, setPositions] = useState([]); // An array to store positions
   const [employers, setEmployers] = useState([]); // An array to store employers
   const [cities, setCities] = useState([]); // An array to store cities
   const [countries, setCountries] = useState([]); // An array to store countries
-  const [startDates, setStartDates] = useState([]); // An array to store start dates
-  const [endDates, setEndDates] = useState([]); // An array to store end dates
+  const [startMonths, setStartMonths] = useState([]); // An array to store start months
+  const [startYears, setStartYears] = useState([]); // An array to store start years
+  const [endMonths, setEndMonths] = useState([]); // An array to store start months
+  const [endYears, setEndYears] = useState([]); // An array to store start years
   const [presents, setPresents] = useState([]); // An array to store presents  
 
   const handleSavePosition = (newPosition) => {
@@ -154,32 +159,37 @@ function App() {
     setCity(""); // Clear the input field if needed
   };
 
-  const handleSaveCountry = (newCountry) => {
-    setCountries((prevCountries) => {
-      const updatedCountries = [...prevCountries, { country: newCountry }];
-      return updatedCountries;
+  const handleSaveStartMonth = (newStartMonth) => {
+    setStartMonths((prevStartMonths) => {
+      const updatedStartMonths = [...prevStartMonths, { startMonth: newStartMonth }];
+      return updatedStartMonths;
     });
-    setCountry(""); // Clear the input field if needed
+    setStartMonth(""); // Clear the input field if needed
+  };
+  
+  const handleSaveStartYear = (newStartYear) => {
+    setStartYears((prevStartYears) => {
+      const updatedStartYears = [...prevStartYears, { startYear: newStartYear }];
+      return updatedStartYears;
+    });
+    setStartYear(""); // Clear the input field if needed
   };
 
-  const handleSaveStartDate = (newStartDate) => {
-    setStartDates((prevStartDates) => {
-      const updatedStartDates = [
-        ...prevStartDates,
-        { startDate: newStartDate },
-      ];
-      return updatedStartDates;
+  const handleSaveEndMonth = (newEndMonth) => {
+    setEndMonths((prevEndMonths) => {
+      const updatedEndMonths = [...prevEndMonths, { endMonth: newEndMonth }];
+      return updatedEndMonths;
     });
-    setStartDate(""); // Clear the input field if needed
+    setEndMonth(""); // Clear the input field if needed
   };
-
-  const handleSaveEndDate = (newEndDate) => {
-    setEndDates((prevEndDates) => {
-      const updatedEndDates = [...prevEndDates, { endDate: newEndDate }];
-      return updatedEndDates;
+  
+  const handleSaveEndYear = (newEndYear) => {
+    setEndYears((prevEndYears) => {
+      const updatedEndYears = [...prevEndYears, { endYear: newEndYear }];
+      return updatedEndYears;
     });
-    setEndDate(""); // Clear the input field if needed
-  };
+    setEndYear(""); // Clear the input field if needed
+  };  
 
   const handleSavePresent = (newPresent) => {
     setPresents((prevPresents) => {
@@ -192,43 +202,43 @@ function App() {
   const handleSaveAll = () => {
     // Create an object to store professional section data
     const profSection = {};
-
+  
     // Create an object with state arrays and their corresponding functions
     const stateArrays = {
       positions: [positions, setPositions, position],
       employers: [employers, setEmployers, employer],
       cities: [cities, setCities, city],
-      countries: [countries, setCountries, country],
-      startDates: [startDates, setStartDates, startDate],
-      endDates: [endDates, setEndDates, endDate],
+      startMonths: [startMonths, setStartMonths, startMonth], // Add startMonths
+      startYears: [startYears, setStartYears, startYear], // Add startYears
+      endMonths: [endMonths, setEndMonths, endMonth], // Add endMonths
+      endYears: [endYears, setEndYears, endYear], // Add endYears
       presents: [presents, setPresents, present],
     };
-
+    
+  
     // Loop through the stateArrays object and update the arrays and log their values
     Object.entries(stateArrays).forEach(
       ([stateName, [stateArray, setState, value]]) => {
         const updatedStateArray = [...stateArray, { [stateName]: value }];
         setState(updatedStateArray);
         profSection[stateName] = updatedStateArray;
-        console.log(stateName, updatedStateArray);
       }
     );
-
+  
     // Clear the input fields
     setPosition("");
     setEmployer("");
     setCity("");
-    setCountry("");
-    setStartDate("");
-    setEndDate("");
+    setStartMonth(""); // Clear startMonth
+    setStartYear(""); // Clear startYear
+    setEndMonth(""); // Clear endMonth
+    setEndYear(""); // Clear endYear
     setPresent("");
-
-    // Now, profSection contains the updated data for each array
-    console.log("profSection:", profSection);
-    console.log("profSection:", profSection.employers[index].value);
-    index++;
-  };
   
+    // Now, profSection contains the updated data for each array
+    console.log("profSection: ", profSection);
+    console.log("profSection: Employers", profSection.employers);
+  };
 
   return (
     <div className="App">
@@ -270,11 +280,14 @@ function App() {
             {positions.map((savedPosition, index) => (
               <div key={index}>
                 <p>Position: {savedPosition.positions}</p>
-                <p>Employer: {employers[index].employer}</p>
-                <p>Start Date: {startDates[index].startDate}</p>
-                <p>End Date: {endDates[index].endDate}</p>
               </div>
             ))}
+            {employers.map((savedEmployer, index) => (
+              <div key={index}>
+                <p>Employer: {savedEmployer.employers}</p>
+              </div>
+            ))}
+
             <PositionInput
               currentPosition={position}
               onPositionChange={(newPosition) => setPosition(newPosition)}
@@ -291,25 +304,34 @@ function App() {
               onCityChange={(newCity) => setCity(newCity)}
             />
 
-            <CountryInput
-              country={country}
-              onCountryChange={(newCountry) => setCountry(newCountry)}
-            />
+            <div className="saveCancel">
+              <h2>Start Date</h2>
+              <StartMonthInput
+                startMonth={startMonth}
+                onMonthChange={(newStartMonth) => setStartMonth(newStartMonth)}
+              />
+              <StartYearInput
+                startYear={startYear}
+                onYearChange={(newStartYear) => setStartYear(newStartYear)}
+              />
+            </div>
 
-            <StartDateInput
-              startDate={startDate}
-              onStartChange={(newStartDate) => setStartDate(newStartDate)}
-            />
-
-            <EndDateInput
-              endDate={endDate}
-              onEndChange={(newEndDate) => setEndDate(newEndDate)}
-            />
-
-            <PresentInput
+            <div className="saveCancel">
+            <h2>End Date</h2>
+              <EndMonthInput
+                endMonth={endMonth}
+                onMonthChange={(newEndMonth) => setEndMonth(newEndMonth)}
+              />
+              <EndYearInput
+                endYear={endYear}
+                onYearChange={(newEndYear) => setEndYear(newEndYear)}
+              />
+              <h3 style={{ textAlign: "center" }}>Is present?</h3>
+              <PresentInput
               present={present}
               onPresentChange={(newPresent) => setPresent(newPresent)}
             />
+            </div>
 
             <button
               onClick={() =>
@@ -318,8 +340,10 @@ function App() {
                   employers,
                   cities,
                   countries,
-                  startDates,
-                  endDates,
+                  startMonths,
+                  startYears,
+                  endMonths,
+                  endYears,
                   presents
                 )
               }
@@ -495,9 +519,10 @@ function App() {
             <p className="c8">
               <span className="c0 c5">{position}</span>
               <span className="c0">
-                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{startDate} -{" "}
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{startMonth}{" "}
+                {startYear} -{" "}{endMonth}{" "}{endYear}
               </span>
-              <span className="c1 c2">{endDate}</span>
+              <span className="c1 c2"></span>
             </p>
             <p className="c19">
               <span className="c3 c0">
