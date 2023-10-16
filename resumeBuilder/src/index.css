@@ -40,10 +40,6 @@ body {
   padding: 0;
 }
 
-div {
-  display: grid;
-}
-
 .container {
   display: grid;
   grid-template: max-content calc(100vh) / max-content minmax(600px, 1fr);
@@ -468,4 +464,36 @@ h4{
 
 .bottom-border {
   color: white;
+}
+
+.ql-editor {
+  height: 300px;
+}
+
+.ql-editor p {
+  color: #f6fff8b7;
+}
+
+.ql-editor li {
+  color: #f6fff8b7;
+}
+
+.ql-editor h1 {
+  color: #f6fff8b7;
+}
+
+.ql-editor h2 {
+  color: #f6fff8b7;
+}
+
+.ql-editor h3 {
+  color: #f6fff8b7;
+}
+
+.ql-snow .ql-picker.ql-header .ql-picker-label::before {
+  color: #f6fff8b7;
+}
+
+.ql-snow .ql-stroke {
+  stroke: #f6fff8b7;
 }

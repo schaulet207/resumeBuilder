@@ -116,6 +116,7 @@
 }
 
 .personal, .professional, .education {
+  display: grid;
   gap: 12px;
 }
 
@@ -235,7 +236,4 @@ button:hover {
 #begin {
   float: right;
   white-space: nowrap;
-}
-
-#oneLine {
 }

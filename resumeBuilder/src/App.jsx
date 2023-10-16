@@ -26,6 +26,7 @@ import {
   SchoolEndDateInput,
 } from "./Education";
 import { Accordion, AccordionSection } from "./Accordion";
+import { QuillEditor } from './QuillEditor';
 
 function App() {
   // Create state variables for each input
@@ -276,7 +277,7 @@ const handleEndYearChange = (newEndYear) => {
               />
             </div>
           </AccordionSection>
-          <AccordionSection title="Professional">
+          <AccordionSection title="Professional" className="professional">
             {positions.map((savedPosition, index) => (
               <div key={index}>
                 <p>Position: {savedPosition.positions}</p>
@@ -289,40 +290,47 @@ const handleEndYearChange = (newEndYear) => {
             ))}
 
             <PositionInput
+              className="professional"
               currentPosition={position}
               onPositionChange={(newPosition) => setPosition(newPosition)}
               onSavePosition={handleSavePosition}
             />
 
             <EmployerInput
+              className="professional"
               employer={employer}
               onEmployerChange={(newEmployer) => setEmployer(newEmployer)}
             />
 
             <CityInput
+              className="professional"
               city={city}
               onCityChange={(newCity) => setCity(newCity)}
             />
 
-            <div className="saveCancel">
-              <h2>Start Date</h2>
+            <div className="professional">
+              <h2 className="professional">Start Date</h2>
               <StartMonthInput
+                className="professional"
                 startMonth={startMonth}
                 onMonthChange={(newStartMonth) => setStartMonth(newStartMonth)}
               />
               <StartYearInput
+                className="professional"
                 startYear={startYear}
                 onYearChange={(newStartYear) => setStartYear(newStartYear)}
               />
             </div>
 
-            <div className="saveCancel">
+            <div className="professional">
             <h2>End Date</h2>
               <EndMonthInput
+                className="professional"
                 endMonth={endMonth}
                 onMonthChange={(newEndMonth) => setEndMonth(newEndMonth)}
               />
               <EndYearInput
+                className="professional"
                 endYear={endYear}
                 onYearChange={(newEndYear) => setEndYear(newEndYear)}
               />
@@ -332,6 +340,8 @@ const handleEndYearChange = (newEndYear) => {
               onPresentChange={(newPresent) => setPresent(newPresent)}
             />
             </div>
+
+            <QuillEditor id="editor" />
 
             <button
               onClick={() =>
@@ -351,61 +361,6 @@ const handleEndYearChange = (newEndYear) => {
               Save
             </button>
           </AccordionSection>
-
-          {/* <AccordionSection title="Professional">
-            <div className="professional">
-              <label className="input-text">Position</label>
-              <PositionInput
-                position={position}
-                onPositionChange={handlePositionChange}
-              />
-              <label className="input-text">Employer</label>
-              <EmployerInput
-                employer={employer}
-                onEmployerChange={handleEmployerChange}
-              />
-              <div className="professional emailNumber">
-                <div className="professional" id="city">
-                  <label className="input-text">City</label>
-                  <CityInput city={city} onCityChange={handleCityChange} />
-                </div>
-                <div className="professional" id="country">
-                  <label className="input-text">Country</label>
-                  <CountryInput
-                    country={country}
-                    onCountryChange={handleCountryChange}
-                  />
-                </div>
-              </div>
-              <div className="professional emailNumber">
-                <div className="professional" id="startDate">
-                  <label className="input-text">Start Date</label>
-                  <StartDateInput
-                    startDate={startDate}
-                    onStartChange={handleStartDateChange}
-                  />
-                </div>
-                <div className="professional" id="endDate">
-                  <label className="input-text">End Date</label>
-                  <EndDateInput
-                    endDate={endDate}
-                    onEndChange={handleEndDateChange}
-                  />
-                </div>
-              </div>
-              <div className="professional emailNumber" id="presentBox">
-                <label className="input-text">Present (Current)</label>
-                <PresentInput
-                  present={present}
-                  onPresentChange={handlePresentChange}
-                />
-              </div>
-              <div className="professional saveCancel">
-                <button id="saveButton">Save</button>
-                <button id="deleteButton">Delete</button>
-              </div>
-              </div>
-          </AccordionSection> */}
           <AccordionSection title="Education">
             <div className="education">
               <label className="input-text">Education</label>
