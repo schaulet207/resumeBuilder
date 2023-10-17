@@ -1,4 +1,5 @@
 import React from "react";
+import { QuillEditor } from './QuillEditor';
 
 export function PositionInput({
   currentPosition,
@@ -131,6 +132,23 @@ export function PresentInput({ present, onPresentChange }) {
       type="checkbox"
       value={present}
       onChange={(e) => onPresentChange(e.target.value)}
+    />
+  );
+}
+
+export function EmployerDescriptionInput({
+  employerDescription,
+  onEmployerDescriptionChange,
+}) {
+  // Handle changes to the employerDescription field
+  const handleDescriptionChange = (content) => {
+    onEmployerDescriptionChange(content);
+  };
+
+  return (
+    <QuillEditor
+      initialValue={employerDescription}
+      onChange={handleDescriptionChange}
     />
   );
 }

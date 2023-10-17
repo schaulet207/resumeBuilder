@@ -16,6 +16,7 @@ import {
   EndMonthInput,
   EndYearInput,
   PresentInput,
+  EmployerDescriptionInput
 } from "./Professional";
 import {
   DegreeInput,
@@ -26,7 +27,7 @@ import {
   SchoolEndDateInput,
 } from "./Education";
 import { Accordion, AccordionSection } from "./Accordion";
-import { QuillEditor } from './QuillEditor';
+// import { QuillEditor } from './QuillEditor';
 
 function App() {
   // Create state variables for each input
@@ -94,6 +95,11 @@ const handleEndYearChange = (newEndYear) => {
   const handlePresentChange = (newPresent) => {
     setPresent(newPresent);
   };
+
+  const [employerDescription, setEmployerDescription] = useState(''); // State for employerDescription
+const handleEmployerDescriptionChange = (newDescription) => {
+  setEmployerDescription(newDescription);
+};
 
   const [degree, setDegree] = useState("");
   const handleDegreeChange = (newDegree) => {
@@ -278,14 +284,13 @@ const handleEndYearChange = (newEndYear) => {
             </div>
           </AccordionSection>
           <AccordionSection title="Professional" className="professional">
-            {positions.map((savedPosition, index) => (
-              <div key={index}>
-                <p>Position: {savedPosition.positions}</p>
-              </div>
-            ))}
-            {employers.map((savedEmployer, index) => (
-              <div key={index}>
-                <p>Employer: {savedEmployer.employers}</p>
+            {[...positions, ...employers].map((item, index) => (
+              <div key={index} className="record">
+                <p>
+                  {item.positions
+                    ? `Position: ${item.positions}`
+                    : `Employer: ${item.employers}`}
+                </p>
               </div>
             ))}
 
@@ -323,7 +328,7 @@ const handleEndYearChange = (newEndYear) => {
             </div>
 
             <div className="professional">
-            <h2>End Date</h2>
+              <h2>End Date</h2>
               <EndMonthInput
                 className="professional"
                 endMonth={endMonth}
@@ -336,12 +341,15 @@ const handleEndYearChange = (newEndYear) => {
               />
               <h3 style={{ textAlign: "center" }}>Is present?</h3>
               <PresentInput
-              present={present}
-              onPresentChange={(newPresent) => setPresent(newPresent)}
-            />
+                present={present}
+                onPresentChange={(newPresent) => setPresent(newPresent)}
+              />
             </div>
 
-            <QuillEditor id="editor" />
+            <EmployerDescriptionInput
+              employerDescription={employerDescription} // Pass the state variable
+              onEmployerDescriptionChange={handleEmployerDescriptionChange} // Pass the change handler
+            />
 
             <button
               onClick={() =>
@@ -475,7 +483,7 @@ const handleEndYearChange = (newEndYear) => {
               <span className="c0 c5">{position}</span>
               <span className="c0">
                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{startMonth}{" "}
-                {startYear} -{" "}{endMonth}{" "}{endYear}
+                {startYear} - {endMonth} {endYear}
               </span>
               <span className="c1 c2"></span>
             </p>
@@ -483,7 +491,7 @@ const handleEndYearChange = (newEndYear) => {
               <span className="c3 c0">
                 Led cross-functional teams, including Data, Product, Design,
                 Front-end, Back-end, and Mobile developers, in the design and
-                development of enterprise-level projects.
+                development of enterprise-level projects.{employerDescription}
               </span>
             </p>
             <ul className="c12 lst-kix_yogqjw9c8tuq-0 start">

@@ -497,3 +497,12 @@ h4{
 .ql-snow .ql-stroke {
   stroke: #f6fff8b7;
 }
+
+.record p {
+  color: white;
+}
+
+.record {
+  display: flex;
+  flex-direction: row;
+}
