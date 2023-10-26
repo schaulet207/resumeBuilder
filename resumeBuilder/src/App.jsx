@@ -245,13 +245,14 @@ const handleEmployerDescriptionChange = (newDescription) => {
     // Now, profSection contains the updated data for each array
     console.log("profSection: ", profSection);
     console.log("profSection: Employers", profSection.employers);
+    console.log(employerDescription);
   };
 
   return (
     <div className="App">
       <div className="left-half">
         <Accordion>
-          <AccordionSection title="Personal Details">
+        <AccordionSection title={<span className="titleWhite">Personal Details</span>}>
             <div className="personal">
               <label className="input-text">Full Name</label>
               <FullNameInput
@@ -283,7 +284,7 @@ const handleEmployerDescriptionChange = (newDescription) => {
               />
             </div>
           </AccordionSection>
-          <AccordionSection title="Professional" className="professional">
+          <AccordionSection title={<span className="titleWhite">Professional</span>} className="professional">
             {[...positions, ...employers].map((item, index) => (
               <div key={index} className="record">
                 <p>
@@ -369,7 +370,7 @@ const handleEmployerDescriptionChange = (newDescription) => {
               Save
             </button>
           </AccordionSection>
-          <AccordionSection title="Education">
+          <AccordionSection title={<span className="titleWhite">Education</span>}>
             <div className="education">
               <label className="input-text">Education</label>
               <DegreeInput
@@ -487,51 +488,10 @@ const handleEmployerDescriptionChange = (newDescription) => {
               </span>
               <span className="c1 c2"></span>
             </p>
-            <p className="c19">
-              <span className="c3 c0">
-                Led cross-functional teams, including Data, Product, Design,
-                Front-end, Back-end, and Mobile developers, in the design and
-                development of enterprise-level projects.{employerDescription}
-              </span>
-            </p>
-            <ul className="c12 lst-kix_yogqjw9c8tuq-0 start">
-              <li className="c22 li-bullet-0">
-                <span className="c3 c0">
-                  Initiated and launched XPASS 2.0, a premium fitness
-                  subscription platform driving adoption among 3,500+ boutique
-                  fitness studios worldwide.
-                </span>
-              </li>
-              <li className="c4 li-bullet-0">
-                <span className="c3 c0">
-                  Implemented a product roadmap for Xponential+, an
-                  award-winning digital fitness VOD platform, resulting in a 15%
-                  increase in user engagement and a 10% improvement in
-                  retention.
-                </span>
-              </li>
-              <li className="c4 li-bullet-0">
-                <span className="c3 c0">
-                  Collaborated with senior leadership to define project
-                  objectives, scope, and deliverables, aligning them with the
-                  clients strategic goals, resulting in successful product
-                  launches and adoption by the user base.
-                </span>
-              </li>
-              <li className="c4 li-bullet-0">
-                <span className="c3 c0">
-                  Planned and prioritized deliverables and resources across
-                  multiple projects with varying requirements and fast feedback
-                  loops.
-                </span>
-              </li>
-              <li className="c4 li-bullet-0">
-                <span className="c0 c20">
-                  Strong technical background, with experience across the entire
-                  software development life cycle.
-                </span>
-              </li>
-            </ul>
+            <div
+              className="employer-description"
+              dangerouslySetInnerHTML={{ __html: employerDescription }}
+            />
             <p className="c6">
               <span className="c1 c0" />
             </p>

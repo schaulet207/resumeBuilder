@@ -4,7 +4,6 @@
   left: 300px;
   margin: 0 auto;
   padding: 2rem;
-  text-align: center;
 }
 
 .logo {
@@ -75,10 +74,6 @@
 .innerH2 {
   font-size: 1.25rem;
   color: var(--purple);
-}
-
-.project-title h2 {
-  color: var(--txt);
 }
 
 .input-text {
@@ -236,4 +231,166 @@ button:hover {
 #begin {
   float: right;
   white-space: nowrap;
+}
+
+/* QUILL EDITOR FORMATTING */
+.employer-description p {
+  color: #000000;
+  font-weight: 400;
+  text-decoration: none;
+  vertical-align: baseline;
+  font-size: 10pt;
+  font-family: "Montserrat";
+  font-style: normal;
+}
+
+.employer-description h1 {
+  font-weight: 400;
+  font-size: 20pt;
+  font-family: "Arial";
+  color: #000000;
+  text-decoration: none;
+  vertical-align: baseline;
+  font-style: normal;
+  padding-top: 20pt;
+  padding-bottom: 0.5pt;
+  line-height: 1.05;
+  page-break-after: avoid;
+  orphans: 2;
+  widows: 2;
+  text-align: left;
+  padding-top: 20pt;
+  padding-bottom: 6pt;
+  page-break-after: avoid;
+}
+
+.employer-description h2 {
+  color: #000000;
+  font-weight: 400;
+  text-decoration: none;
+  vertical-align: baseline;
+  font-size: 16pt;
+  font-family: "Arial";
+  font-style: normal;
+  padding-top: 18pt;
+  padding-bottom: 0.5pt;
+  line-height: 1.05;
+  page-break-after: avoid;
+  orphans: 2;
+  widows: 2;
+  text-align: left;
+  padding-top: 18pt;
+  padding-bottom: 6pt;
+  page-break-after: avoid;
+}
+
+.employer-description h3 {
+  font-size: 14pt;
+  color: #434343;
+  font-weight: 400;
+  text-decoration: none;
+  vertical-align: baseline;
+  font-family: "Arial";
+  font-style: normal;
+  padding-top: 16pt;
+  padding-bottom: 0.5pt;
+  line-height: 1.05;
+  page-break-after: avoid;
+  orphans: 2;
+  widows: 2;
+  text-align: left;
+  padding-top: 16pt;
+  padding-bottom: 4pt;
+  page-break-after: avoid;
+}
+
+.employer-description strong {
+  font-size: 10pt;
+  font-weight: 700;
+  font-family: "Montserrat";
+  color: #000000;
+  text-decoration: none;
+  vertical-align: baseline;
+  font-style: normal;
+  padding-top: 0pt;
+  padding-bottom: 0.5pt;
+  line-height: 1.05;
+  orphans: 2;
+  widows: 2;
+  text-align: left;
+  margin: 0;
+}
+
+.employer-description em {
+  font-family: "Montserrat";
+  font-style: italic;
+  font-weight: 400;
+  color: #000000;
+  text-decoration: none;
+  vertical-align: baseline;
+  font-size: 10pt;
+  padding-top: 0pt;
+  padding-bottom: 0.5pt;
+  line-height: 1.05;
+  orphans: 2;
+  widows: 2;
+  text-align: left;
+  margin: 0;
+}
+
+.employer-description u {
+  color: #000000;
+  vertical-align: baseline;
+  font-size: 10pt;
+  font-style: normal;
+  text-decoration-skip-ink: none;
+  font-family: "Montserrat";
+  font-weight: 400;
+  text-decoration: underline;
+  padding-top: 0pt;
+  padding-bottom: 0.5pt;
+  line-height: 1.05;
+  orphans: 2;
+  widows: 2;
+  text-align: left;
+  margin: 0;
+}
+
+.employer-description li {
+  color: #000000;
+  font-weight: 400;
+  text-decoration: none;
+  vertical-align: baseline;
+  font-size: 10pt;
+  font-family: "Montserrat";
+  font-style: normal;
+  padding-top: 0pt;
+  padding-bottom: 0.5pt;
+  line-height: 1.05;
+  orphans: 2;
+  widows: 2;
+  text-align: left;
+}
+
+.employer-description ul {
+  color: #000000;
+  font-weight: 400;
+  text-decoration: none;
+  vertical-align: baseline;
+  font-size: 10pt;
+  font-family: "Montserrat";
+  font-style: normal;
+  padding-top: 0pt;
+  padding-bottom: 0.5pt;
+  line-height: 1.05;
+  orphans: 2;
+  widows: 2;
+  text-align: left;
+}
+.employer-description ol {
+padding-inline-start: 40px;
+}
+
+.titleWhite {
+  color: white;
 }
