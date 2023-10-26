@@ -468,6 +468,12 @@ h4{
 
 .ql-editor p {
   color: #f6fff8b7;
+  font-weight: 400;
+  text-decoration: none;
+  vertical-align: baseline;
+  font-size: 10pt;
+  font-family: "Montserrat";
+  font-style: normal;
 }
 
 .ql-editor li {
@@ -476,14 +482,57 @@ h4{
 
 .ql-editor h1 {
   color: #f6fff8b7;
+  font-weight: 400;
+  font-size: 20pt;
+  font-family: "Arial";
+  text-decoration: none;
+  vertical-align: baseline;
+  font-style: normal;
+  padding-top: 0;
+  padding-bottom: 0;
+  line-height: 1.05;
+  page-break-after: avoid;
+  orphans: 2;
+  widows: 2;
+  text-align: left;
+  page-break-after: avoid;
 }
 
 .ql-editor h2 {
   color: #f6fff8b7;
+  font-weight: 400;
+  text-decoration: none;
+  vertical-align: baseline;
+  font-size: 16pt;
+  font-family: "Arial";
+  font-style: normal;
+  line-height: 1.05;
+  page-break-after: avoid;
+  orphans: 2;
+  widows: 2;
+  text-align: left;
+  padding-top: 0;
+  padding-bottom: 0;
+  page-break-after: avoid;
+  flex-direction: row;
 }
 
 .ql-editor h3 {
   color: #f6fff8b7;
+  font-size: 14pt;
+  font-weight: 400;
+  text-decoration: none;
+  vertical-align: baseline;
+  font-family: "Arial";
+  font-style: normal;
+  padding-top: 0;
+  padding-bottom: 0;
+  line-height: 1.05;
+  page-break-after: avoid;
+  orphans: 2;
+  widows: 2;
+  text-align: left;
+  page-break-after: avoid;
 }
 
 .ql-snow .ql-picker.ql-header .ql-picker-label::before {

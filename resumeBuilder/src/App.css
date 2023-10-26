@@ -252,15 +252,13 @@ button:hover {
   text-decoration: none;
   vertical-align: baseline;
   font-style: normal;
-  padding-top: 20pt;
-  padding-bottom: 0.5pt;
+  padding-top: 0;
+  padding-bottom: 0;
   line-height: 1.05;
   page-break-after: avoid;
   orphans: 2;
   widows: 2;
   text-align: left;
-  padding-top: 20pt;
-  padding-bottom: 6pt;
   page-break-after: avoid;
 }
 
@@ -272,15 +270,13 @@ button:hover {
   font-size: 16pt;
   font-family: "Arial";
   font-style: normal;
-  padding-top: 18pt;
-  padding-bottom: 0.5pt;
+  padding-top: 0;
+  padding-bottom: 0;
   line-height: 1.05;
   page-break-after: avoid;
   orphans: 2;
   widows: 2;
   text-align: left;
-  padding-top: 18pt;
-  padding-bottom: 6pt;
   page-break-after: avoid;
 }
 
@@ -292,15 +288,13 @@ button:hover {
   vertical-align: baseline;
   font-family: "Arial";
   font-style: normal;
-  padding-top: 16pt;
-  padding-bottom: 0.5pt;
+  padding-top: 0;
+  padding-bottom: 0;
   line-height: 1.05;
   page-break-after: avoid;
   orphans: 2;
   widows: 2;
   text-align: left;
-  padding-top: 16pt;
-  padding-bottom: 4pt;
   page-break-after: avoid;
 }
 
