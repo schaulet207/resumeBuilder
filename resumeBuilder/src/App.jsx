@@ -252,7 +252,9 @@ const handleEmployerDescriptionChange = (newDescription) => {
     <div className="App">
       <div className="left-half">
         <Accordion>
-        <AccordionSection title={<span className="titleWhite">Personal Details</span>}>
+          <AccordionSection
+            title={<span className="titleWhite">Personal Details</span>}
+          >
             <div className="personal">
               <label className="input-text">Full Name</label>
               <FullNameInput
@@ -284,38 +286,44 @@ const handleEmployerDescriptionChange = (newDescription) => {
               />
             </div>
           </AccordionSection>
-          <AccordionSection title={<span className="titleWhite">Professional</span>} className="professional">
-            {[...positions, ...employers].map((item, index) => (
-              <div key={index} className="record">
-                <p>
-                  {item.positions
-                    ? `Position: ${item.positions}`
-                    : `Employer: ${item.employers}`}
-                </p>
-              </div>
-            ))}
-
-            <PositionInput
-              className="professional"
-              currentPosition={position}
-              onPositionChange={(newPosition) => setPosition(newPosition)}
-              onSavePosition={handleSavePosition}
-            />
-
-            <EmployerInput
-              className="professional"
-              employer={employer}
-              onEmployerChange={(newEmployer) => setEmployer(newEmployer)}
-            />
-
-            <CityInput
-              className="professional"
-              city={city}
-              onCityChange={(newCity) => setCity(newCity)}
-            />
-
+          <AccordionSection
+            title={<span className="titleWhite">Professional</span>}
+          >
             <div className="professional">
-              <h2 className="professional">Start Date</h2>
+              {[...positions, ...employers].map((item, index) => (
+                <div key={index} className="record">
+                  <p>
+                    {item.positions
+                      ? `Position: ${item.positions}`
+                      : `Employer: ${item.employers}`}
+                  </p>
+                </div>
+              ))}
+
+              <label className="input-text">Job Title</label>
+              <PositionInput
+                className="professional"
+                currentPosition={position}
+                onPositionChange={(newPosition) => setPosition(newPosition)}
+                onSavePosition={handleSavePosition}
+              />
+              <label className="input-text">Employer</label>
+              <EmployerInput
+                className="professional"
+                employer={employer}
+                onEmployerChange={(newEmployer) => setEmployer(newEmployer)}
+              />
+              <label className="input-text">Address</label>
+              <CityInput
+                className="professional"
+                city={city}
+                onCityChange={(newCity) => setCity(newCity)}
+              />
+            </div>
+            <div className="datePickers">
+            <div className="professional">
+              <label className="input-text">Start Date</label>
+              <div className="selectInputs">
               <StartMonthInput
                 className="professional"
                 startMonth={startMonth}
@@ -325,11 +333,12 @@ const handleEmployerDescriptionChange = (newDescription) => {
                 className="professional"
                 startYear={startYear}
                 onYearChange={(newStartYear) => setStartYear(newStartYear)}
-              />
+              /></div>
             </div>
 
             <div className="professional">
-              <h2>End Date</h2>
+              <label className="input-text">End Date</label>
+              <div className="selectInputs">
               <EndMonthInput
                 className="professional"
                 endMonth={endMonth}
@@ -340,19 +349,23 @@ const handleEmployerDescriptionChange = (newDescription) => {
                 endYear={endYear}
                 onYearChange={(newEndYear) => setEndYear(newEndYear)}
               />
-              <h3 style={{ textAlign: "center" }}>Is present?</h3>
+              </div>
+              </div>
+              </div>
+              <div className="presentCheck">
+              <h3 className="isPresent" style={{ textAlign: "center" }}>Is present?</h3>
               <PresentInput
                 present={present}
                 onPresentChange={(newPresent) => setPresent(newPresent)}
               />
-            </div>
+              </div>
 
             <EmployerDescriptionInput
               employerDescription={employerDescription} // Pass the state variable
               onEmployerDescriptionChange={handleEmployerDescriptionChange} // Pass the change handler
             />
-
-            <button
+            <button className="cancelButton">Cancel</button>
+            <button className="saveButton"
               onClick={() =>
                 handleSaveAll(
                   positions,
@@ -370,7 +383,9 @@ const handleEmployerDescriptionChange = (newDescription) => {
               Save
             </button>
           </AccordionSection>
-          <AccordionSection title={<span className="titleWhite">Education</span>}>
+          <AccordionSection
+            title={<span className="titleWhite">Education</span>}
+          >
             <div className="education">
               <label className="input-text">Education</label>
               <DegreeInput

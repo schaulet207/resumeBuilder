@@ -15,6 +15,7 @@ export function PositionInput({
     <div>
       <input
         className="inputs"
+        id="position"
         type="text"
         placeholder="Enter Title"
         value={currentPosition}
@@ -41,7 +42,7 @@ export function CityInput({ city, onCityChange }) {
     <input
       className="inputs"
       type="text"
-      placeholder="Enter City"
+      placeholder="Enter City, Country"
       value={city}
       onChange={(e) => onCityChange(e.target.value)}
     />
@@ -50,7 +51,7 @@ export function CityInput({ city, onCityChange }) {
 
 export function StartMonthInput({ startMonth, onMonthChange }) {
   const months = [
-    'Select Month', 'January', 'February', 'March', 'April', 'May', 'June',
+    'Month', 'January', 'February', 'March', 'April', 'May', 'June',
     'July', 'August', 'September', 'October', 'November', 'December'
   ];
 
@@ -77,7 +78,7 @@ export function StartYearInput({ startYear, onYearChange }) {
       value={startYear}
       onChange={(e) => onYearChange(e.target.value)}
     >
-      <option value="">Select Year</option>
+      <option value="">Year</option>
       {years.map((year, index) => (
         <option key={index} value={year}>
           {year}
@@ -89,7 +90,7 @@ export function StartYearInput({ startYear, onYearChange }) {
 
 export function EndMonthInput({ endMonth, onMonthChange }) {
   const months = [
-    'Select Month', 'January', 'February', 'March', 'April', 'May', 'June',
+    'Month', 'January', 'February', 'March', 'April', 'May', 'June',
     'July', 'August', 'September', 'October', 'November', 'December'
   ];
 
@@ -116,7 +117,7 @@ export function EndYearInput({ startYear, onYearChange }) {
       value={startYear}
       onChange={(e) => onYearChange(e.target.value)}
     >
-      <option value="">Select Year</option>
+      <option value="">Year</option>
       {years.map((year, index) => (
         <option key={index} value={year}>
           {year}

@@ -52,7 +52,7 @@ export function AddressInput({ address, onAddressChange }) {
     <input
     className="inputs"
       type="text"
-      placeholder="City, Country"
+      placeholder="Enter City, Country"
       value={address}
       onChange={(e) => onAddressChange(e.target.value)}
     />

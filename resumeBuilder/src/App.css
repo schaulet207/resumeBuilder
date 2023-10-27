@@ -58,7 +58,7 @@
   border-radius: 12px;
   padding: 18px;
   box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.075);
-  width: 30rem;
+  width: 36rem;
 }
 
 .right-half {
@@ -233,6 +233,59 @@ button:hover {
   white-space: nowrap;
 }
 
+#position {
+  width: 95%;
+}
+
+.datePickers {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.selectInputs {
+  display: flex;
+  flex-direction: row;
+  gap: 8px;
+}
+
+.presentCheck {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  align-items: center;
+  margin-right: 10px;
+  height: 50px;
+  margin-bottom: 10px;
+}
+
+.isPresent {
+  position: relative;
+  bottom: 7.5px;
+  right: 8px;
+  color: rgb(203, 200, 200);
+}
+
+.saveButton {
+  position: relative;
+  margin-top: 20px;
+  left: 297px;
+  height: 60px;
+  width: 120px;
+  border-radius: 20px;
+  font-size: 24px;
+}
+
+.cancelButton {
+  position: relative;
+  left: 280px;
+  height: 60px;
+  width: 120px;
+  border-radius: 20px;
+  font-size: 24px;
+  background-color: transparent;
+}
+
 /* QUILL EDITOR FORMATTING */
 .employer-description p {
   color: #000000;
@@ -260,6 +313,10 @@ button:hover {
   widows: 2;
   text-align: left;
   page-break-after: avoid;
+}
+
+.professional h2 {
+  color: #757575;
 }
 
 .employer-description h2 {
@@ -387,4 +444,12 @@ padding-inline-start: 40px;
 
 .titleWhite {
   color: white;
+}
+
+.titleGrey {
+  color: #757575;
+}
+
+.professional {
+  padding: 12px;
 }
