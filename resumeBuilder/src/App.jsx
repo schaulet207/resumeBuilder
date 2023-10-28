@@ -206,6 +206,19 @@ const handleEmployerDescriptionChange = (newDescription) => {
     // You can handle the checkbox value here if needed
   };
 
+  const clearInputFields = () => {
+    setPosition(""); // Clear position field
+    setEmployer(""); // Clear employer field
+    setCity(""); // Clear city field
+    setStartMonth(""); // Clear startMonth field
+    setStartYear(""); // Clear startYear field
+    setEndMonth(""); // Clear endMonth field
+    setEndYear(""); // Clear endYear field
+    setPresent(false); // Clear present checkbox
+    handleEmployerDescriptionChange(""); // Clear the Quill editor content
+
+  };
+
   const handleSaveAll = () => {
     // Create an object to store professional section data
     const profSection = {};
@@ -221,7 +234,6 @@ const handleEmployerDescriptionChange = (newDescription) => {
       endYears: [endYears, setEndYears, endYear], // Add endYears
       presents: [presents, setPresents, present],
     };
-    
   
     // Loop through the stateArrays object and update the arrays and log their values
     Object.entries(stateArrays).forEach(
@@ -232,15 +244,7 @@ const handleEmployerDescriptionChange = (newDescription) => {
       }
     );
   
-    // Clear the input fields
-    setPosition("");
-    setEmployer("");
-    setCity("");
-    setStartMonth(""); // Clear startMonth
-    setStartYear(""); // Clear startYear
-    setEndMonth(""); // Clear endMonth
-    setEndYear(""); // Clear endYear
-    setPresent("");
+    clearInputFields();
   
     // Now, profSection contains the updated data for each array
     console.log("profSection: ", profSection);
@@ -321,51 +325,59 @@ const handleEmployerDescriptionChange = (newDescription) => {
               />
             </div>
             <div className="datePickers">
-            <div className="professional">
-              <label className="input-text">Start Date</label>
-              <div className="selectInputs">
-              <StartMonthInput
-                className="professional"
-                startMonth={startMonth}
-                onMonthChange={(newStartMonth) => setStartMonth(newStartMonth)}
-              />
-              <StartYearInput
-                className="professional"
-                startYear={startYear}
-                onYearChange={(newStartYear) => setStartYear(newStartYear)}
-              /></div>
-            </div>
+              <div className="professional">
+                <label className="input-text">Start Date</label>
+                <div className="selectInputs">
+                  <StartMonthInput
+                    className="professional"
+                    startMonth={startMonth}
+                    onMonthChange={(newStartMonth) =>
+                      setStartMonth(newStartMonth)
+                    }
+                  />
+                  <StartYearInput
+                    className="professional"
+                    startYear={startYear}
+                    onYearChange={(newStartYear) => setStartYear(newStartYear)}
+                  />
+                </div>
+              </div>
 
-            <div className="professional">
-              <label className="input-text">End Date</label>
-              <div className="selectInputs">
-              <EndMonthInput
-                className="professional"
-                endMonth={endMonth}
-                onMonthChange={(newEndMonth) => setEndMonth(newEndMonth)}
-              />
-              <EndYearInput
-                className="professional"
-                endYear={endYear}
-                onYearChange={(newEndYear) => setEndYear(newEndYear)}
-              />
+              <div className="professional">
+                <label className="input-text">End Date</label>
+                <div className="selectInputs">
+                  <EndMonthInput
+                    className="professional"
+                    endMonth={endMonth}
+                    onMonthChange={(newEndMonth) => setEndMonth(newEndMonth)}
+                  />
+                  <EndYearInput
+                    className="professional"
+                    endYear={endYear}
+                    onYearChange={(newEndYear) => setEndYear(newEndYear)}
+                  />
+                </div>
               </div>
-              </div>
-              </div>
-              <div className="presentCheck">
-              <h3 className="isPresent" style={{ textAlign: "center" }}>Is present?</h3>
+            </div>
+            <div className="presentCheck">
+              <h3 className="isPresent" style={{ textAlign: "center" }}>
+                Is present?
+              </h3>
               <PresentInput
                 present={present}
                 onPresentChange={(newPresent) => setPresent(newPresent)}
               />
-              </div>
+            </div>
 
             <EmployerDescriptionInput
               employerDescription={employerDescription} // Pass the state variable
               onEmployerDescriptionChange={handleEmployerDescriptionChange} // Pass the change handler
             />
-            <button className="cancelButton">Cancel</button>
-            <button className="saveButton"
+            <button className="cancelButton" onClick={clearInputFields}>
+              Cancel
+            </button>
+            <button
+              className="saveButton"
               onClick={() =>
                 handleSaveAll(
                   positions,

@@ -2,7 +2,7 @@ import React, { useRef, useEffect } from 'react';
 import Quill from 'quill';
 import 'quill/dist/quill.snow.css';
 
-export function QuillEditor({ value, onChange }) {
+export function QuillEditor({ value, onChange, clearContent }) {
   const quillRef = useRef(null);
   const quillInstance = useRef(null); // Store the Quill instance
 
@@ -30,8 +30,13 @@ export function QuillEditor({ value, onChange }) {
     }
   }, [value]);
 
+  const clearQuillContent = () => {
+    quillInstance.current.root.innerHTML = '';
+  };
+
   return (
     <div>
+      <button onClick={clearQuillContent}>Clear Content</button>
       <div ref={quillRef}></div>
     </div>
   );
