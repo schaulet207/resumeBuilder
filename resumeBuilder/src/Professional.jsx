@@ -99,6 +99,7 @@ export function EndMonthInput({ endMonth, onMonthChange }) {
       className="inputs"
       value={endMonth}
       onChange={(e) => onMonthChange(e.target.value)}
+      id="endMonthField"
     >
       {months.map((month, index) => (
         <option key={index} value={month}>{month}</option>
@@ -116,6 +117,7 @@ export function EndYearInput({ startYear, onYearChange }) {
       className="inputs"
       value={startYear}
       onChange={(e) => onYearChange(e.target.value)}
+      id="endYearField"
     >
       <option value="">Year</option>
       {years.map((year, index) => (
@@ -133,6 +135,7 @@ export function PresentInput({ present, onPresentChange }) {
       type="checkbox"
       value={present}
       onChange={(e) => onPresentChange(e.target.value)}
+      id="professionalPresentField"
     />
   );
 }

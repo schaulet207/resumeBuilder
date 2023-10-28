@@ -217,6 +217,7 @@ const handleEmployerDescriptionChange = (newDescription) => {
     }
   }
 
+  // Clear all the Professional section input fields
   const clearInputFields = () => {
     setPosition(""); // Clear position field
     setEmployer(""); // Clear employer field
@@ -228,8 +229,25 @@ const handleEmployerDescriptionChange = (newDescription) => {
     setPresent(false); // Clear present checkbox
     handleEmployerDescriptionChange(""); // Clear the Quill editor content
     clearQuillHTML()
+    handleIsPresent(); // Clear the endMonth and endYear fields
   };
 
+// A function where if the Is Present button is clicked, the endMonth and endYear fields are removed
+const handleIsPresent = () => {
+  // Select the existing elements with specific IDs
+  const endMonth = document.querySelector('#endMonthField'); 
+  const endYear = document.querySelector('#endYearField'); 
+  const endSection = document.querySelector('#endMonthYear'); 
+  const professionalPresentCheck = document.querySelector('#professionalPresentField'); 
+
+  // If the checkbox is checked, remove the endMonth and endYear elements
+  if (professionalPresentCheck.checked === true) {
+    endSection.innerHTML= '';
+  }
+  console.log(professionalPresentCheck.checked);
+};
+
+// A function to save all the Professional section data
   const handleSaveAll = () => {
     // Create an object to store professional section data
     const profSection = {};
@@ -356,7 +374,7 @@ const handleEmployerDescriptionChange = (newDescription) => {
 
               <div className="professional">
                 <label className="input-text">End Date</label>
-                <div className="selectInputs">
+                <div className="selectInputs" id="endMonthYear">
                   <EndMonthInput
                     className="professional"
                     endMonth={endMonth}
@@ -377,6 +395,7 @@ const handleEmployerDescriptionChange = (newDescription) => {
               <PresentInput
                 present={present}
                 onPresentChange={(newPresent) => setPresent(newPresent)}
+                id="professionalPresentField"
               />
             </div>
 
