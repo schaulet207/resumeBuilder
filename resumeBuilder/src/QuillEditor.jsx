@@ -30,13 +30,18 @@ export function QuillEditor({ value, onChange, clearContent }) {
     }
   }, [value]);
 
-  const clearQuillContent = () => {
-    quillInstance.current.root.innerHTML = '';
-  };
+  // Set the ID on the child element within the Quill editor
+  useEffect(() => {
+    if (quillRef.current) {
+      const quillEditor = quillRef.current.querySelector('.ql-editor');
+      if (quillEditor) {
+        quillEditor.id = 'employerDescriptionQlEditor';
+      }
+    }
+  }, []);
 
   return (
     <div>
-      <button onClick={clearQuillContent}>Clear Content</button>
       <div ref={quillRef}></div>
     </div>
   );

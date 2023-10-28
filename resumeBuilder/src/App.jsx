@@ -206,6 +206,17 @@ const handleEmployerDescriptionChange = (newDescription) => {
     // You can handle the checkbox value here if needed
   };
 
+  // Clear the quill editor content
+  function clearQuillHTML() {
+    // Select the existing element with a specific class name
+    const qleditor = document.querySelector('#employerDescriptionQlEditor');
+  
+    if (qleditor) {
+      // Clear the innerHTML of the selected element
+      qleditor.innerHTML = '';
+    }
+  }
+
   const clearInputFields = () => {
     setPosition(""); // Clear position field
     setEmployer(""); // Clear employer field
@@ -216,7 +227,7 @@ const handleEmployerDescriptionChange = (newDescription) => {
     setEndYear(""); // Clear endYear field
     setPresent(false); // Clear present checkbox
     handleEmployerDescriptionChange(""); // Clear the Quill editor content
-
+    clearQuillHTML()
   };
 
   const handleSaveAll = () => {
