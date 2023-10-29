@@ -115,10 +115,31 @@
   gap: 12px;
 }
 
+.personal {
+  padding: 12px;
+}
+
+#careerSummaryPersonal {
+  max-width: 490.523px;
+  max-height: 400px;
+  min-height: 64px;
+  border-radius: 1px;
+}
+
 .emailNumber {
   display: flex;
   flex-direction: row;
-  width: f
+  padding: 0px;
+  margin: 0px;
+}
+
+#emailPersonal {
+  width: 270px;
+  margin-top: 12px;
+}
+
+#phonePersonal {
+  margin-top: 12px;
 }
 
 #city, #country, #startDate, #endDate, #email, #phone {
@@ -431,12 +452,13 @@ button:hover {
   font-size: 10pt;
   font-family: "Montserrat";
   font-style: normal;
-  padding-top: 0pt;
+  padding-top: 0px;
   padding-bottom: 0.5pt;
   line-height: 1.05;
   orphans: 2;
   widows: 2;
   text-align: left;
+  margin: 0px;
 }
 .employer-description ol {
 padding-inline-start: 40px;
@@ -456,4 +478,9 @@ padding-inline-start: 40px;
 
 .hide-section {
   display: none;
+}
+
+.move-section {
+  position: relative;
+  bottom: 60px;
 }

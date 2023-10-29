@@ -19,6 +19,7 @@ export function CareerInput({ careerSummary, onCareerSummaryChange }) {
       placeholder="Enter Career Summary"
       value={careerSummary}
       onChange={(e) => onCareerSummaryChange(e.target.value)}
+      id="careerSummaryPersonal"
     />
   );
 }
@@ -31,6 +32,7 @@ export function EmailInput({ email, onEmailChange }) {
       placeholder="Enter email"
       value={email}
       onChange={(e) => onEmailChange(e.target.value)}
+      id="emailPersonal"
     />
   );
 }
@@ -43,6 +45,7 @@ export function PhoneInput({ phoneNumber, onPhoneChange }) {
       placeholder="Enter phone"
       value={phoneNumber}
       onChange={(e) => onPhoneChange(e.target.value)}
+      id="phonePersonal"
     />
   );
 }

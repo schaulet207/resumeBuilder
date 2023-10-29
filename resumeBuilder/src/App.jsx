@@ -228,8 +228,7 @@ const handleEmployerDescriptionChange = (newDescription) => {
     setEndYear(""); // Clear endYear field
     setPresent(false); // Clear present checkbox
     handleEmployerDescriptionChange(""); // Clear the Quill editor content
-    clearQuillHTML()
-    handleIsPresent(); // Clear the endMonth and endYear fields
+    clearQuillHTML();
   };
 
 // Pass variables to actively see whether the checkbox is checked or not
@@ -238,16 +237,22 @@ const [isProfessionalPresentChecked, setIsProfessionalPresentChecked] = useState
   // Function on checkbox change
   const handleCheckboxChange = (isChecked) => {
   const endSection = document.querySelector('#endMonthYear'); 
+  const endLabel = document.querySelector('#endLabelProfessional'); 
+  const presentSection = document.querySelector('.presentCheck'); 
     // Update the state to reflect the checkbox status
     setIsProfessionalPresentChecked(isChecked);
     if (isChecked) {
       setEndMonth('Present'); // Update state variable
       setEndYear('');
       endSection.classList.add('hide-section');
+      endLabel.classList.add('hide-section');
+      presentSection.classList.add('move-section');
     } else {
       setEndMonth(''); // Clear the value when the checkbox is not checked
       setEndYear(''); // Clear the value for endYear as well if necessary
       endSection.classList.remove('hide-section');
+      endLabel.classList.remove('hide-section');
+      presentSection.classList.remove('move-section');
     }
   };
 
@@ -298,17 +303,12 @@ const [isProfessionalPresentChecked, setIsProfessionalPresentChecked] = useState
                 fullName={fullName}
                 onFullNameChange={handleFullNameChange}
               />
-              <label className="input-text">Summary</label>
-              <CareerInput
-                careerSummary={careerSummary}
-                onCareerSummaryChange={handleCareerSummaryChange}
-              />
-              <div className="personal emailNumber">
-                <div className="personal" id="email">
+              <div className="emailNumber">
+                <div id="email">
                   <label className="input-text">Email</label>
                   <EmailInput email={email} onEmailChange={handleEmailChange} />
                 </div>
-                <div className="personal" id="phoneNumber">
+                <div id="phoneNumber">
                   <label className="input-text">Phone</label>
                   <PhoneInput
                     phoneNumber={phoneNumber}
@@ -320,6 +320,11 @@ const [isProfessionalPresentChecked, setIsProfessionalPresentChecked] = useState
               <AddressInput
                 address={address}
                 onAddressChange={handleAddressChange}
+              />
+              <label className="input-text">Summary</label>
+              <CareerInput
+                careerSummary={careerSummary}
+                onCareerSummaryChange={handleCareerSummaryChange}
               />
             </div>
           </AccordionSection>
@@ -377,7 +382,7 @@ const [isProfessionalPresentChecked, setIsProfessionalPresentChecked] = useState
               </div>
 
               <div className="professional">
-                <label className="input-text">End Date</label>
+                <label className="input-text" id="endLabelProfessional">End Date</label>
                 <div className="selectInputs" id="endMonthYear">
                   <EndMonthInput
                     className="professional"
@@ -424,7 +429,14 @@ const [isProfessionalPresentChecked, setIsProfessionalPresentChecked] = useState
                   startYears,
                   endMonths,
                   endYears,
-                  presents
+                  presents,
+                  console.log('Position: ', position),
+                  console.log('Employer: ', employer),
+                  console.log('City: ', city),
+                  console.log('Start Month: ', startMonth),
+                  console.log('Start Year: ', startYear),
+                  console.log('End Month: ', endMonth),
+                  console.log('End Year: ', endYear),
                 )
               }
             >
