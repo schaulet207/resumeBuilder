@@ -129,12 +129,17 @@ export function EndYearInput({ startYear, onYearChange }) {
   );
 }
 export function PresentInput({ present, onPresentChange }) {
+  const handleCheckboxChange = (e) => {
+    // Call the function passed as a prop when the checkbox is changed
+    onPresentChange(e.target.checked);
+  };
+
   return (
     <input
       className="checkbox"
       type="checkbox"
-      value={present}
-      onChange={(e) => onPresentChange(e.target.value)}
+      checked={present}
+      onChange={handleCheckboxChange}
       id="professionalPresentField"
     />
   );

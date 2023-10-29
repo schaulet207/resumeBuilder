@@ -232,20 +232,24 @@ const handleEmployerDescriptionChange = (newDescription) => {
     handleIsPresent(); // Clear the endMonth and endYear fields
   };
 
-// A function where if the Is Present button is clicked, the endMonth and endYear fields are removed
-const handleIsPresent = () => {
-  // Select the existing elements with specific IDs
-  const endMonth = document.querySelector('#endMonthField'); 
-  const endYear = document.querySelector('#endYearField'); 
-  const endSection = document.querySelector('#endMonthYear'); 
-  const professionalPresentCheck = document.querySelector('#professionalPresentField'); 
+// Pass variables to actively see whether the checkbox is checked or not
+const [isProfessionalPresentChecked, setIsProfessionalPresentChecked] = useState(false);
 
-  // If the checkbox is checked, remove the endMonth and endYear elements
-  if (professionalPresentCheck.checked === true) {
-    endSection.innerHTML= '';
-  }
-  console.log(professionalPresentCheck.checked);
-};
+  // Function on checkbox change
+  const handleCheckboxChange = (isChecked) => {
+  const endSection = document.querySelector('#endMonthYear'); 
+    // Update the state to reflect the checkbox status
+    setIsProfessionalPresentChecked(isChecked);
+    if (isChecked) {
+      setEndMonth('Present'); // Update state variable
+      setEndYear('');
+      endSection.classList.add('hide-section');
+    } else {
+      setEndMonth(''); // Clear the value when the checkbox is not checked
+      setEndYear(''); // Clear the value for endYear as well if necessary
+      endSection.classList.remove('hide-section');
+    }
+  };
 
 // A function to save all the Professional section data
   const handleSaveAll = () => {
@@ -379,11 +383,13 @@ const handleIsPresent = () => {
                     className="professional"
                     endMonth={endMonth}
                     onMonthChange={(newEndMonth) => setEndMonth(newEndMonth)}
+                    disabled={isProfessionalPresentChecked} // Set the disabled attribute based on the condition
                   />
                   <EndYearInput
                     className="professional"
                     endYear={endYear}
                     onYearChange={(newEndYear) => setEndYear(newEndYear)}
+                    disabled={isProfessionalPresentChecked} // Set the disabled attribute based on the condition
                   />
                 </div>
               </div>
@@ -393,8 +399,8 @@ const handleIsPresent = () => {
                 Is present?
               </h3>
               <PresentInput
-                present={present}
-                onPresentChange={(newPresent) => setPresent(newPresent)}
+                present={isProfessionalPresentChecked}
+                onPresentChange={handleCheckboxChange}
                 id="professionalPresentField"
               />
             </div>

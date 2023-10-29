@@ -453,3 +453,7 @@ padding-inline-start: 40px;
 .professional {
   padding: 12px;
 }
+
+.hide-section {
+  display: none;
+}
