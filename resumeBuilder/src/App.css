@@ -484,3 +484,7 @@ padding-inline-start: 40px;
   position: relative;
   bottom: 60px;
 }
+
+#profHist {
+  color: white;
+}

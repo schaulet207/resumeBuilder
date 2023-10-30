@@ -30,7 +30,7 @@ import { Accordion, AccordionSection } from "./Accordion";
 // import { QuillEditor } from './QuillEditor';
 
 function App() {
-  // Create state variables for each input
+
   const [fullName, setFullName] = useState("");
   const handleFullNameChange = (newFullName) => {
     setFullName(newFullName);
@@ -283,11 +283,16 @@ const [isProfessionalPresentChecked, setIsProfessionalPresentChecked] = useState
     );
   
     clearInputFields();
-  
-    // Now, profSection contains the updated data for each array
-    console.log("profSection: ", profSection);
-    console.log("profSection: Employers", profSection.employers);
-    console.log(employerDescription);
+
+    // Select the professional history section
+const profHistory = document.querySelector('#profHist');
+
+// Create a new <div> element to hold the professional history information
+const newProfHistoryEntry = document.createElement('div');
+newProfHistoryEntry.innerHTML = position + ' ' + employer + ' ' + city + ' ' + startMonth + ' ' + startYear + ' ' + endMonth + ' ' + endYear;
+
+// Append the new <div> element to the professional history section
+profHistory.appendChild(newProfHistoryEntry);
   };
 
   return (
@@ -332,16 +337,6 @@ const [isProfessionalPresentChecked, setIsProfessionalPresentChecked] = useState
             title={<span className="titleWhite">Professional</span>}
           >
             <div className="professional">
-              {[...positions, ...employers].map((item, index) => (
-                <div key={index} className="record">
-                  <p>
-                    {item.positions
-                      ? `Position: ${item.positions}`
-                      : `Employer: ${item.employers}`}
-                  </p>
-                </div>
-              ))}
-
               <label className="input-text">Job Title</label>
               <PositionInput
                 className="professional"
@@ -430,18 +425,14 @@ const [isProfessionalPresentChecked, setIsProfessionalPresentChecked] = useState
                   endMonths,
                   endYears,
                   presents,
-                  console.log('Position: ', position),
-                  console.log('Employer: ', employer),
-                  console.log('City: ', city),
-                  console.log('Start Month: ', startMonth),
-                  console.log('Start Year: ', startYear),
-                  console.log('End Month: ', endMonth),
-                  console.log('End Year: ', endYear),
                 )
               }
             >
               Save
             </button>
+            <div>
+              <div id="profHist"></div>
+            </div>
           </AccordionSection>
           <AccordionSection
             title={<span className="titleWhite">Education</span>}
