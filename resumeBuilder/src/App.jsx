@@ -260,7 +260,7 @@ const [isProfessionalPresentChecked, setIsProfessionalPresentChecked] = useState
   const handleSaveAll = () => {
     // Create an object to store professional section data
     const profSection = {};
-  
+
     // Create an object with state arrays and their corresponding functions
     const stateArrays = {
       positions: [positions, setPositions, position],
@@ -272,7 +272,7 @@ const [isProfessionalPresentChecked, setIsProfessionalPresentChecked] = useState
       endYears: [endYears, setEndYears, endYear], // Add endYears
       presents: [presents, setPresents, present],
     };
-  
+
     // Loop through the stateArrays object and update the arrays and log their values
     Object.entries(stateArrays).forEach(
       ([stateName, [stateArray, setState, value]]) => {
@@ -281,18 +281,67 @@ const [isProfessionalPresentChecked, setIsProfessionalPresentChecked] = useState
         profSection[stateName] = updatedStateArray;
       }
     );
-  
+
     clearInputFields();
 
     // Select the professional history section
-const profHistory = document.querySelector('#profHist');
+    const profHistory = document.querySelector("#profHist");
 
-// Create a new <div> element to hold the professional history information
-const newProfHistoryEntry = document.createElement('div');
-newProfHistoryEntry.innerHTML = position + ' ' + employer + ' ' + city + ' ' + startMonth + ' ' + startYear + ' ' + endMonth + ' ' + endYear;
+    // Create a new <div> element to hold the professional history information
+    const newProfHistoryEntry = document.createElement("div");
+    newProfHistoryEntry.innerHTML =
+      '<div id="top-top">' +
+      '<div id="top-left">' +
+      position +
+      "</div>" +
+      '<div id="top-right">' +
+      ", " +
+      employer +
+      "</div>" +
+      "</div>" +
+      '<div id="bottom-bottom">' +
+      '<div id="bottom-row">' +
+      '<div id="bottom-left">' +
+      " " +
+      startMonth +
+      " " +
+      startYear +
+      " - " +
+      endMonth +
+      " " +
+      endYear +
+      "</div>" +
+      "|" +
+      '<div id="bottom-right">' +
+      city +
+      "</div>" +
+      '</div>' +
+      '<div id="toggle-button">' +
+      '<img src="visibility_FILL.svg" alt="Visible" id="visible" style="display: inline;">' +
+      '<img src="visibility_off.svg" alt="Hidden" id="hidden" style="display: none;">' +
+      "</div>" +
+      "</div>";
 
-// Append the new <div> element to the professional history section
-profHistory.appendChild(newProfHistoryEntry);
+    // Attach the click event listener to a parent element that exists when the page loads (e.g., profHistory).
+    profHistory.addEventListener("click", (event) => {
+      const target = event.target;
+      const visibleIcon = document.querySelector("#visible");
+      const hiddenIcon = document.querySelector("#hidden");
+      
+      if (target.id === "toggle-button" || target.id === "visible" || target.id === "hidden") {
+    
+        if (visibleIcon.style.display === "inline") {
+          visibleIcon.style.display = "none";
+          hiddenIcon.style.display = "inline";
+        } else {
+          visibleIcon.style.display = "inline";
+          hiddenIcon.style.display = "none";
+        }
+      }
+    });
+
+    // Append the new <div> element to the professional history section
+    profHistory.appendChild(newProfHistoryEntry);
   };
 
   return (
