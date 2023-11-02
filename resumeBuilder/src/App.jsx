@@ -131,6 +131,8 @@ const handleEmployerDescriptionChange = (newDescription) => {
     setSchoolEndDate(newSchoolEndDate);
   };
 
+  let profKey = 0; // Key for professional experience
+
   // Create empty arrays
   const [positions, setPositions] = useState([]); // An array to store positions
   const [employers, setEmployers] = useState([]); // An array to store employers
@@ -316,26 +318,33 @@ const [isProfessionalPresentChecked, setIsProfessionalPresentChecked] = useState
       city +
       "</div>" +
       '</div>' +
-      '<div id="toggle-button">' +
-      '<img src="visibility_FILL.svg" alt="Visible" id="visible" style="display: inline;">' +
-      '<img src="visibility_off.svg" alt="Hidden" id="hidden" style="display: none;">' +
+      '<div id=' + '"profSection' + positions.length + '"' + 'class="toggle-button"' + '>' +
+      '<img src="visibility_FILL.svg" alt="Visible" class="visible" id="visi' + positions.length + '"' + 'style="display: inline;">' +
+      '<img src="visibility_off.svg" alt="Hidden" class="hidden" id="hid' + positions.length + '"' + 'style="display: none;">' +
       "</div>" +
       "</div>";
 
     // Attach the click event listener to a parent element that exists when the page loads (e.g., profHistory).
     profHistory.addEventListener("click", (event) => {
       const target = event.target;
-      const visibleIcon = document.querySelector("#visible");
-      const hiddenIcon = document.querySelector("#hidden");
-      
-      if (target.id === "toggle-button" || target.id === "visible" || target.id === "hidden") {
+    
+      if (
+        target.id === `profSection${positions.length}` ||
+        target.id === `visi${positions.length}` ||
+        target.id === `hid${positions.length}`
+      ) {
+        const visibleIcon = document.querySelector(`#visi${positions.length}`);
+        const hiddenIcon = document.querySelector(`#hid${positions.length}`);
+        console.log("Uno")
     
         if (visibleIcon.style.display === "inline") {
           visibleIcon.style.display = "none";
           hiddenIcon.style.display = "inline";
+          console.log("Dos")
         } else {
           visibleIcon.style.display = "inline";
           hiddenIcon.style.display = "none";
+          console.log("Tres")
         }
       }
     });

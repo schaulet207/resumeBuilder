@@ -534,7 +534,7 @@ padding-inline-start: 40px;
   color: white;
 }
 
-#toggle-button {
+.toggle-button {
   display: flex;
   flex-direction: row;
   justify-content: flex-end;
@@ -542,18 +542,18 @@ padding-inline-start: 40px;
   height: 40px;
 }
 
-#toggle-button:hover {
+.toggle-button:hover {
   cursor: pointer;
 }
 
-#visible {
+.visible {
   position: relative;
   bottom: 20px;
   height: 40px;
   width: 40px;
 }
 
-#hidden {
+.hidden {
   position: relative;
   bottom: 20px;
   height: 40px;
