@@ -205,7 +205,6 @@ const handleEmployerDescriptionChange = (newDescription) => {
       const updatedPresents = [...prevPresents, { present: newPresent }];
       return updatedPresents;
     });
-    // You can handle the checkbox value here if needed
   };
 
   // Clear the quill editor content
@@ -335,16 +334,13 @@ const [isProfessionalPresentChecked, setIsProfessionalPresentChecked] = useState
       ) {
         const visibleIcon = document.querySelector(`#visi${positions.length}`);
         const hiddenIcon = document.querySelector(`#hid${positions.length}`);
-        console.log("Uno")
     
         if (visibleIcon.style.display === "inline") {
           visibleIcon.style.display = "none";
           hiddenIcon.style.display = "inline";
-          console.log("Dos")
         } else {
           visibleIcon.style.display = "inline";
           hiddenIcon.style.display = "none";
-          console.log("Tres")
         }
       }
     });
