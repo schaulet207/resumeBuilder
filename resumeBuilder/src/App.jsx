@@ -132,6 +132,7 @@ const handleEmployerDescriptionChange = (newDescription) => {
   };
 
   let profKey = 0; // Key for professional experience
+  let profHistoryInfo;
 
   // Create empty arrays
   const [positions, setPositions] = useState([]); // An array to store positions
@@ -143,6 +144,17 @@ const handleEmployerDescriptionChange = (newDescription) => {
   const [endMonths, setEndMonths] = useState([]); // An array to store start months
   const [endYears, setEndYears] = useState([]); // An array to store start years
   const [presents, setPresents] = useState([]); // An array to store presents  
+
+  function showProfInputs() {
+    const profSectionInputs = document.querySelector('.profInputs');
+    const addProfButton = document.querySelector('#addProf');
+    profSectionInputs.style.display = 'none';
+  
+    if (profSectionInputs.style.display === 'none') {
+      profSectionInputs.style.display = 'inline';
+      addProfButton.style.display = 'none';
+    }
+  }
 
   const handleSavePosition = (newPosition) => {
     setPositions((prevPositions) => {
@@ -262,6 +274,11 @@ const [isProfessionalPresentChecked, setIsProfessionalPresentChecked] = useState
     // Create an object to store professional section data
     const profSection = {};
 
+    const profSectionInputs = document.querySelector('.profInputs');
+    const addProfButton = document.querySelector('#addProf');
+    profSectionInputs.style.display = 'none';
+    addProfButton.style.display = 'inline';
+
     // Create an object with state arrays and their corresponding functions
     const stateArrays = {
       positions: [positions, setPositions, position],
@@ -287,7 +304,7 @@ const [isProfessionalPresentChecked, setIsProfessionalPresentChecked] = useState
 
     // Select the professional history section
     const profHistory = document.querySelector("#profHist");
-
+    
     // Create a new <div> element to hold the professional history information
     const newProfHistoryEntry = document.createElement("div");
     newProfHistoryEntry.innerHTML =
@@ -322,6 +339,8 @@ const [isProfessionalPresentChecked, setIsProfessionalPresentChecked] = useState
       '<img src="visibility_off.svg" alt="Hidden" class="hidden" id="hid' + positions.length + '"' + 'style="display: none;">' +
       "</div>" +
       "</div>";
+       // Create a variable that stores all the professional history information
+    profHistoryInfo = newProfHistoryEntry.innerHTML;
 
     // Attach the click event listener to a parent element that exists when the page loads (e.g., profHistory).
     profHistory.addEventListener("click", (event) => {
@@ -390,6 +409,7 @@ const [isProfessionalPresentChecked, setIsProfessionalPresentChecked] = useState
           <AccordionSection
             title={<span className="titleWhite">Professional</span>}
           >
+            <div className="profInputs">
             <div className="professional">
               <label className="input-text">Job Title</label>
               <PositionInput
@@ -484,8 +504,12 @@ const [isProfessionalPresentChecked, setIsProfessionalPresentChecked] = useState
             >
               Save
             </button>
+            </div>
             <div>
               <div id="profHist"></div>
+            </div>
+            <div id="addButtonProf">
+              <button className="addButton" id="addProf" onClick={showProfInputs}>+ Professional Experience</button>
             </div>
           </AccordionSection>
           <AccordionSection

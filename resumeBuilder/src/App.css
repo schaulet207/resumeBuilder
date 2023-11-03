@@ -560,3 +560,20 @@ padding-inline-start: 40px;
   height: 40px;
   width: 40px;
 }
+
+.profInputs {
+  display: none;
+}
+
+#profHist {
+  display: inline;
+}
+
+#addProf {
+  position: relative;
+  left: 120px;
+  width: 300px;
+  margin-top: 36px;
+  height: 42px;
+  font-size: 20px;
+}
