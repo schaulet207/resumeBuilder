@@ -134,6 +134,31 @@ const handleEmployerDescriptionChange = (newDescription) => {
   let profKey = 0; // Key for professional experience
   let profHistoryInfo;
 
+    function collapseEducation() {
+      const educationCollapsible = document.querySelector("#edu");
+      const educationIcon = document.querySelector("#educationIcon");
+      if (educationCollapsible) {
+        educationCollapsible.classList.toggle("collapsed");
+        educationIcon.classList.toggle("open");
+      }
+    }
+
+    function collapseProfessional() {
+      const profCollapsible = document.querySelector("#allProf");
+      if (profCollapsible) {
+        profCollapsible.classList.toggle("collapsed");
+        console.log("ayo!!!");
+      }
+    }
+
+    function collapsePersonal() {
+      const persCollapsible = document.querySelector("#pers");
+      if (persCollapsible) {
+        persCollapsible.classList.toggle("collapsed");
+        personalIcon.classList.toggle("open");
+      }
+    }
+
   // Create empty arrays
   const [positions, setPositions] = useState([]); // An array to store positions
   const [employers, setEmployers] = useState([]); // An array to store employers
@@ -371,11 +396,13 @@ const [isProfessionalPresentChecked, setIsProfessionalPresentChecked] = useState
   return (
     <div className="App">
       <div className="left-half">
-        <Accordion>
-          <AccordionSection
-            title={<span className="titleWhite">Personal Details</span>}
-          >
-            <div className="personal">
+        <div className="accordion">
+        <div className="collapsible">
+          <div className="titleSection" onClick={collapsePersonal}>
+            <div className="titleWhite">Personal Details</div>
+            <img src="./expand.svg" alt="Expand" className="expand-icon" id="personalIcon" /> 
+            </div>
+            <div className="personal" id="pers">
               <label className="input-text">Full Name</label>
               <FullNameInput
                 fullName={fullName}
@@ -405,12 +432,17 @@ const [isProfessionalPresentChecked, setIsProfessionalPresentChecked] = useState
                 onCareerSummaryChange={handleCareerSummaryChange}
               />
             </div>
-          </AccordionSection>
-          <AccordionSection
-            title={<span className="titleWhite">Professional</span>}
-          >
+          </div>
+
+
+          <div className="collapsible">
+          <div className="titleSection" onClick={collapseProfessional}>
+            <div className="titleWhite">Professional Experience</div>
+            <img src="./expand.svg" alt="Expand" className="expand-icon" /> 
+            </div>
+            <div id="allProf">
             <div className="profInputs">
-            <div className="professional">
+            <div className="professional" id="prof">
               <label className="input-text">Job Title</label>
               <PositionInput
                 className="professional"
@@ -511,11 +543,16 @@ const [isProfessionalPresentChecked, setIsProfessionalPresentChecked] = useState
             <div id="addButtonProf">
               <button className="addButton" id="addProf" onClick={showProfInputs}>+ Professional Experience</button>
             </div>
-          </AccordionSection>
-          <AccordionSection
-            title={<span className="titleWhite">Education</span>}
-          >
-            <div className="education">
+            </div>
+          </div>
+
+
+          <div className="collapsible">
+          <div className="titleSection" onClick={collapseEducation}>
+            <div className="titleWhite">Education</div>
+            <img src="./expand.svg" alt="Expand" className="expand-icon"  id="educationIcon"/> 
+            </div>
+            <div className ="education" id="edu">
               <label className="input-text">Education</label>
               <DegreeInput
                 degree={degree}
@@ -559,8 +596,8 @@ const [isProfessionalPresentChecked, setIsProfessionalPresentChecked] = useState
                 </div>
               </div>
             </div>
-          </AccordionSection>
-        </Accordion>
+          </div>
+        </div>
       </div>
       <div className="right-half">
         <figure>

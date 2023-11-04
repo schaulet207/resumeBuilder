@@ -189,12 +189,9 @@ html {
   font-size: 24px;
 }
 
-.expand-icon {
-  transition: transform 0.3s ease; /* Apply a 0.3s transition to the transform property */
-}
-
-.open .expand-icon {
+.open {
   transform: rotate(180deg); /* Rotate the icon 180 degrees when the section is open */
+  transition: transform 0.3s ease; /* Apply a 0.3s transition to the transform property */
 }
 
 .checkbox {
@@ -467,6 +464,23 @@ padding-inline-start: 40px;
 
 .titleWhite {
   color: white;
+}
+
+.titleSection {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  padding: 20px;
+}
+
+.titleSection:hover {
+  cursor: pointer;
+}
+
+.collapsed {
+  display: none;
+  gap: 12px;
+  width: 100%;
 }
 
 .titleGrey {
