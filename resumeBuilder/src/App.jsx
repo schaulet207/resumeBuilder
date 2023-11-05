@@ -190,11 +190,9 @@ const handleEmployerDescriptionChange = (newDescription) => {
     if (addProfBottom.classList.contains("heightAdjust")) {
       // If it has the class, remove it
       addProfBottom.classList.remove("heightAdjust");
-      console.log("Removed class 'heightAdjust'");
     } else {
       // If it doesn't have the class, add it
       addProfBottom.classList.add("heightAdjust");
-      console.log("Added class 'heightAdjust'");
     }
   }
 
@@ -284,8 +282,6 @@ const handleEmployerDescriptionChange = (newDescription) => {
     setPresent(false); // Clear present checkbox
     handleEmployerDescriptionChange(""); // Clear the Quill editor content
     clearQuillHTML();
-    // Get the checkbox element by its ID
-    var checkbox = document.getElementById("professionalPresentField");
   };
   
 
@@ -301,8 +297,8 @@ const clearInputFields2 = () => {
   setPresent(false); // Clear present checkbox
   handleEmployerDescriptionChange(""); // Clear the Quill editor content
   clearQuillHTML();
-  // Get the checkbox element by its ID
-  var checkbox = document.getElementById("professionalPresentField");
+  // If the present checkbox is checked, returns to unchecked
+  handleCheckboxChange(false);
 
   const profCollapsible = document.querySelector(".profInputs");
   const addProfButton = document.querySelector("#addProf");
@@ -333,6 +329,7 @@ const [isProfessionalPresentChecked, setIsProfessionalPresentChecked] = useState
   const endSection = document.querySelector('#endMonthYear'); 
   const endLabel = document.querySelector('#endLabelProfessional'); 
   const presentSection = document.querySelector('.presentCheck'); 
+  const endOpt = document.querySelector('#endOpt'); 
     // Update the state to reflect the checkbox status
     setIsProfessionalPresentChecked(isChecked);
     if (isChecked) {
@@ -340,12 +337,14 @@ const [isProfessionalPresentChecked, setIsProfessionalPresentChecked] = useState
       setEndYear('');
       endSection.classList.add('hide-section');
       endLabel.classList.add('hide-section');
+      endOpt.classList.add('hide-section');
       presentSection.classList.add('move-section');
     } else {
       setEndMonth(''); // Clear the value when the checkbox is not checked
       setEndYear(''); // Clear the value for endYear as well if necessary
       endSection.classList.remove('hide-section');
       endLabel.classList.remove('hide-section');
+      endOpt.classList.remove('hide-section');
       presentSection.classList.remove('move-section');
     }
   };
@@ -361,6 +360,7 @@ const [isProfessionalPresentChecked, setIsProfessionalPresentChecked] = useState
     const employerRequired = document.querySelector("#employerReq");
     const positionBorder = document.querySelector("#position");
     const employerBorder = document.querySelector("#employerInput");
+    const presentInput = document.querySelector("#professionalPresentField");
 
     // Check if the Job Title and Employer fields are not empty
     if (!jobTitleValue && !employerValue) {
@@ -418,6 +418,9 @@ const [isProfessionalPresentChecked, setIsProfessionalPresentChecked] = useState
     );
 
     clearInputFields();
+
+    // If the present checkbox is checked, returns to unchecked
+    handleCheckboxChange(false);
 
     // Select the professional history section
     const profHistory = document.querySelector("#profHist");
@@ -624,7 +627,7 @@ const [isProfessionalPresentChecked, setIsProfessionalPresentChecked] = useState
               <div className="professional">
               <div className="topSubtitle">
               <label className="input-text" id="endLabelProfessional">End Date</label>
-              <div className="subLabel">Optional</div>
+              <div className="subLabel" id="endOpt">Optional</div>
               </div>
                 <div className="selectInputs" id="endMonthYear">
                   <EndMonthInput
