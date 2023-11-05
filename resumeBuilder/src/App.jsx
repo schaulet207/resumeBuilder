@@ -174,10 +174,27 @@ const handleEmployerDescriptionChange = (newDescription) => {
     const profSectionInputs = document.querySelector('.profInputs');
     const addProfButton = document.querySelector('#addProf');
     profSectionInputs.style.display = 'none';
+    toggleHeight();
   
     if (profSectionInputs.style.display === 'none') {
       profSectionInputs.style.display = 'inline';
       addProfButton.style.display = 'none';
+    }
+  }
+
+  // Helper function to adjust spacing in Professional section after saving a new position
+  function toggleHeight() {
+    const addProfBottom = document.querySelector("#addButtonProf");
+  
+    // Check if the element has the class "heightAdjust"
+    if (addProfBottom.classList.contains("heightAdjust")) {
+      // If it has the class, remove it
+      addProfBottom.classList.remove("heightAdjust");
+      console.log("Removed class 'heightAdjust'");
+    } else {
+      // If it doesn't have the class, add it
+      addProfBottom.classList.add("heightAdjust");
+      console.log("Added class 'heightAdjust'");
     }
   }
 
@@ -267,7 +284,46 @@ const handleEmployerDescriptionChange = (newDescription) => {
     setPresent(false); // Clear present checkbox
     handleEmployerDescriptionChange(""); // Clear the Quill editor content
     clearQuillHTML();
+    // Get the checkbox element by its ID
+    var checkbox = document.getElementById("professionalPresentField");
   };
+  
+
+// Clear all the Professional section input fields AND hide the Professional section
+const clearInputFields2 = () => {
+  setPosition(""); // Clear position field
+  setEmployer(""); // Clear employer field
+  setCity(""); // Clear city field
+  setStartMonth(""); // Clear startMonth field
+  setStartYear(""); // Clear startYear field
+  setEndMonth(""); // Clear endMonth field
+  setEndYear(""); // Clear endYear field
+  setPresent(false); // Clear present checkbox
+  handleEmployerDescriptionChange(""); // Clear the Quill editor content
+  clearQuillHTML();
+  // Get the checkbox element by its ID
+  var checkbox = document.getElementById("professionalPresentField");
+
+  const profCollapsible = document.querySelector(".profInputs");
+  const addProfButton = document.querySelector("#addProf");
+  profCollapsible.style.display = "none";
+  addProfButton.style.display = "inline";
+
+  // Get the div that will house the validation error messages
+  const jobRequired = document.querySelector("#jobReq");
+  const employerRequired = document.querySelector("#employerReq");
+  const positionBorder = document.querySelector("#position");
+  const employerBorder = document.querySelector("#employerInput");
+
+  // Reset the error messages
+  jobRequired.className = "subLabel";
+  employerRequired.className = "subLabel";
+  positionBorder.style.border = "1px solid rgb(61, 61, 64)";
+  employerBorder.style.border = "1px solid rgb(61, 61, 64)";
+
+  // Reset the height of the Professional history section
+  toggleHeight();
+};
 
 // Pass variables to actively see whether the checkbox is checked or not
 const [isProfessionalPresentChecked, setIsProfessionalPresentChecked] = useState(false);
@@ -296,13 +352,49 @@ const [isProfessionalPresentChecked, setIsProfessionalPresentChecked] = useState
 
 // A function to save all the Professional section data
   const handleSaveAll = () => {
+    // Get and trim the values of Job Title and Employer fields
+    const jobTitleValue = position.trim();
+    const employerValue = employer.trim();
+
+    // Get the div that will house the validation error messages
+    const jobRequired = document.querySelector("#jobReq");
+    const employerRequired = document.querySelector("#employerReq");
+    const positionBorder = document.querySelector("#position");
+    const employerBorder = document.querySelector("#employerInput");
+
+    // Check if the Job Title and Employer fields are not empty
+    if (!jobTitleValue && !employerValue) {
+      jobRequired.className = "error";
+      employerRequired.className = "error";
+      positionBorder.style.border = "1px solid red";
+      employerBorder.style.border = "1px solid red";
+      return;
+    } else if (!jobTitleValue) {
+      jobRequired.className = "error";
+      positionBorder.style.border = "1px solid red";
+      return;
+    } else if (!employerValue) {
+      employerRequired.className = "error";
+      employerBorder.style.border = "1px solid red";
+      return;
+    }
+
+    // Reset the error messages
+    jobRequired.className = "subLabel";
+    employerRequired.className = "subLabel";
+    positionBorder.style.border = "1px solid rgb(61, 61, 64)";
+    employerBorder.style.border = "1px solid rgb(61, 61, 64)";
+
+    // Helper function to toggle the height of the professional experience section
+    toggleHeight();
+
     // Create an object to store professional section data
     const profSection = {};
 
-    const profSectionInputs = document.querySelector('.profInputs');
-    const addProfButton = document.querySelector('#addProf');
-    profSectionInputs.style.display = 'none';
-    addProfButton.style.display = 'inline';
+    const profSectionInputs = document.querySelector(".profInputs");
+    const addProfButton = document.querySelector("#addProf");
+    profSectionInputs.style.display = "none";
+    addProfButton.style.display = "inline";
 
     // Create an object with state arrays and their corresponding functions
     const stateArrays = {
@@ -329,13 +421,13 @@ const [isProfessionalPresentChecked, setIsProfessionalPresentChecked] = useState
 
     // Select the professional history section
     const profHistory = document.querySelector("#profHist");
-    
+
     // Create a new <div> element to hold the professional history information
     const newProfHistoryEntry = document.createElement("div");
     newProfHistoryEntry.className = "profHistoryEntry";
     newProfHistoryEntry.innerHTML =
-    "<hr id='topLine'>" +   
-    '<div id="top-top">' +
+      "<hr id='topLine'>" +
+      '<div id="top-top">' +
       '<div id="top-left">' +
       position +
       "</div>" +
@@ -360,19 +452,31 @@ const [isProfessionalPresentChecked, setIsProfessionalPresentChecked] = useState
       '<div id="bottom-right">' +
       city +
       "</div>" +
-      '</div>' +
-      '<div id=' + '"profSection' + positions.length + '"' + 'class="toggle-button"' + '>' +
-      '<img src="visibility_FILL.svg" alt="Visible" class="visible" id="visi' + positions.length + '"' + 'style="display: inline;">' +
-      '<img src="visibility_off.svg" alt="Hidden" class="hidden" id="hid' + positions.length + '"' + 'style="display: none;">' +
       "</div>" +
-      "</div>" + "<hr>";
-       // Create a variable that stores all the professional history information
+      "<div id=" +
+      '"profSection' +
+      positions.length +
+      '"' +
+      'class="toggle-button"' +
+      ">" +
+      '<img src="visibility_FILL.svg" alt="Visible" class="visible" id="visi' +
+      positions.length +
+      '"' +
+      'style="display: inline;">' +
+      '<img src="visibility_off.svg" alt="Hidden" class="hidden" id="hid' +
+      positions.length +
+      '"' +
+      'style="display: none;">' +
+      "</div>" +
+      "</div>" +
+      "<hr>";
+    // Create a variable that stores all the professional history information
     profHistoryInfo = newProfHistoryEntry.innerHTML;
 
     // Attach the click event listener to a parent element that exists when the page loads (e.g., profHistory).
     profHistory.addEventListener("click", (event) => {
       const target = event.target;
-    
+
       if (
         target.id === `profSection${positions.length}` ||
         target.id === `visi${positions.length}` ||
@@ -380,7 +484,7 @@ const [isProfessionalPresentChecked, setIsProfessionalPresentChecked] = useState
       ) {
         const visibleIcon = document.querySelector(`#visi${positions.length}`);
         const hiddenIcon = document.querySelector(`#hid${positions.length}`);
-    
+
         if (visibleIcon.style.display === "inline") {
           visibleIcon.style.display = "none";
           hiddenIcon.style.display = "inline";
@@ -393,6 +497,12 @@ const [isProfessionalPresentChecked, setIsProfessionalPresentChecked] = useState
 
     // Append the new <div> element to the professional history section
     profHistory.appendChild(newProfHistoryEntry);
+
+    // Adjust button spacing
+    const addProfExp = document.querySelector("#addProf");
+    const addProfBottom = document.querySelector("#addButtonProf");
+    addProfExp.style.top = "60px";
+    addProfBottom.style.paddingBottom = "80px";
   };
 
   return (
@@ -406,7 +516,7 @@ const [isProfessionalPresentChecked, setIsProfessionalPresentChecked] = useState
             </div>
             <div className="personal" id="pers">
             <div className="topSubtitle">
-              <label className="input-text" id="employerReq">Full Name</label>
+              <label className="input-text">Full Name</label>
               <div className="subLabel">Required</div>
               </div>
               <FullNameInput
@@ -416,14 +526,14 @@ const [isProfessionalPresentChecked, setIsProfessionalPresentChecked] = useState
               <div className="emailNumber">
                 <div id="email">
                 <div className="topSubtitle">
-              <label className="input-text" id="employerReq">Email</label>
+              <label className="input-text">Email</label>
               <div className="subLabel">Optional</div>
               </div>
                   <EmailInput email={email} onEmailChange={handleEmailChange} />
                 </div>
                 <div id="phoneNumber">
                 <div className="topSubtitle">
-              <label className="input-text" id="employerReq">Phone</label>
+              <label className="input-text">Phone</label>
               <div className="subLabel">Optional</div>
               </div>
                   <PhoneInput
@@ -433,7 +543,7 @@ const [isProfessionalPresentChecked, setIsProfessionalPresentChecked] = useState
                 </div>
               </div>
               <div className="topSubtitle">
-              <label className="input-text" id="employerReq">Address</label>
+              <label className="input-text">Address</label>
               <div className="subLabel">Recommended</div>
               </div>
               <AddressInput
@@ -441,7 +551,7 @@ const [isProfessionalPresentChecked, setIsProfessionalPresentChecked] = useState
                 onAddressChange={handleAddressChange}
               />
               <div className="topSubtitle">
-              <label className="input-text" id="employerReq">Summary</label>
+              <label className="input-text">Summary</label>
               <div className="subLabel">Recommended</div>
               </div>
               <CareerInput
@@ -547,7 +657,7 @@ const [isProfessionalPresentChecked, setIsProfessionalPresentChecked] = useState
               employerDescription={employerDescription} // Pass the state variable
               onEmployerDescriptionChange={handleEmployerDescriptionChange} // Pass the change handler
             />
-            <button className="cancelButton" onClick={clearInputFields}>
+            <button className="cancelButton" onClick={clearInputFields2}>
               Cancel
             </button>
             <button

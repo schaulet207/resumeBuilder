@@ -144,11 +144,6 @@
   margin-bottom: 0;
 }
 
-#addButtonProf {
-  margin-top: 8px;
-  padding-bottom: 12px;
-}
-
 #educationBottom {
   display: flex;
   flex-direction: column;
@@ -620,6 +615,7 @@ padding-inline-start: 40px;
 .profHistoryEntry {
   padding: 18px;
   margin-top: 10px;
+  max-height: 80px;
 }
 
 #topLine {
@@ -669,12 +665,31 @@ padding-inline-start: 40px;
 
 #addProf {
   position: relative;
-  left: 120px;
   width: 300px;
-  margin-top: 36px;
-  bottom: 12px;
-  height: 42px;
+  height: 56px;
   font-size: 20px;
+  margin-top: 8px;
+}
+
+#addButtonProf {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 80px;
+  margin-top: 8px;
+  padding-bottom: 12px;
+}
+
+.heightAdjust {
+  height: 0px  !important;
+}
+
+.error {
+  color: red;
+  font-size: 12px;
+  padding: 4px;
+  margin-left: 8px;
 }
 
 .ql-toolbar, .ql-container {

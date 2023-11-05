@@ -29,6 +29,7 @@ export function EmployerInput({ employer, onEmployerChange }) {
   return (
     <input
       className="inputs"
+      id="employerInput"
       type="text"
       placeholder="Enter Employer"
       value={employer}
