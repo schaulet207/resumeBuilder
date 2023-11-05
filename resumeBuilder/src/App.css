@@ -54,7 +54,6 @@
 }
 
 .left-half {
-  background-color: rgb(17, 16, 17);
   border-radius: 12px;
   padding: 18px;
   box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.075);
@@ -101,6 +100,15 @@
   padding: 10px;
 }
 
+.fullWidth {
+  width: 91%;
+  margin-top: 12px;
+}
+
+#country, #endDate {
+  margin-left: 24px;
+}
+
 .inputs:focus {
   color: rgb(117, 117, 117);
   background-color: black;
@@ -115,22 +123,79 @@
   gap: 12px;
 }
 
-.personal {
-  padding: 12px;
-}
-
-#careerSummaryPersonal {
-  max-width: 490.523px;
-  max-height: 400px;
-  min-height: 64px;
-  border-radius: 1px;
+#pers {
+  margin-bottom: 8px;
 }
 
 .emailNumber {
   display: flex;
   flex-direction: row;
-  padding: 0px;
   margin: 0px;
+}
+
+.education {
+  padding: 12px;
+  background-color: rgb(32, 34, 34);
+  border-radius: 10px;
+}
+
+#profTitle {
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+#addButtonProf {
+  margin-top: 8px;
+  padding-bottom: 12px;
+}
+
+#educationBottom {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  width: 100%;
+}
+
+.educationInputs {
+  width: 100%;
+}
+
+.titleSection {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  padding: 20px;
+}
+
+.eduTitle {
+  padding: 20px;
+}
+
+.personal {
+  padding: 12px;
+  background-color: rgb(32, 34, 34);
+  border-radius: 10px;
+}
+
+.titleSection {
+  background-color: rgb(32, 34, 34);
+  border-radius: 10px;
+  margin-top: 8px;
+  margin-bottom: 8px;
+}
+
+#allProf {
+  background-color: rgb(32, 34, 34);
+  border-radius: 10px;
+}
+
+#careerSummaryPersonal {
+  max-width: 529.008px;
+  max-height: 400px;
+  min-height: 64px;
+  border-radius: 10px;
+  font-size: 17px;
+  font-family: 'Quicksand', sans-serif;
 }
 
 #emailPersonal {
@@ -143,7 +208,8 @@
 }
 
 #city, #country, #startDate, #endDate, #email, #phone {
-  width: 100%;
+ width: 100%; 
+ gap: 12px;
 }
 
 html {
@@ -217,6 +283,13 @@ figure {
 
 hr {
   width: 100%;
+}
+
+.subLabel {
+  color: white;
+  font-size: 12px;
+  padding: 4px;
+  margin-left: 8px;
 }
 
 .saveCancel {
@@ -466,13 +539,6 @@ padding-inline-start: 40px;
   color: white;
 }
 
-.titleSection {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  padding: 20px;
-}
-
 .titleSection:hover {
   cursor: pointer;
 }
@@ -505,10 +571,12 @@ padding-inline-start: 40px;
   flex-direction: row;
   margin-top: 48px;
   font-size: 20px;
+  max-width: 500px;
 }
 
-#top-left {
-  
+.topSubtitle {
+  display: flex;
+  flex-direction: row;
 }
 
 #top-right {
@@ -549,6 +617,18 @@ padding-inline-start: 40px;
   color: white;
 }
 
+.profHistoryEntry {
+  padding: 18px;
+  margin-top: 10px;
+}
+
+#topLine {
+  position: relative;
+  top: 24px;
+}
+
+
+
 .toggle-button {
   display: flex;
   flex-direction: row;
@@ -583,11 +663,21 @@ padding-inline-start: 40px;
   display: inline;
 }
 
+#prof {
+  margin-top: 8px;
+}
+
 #addProf {
   position: relative;
   left: 120px;
   width: 300px;
   margin-top: 36px;
+  bottom: 12px;
   height: 42px;
   font-size: 20px;
+}
+
+.ql-toolbar, .ql-container {
+  margin-left: 12px !important;
+  margin-right: 12px !important;
 }

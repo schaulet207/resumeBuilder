@@ -27,7 +27,7 @@ export function SchoolInput({ school, onSchoolChange }) {
 export function SchoolCityInput({ schoolCity, onSchoolCityChange }) {
   return (
     <input
-    className="inputs"
+    className="inputs fullWidth"
       type="text"
       placeholder="Enter City"
       value={schoolCity}
@@ -39,7 +39,7 @@ export function SchoolCityInput({ schoolCity, onSchoolCityChange }) {
 export function SchoolCountryInput({ schoolCountry, onSchoolCountryChange }) {
   return (
     <input
-    className="inputs"
+    className="inputs fullWidth"
       type="text"
       placeholder="Enter Country"
       value={schoolCountry}
@@ -51,7 +51,7 @@ export function SchoolCountryInput({ schoolCountry, onSchoolCountryChange }) {
 export function SchoolStartDateInput({ schoolStartDate, onSchoolStartChange }) {
   return (
     <input
-    className="inputs"
+    className="inputs fullWidth"
       type="date"
       value={schoolStartDate}
       onChange={(e) => onSchoolStartChange(e.target.value)}
@@ -62,7 +62,7 @@ export function SchoolStartDateInput({ schoolStartDate, onSchoolStartChange }) {
 export function SchoolEndDateInput({ schoolEndDate, onSchoolEndChange }) {
   return (
     <input
-    className="inputs"
+    className="inputs fullWidth"
       type="date"
       value={schoolEndDate}
       onChange={(e) => onSchoolEndChange(e.target.value)}

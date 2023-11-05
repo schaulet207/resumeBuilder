@@ -26,7 +26,6 @@ import {
   SchoolStartDateInput,
   SchoolEndDateInput,
 } from "./Education";
-import { Accordion, AccordionSection } from "./Accordion";
 // import { QuillEditor } from './QuillEditor';
 
 function App() {
@@ -145,9 +144,10 @@ const handleEmployerDescriptionChange = (newDescription) => {
 
     function collapseProfessional() {
       const profCollapsible = document.querySelector("#allProf");
+      const educationIcon = document.querySelector("#professionalIcon");
       if (profCollapsible) {
         profCollapsible.classList.toggle("collapsed");
-        console.log("ayo!!!");
+        professionalIcon.classList.toggle("open");
       }
     }
 
@@ -332,8 +332,10 @@ const [isProfessionalPresentChecked, setIsProfessionalPresentChecked] = useState
     
     // Create a new <div> element to hold the professional history information
     const newProfHistoryEntry = document.createElement("div");
+    newProfHistoryEntry.className = "profHistoryEntry";
     newProfHistoryEntry.innerHTML =
-      '<div id="top-top">' +
+    "<hr id='topLine'>" +   
+    '<div id="top-top">' +
       '<div id="top-left">' +
       position +
       "</div>" +
@@ -363,7 +365,7 @@ const [isProfessionalPresentChecked, setIsProfessionalPresentChecked] = useState
       '<img src="visibility_FILL.svg" alt="Visible" class="visible" id="visi' + positions.length + '"' + 'style="display: inline;">' +
       '<img src="visibility_off.svg" alt="Hidden" class="hidden" id="hid' + positions.length + '"' + 'style="display: none;">' +
       "</div>" +
-      "</div>";
+      "</div>" + "<hr>";
        // Create a variable that stores all the professional history information
     profHistoryInfo = newProfHistoryEntry.innerHTML;
 
@@ -400,33 +402,48 @@ const [isProfessionalPresentChecked, setIsProfessionalPresentChecked] = useState
         <div className="collapsible">
           <div className="titleSection" onClick={collapsePersonal}>
             <div className="titleWhite">Personal Details</div>
-            <img src="./expand.svg" alt="Expand" className="expand-icon" id="personalIcon" /> 
+            <img src="./expand.svg" alt="Expand" className="expand-icon" id="personalIcon"/> 
             </div>
             <div className="personal" id="pers">
-              <label className="input-text">Full Name</label>
+            <div className="topSubtitle">
+              <label className="input-text" id="employerReq">Full Name</label>
+              <div className="subLabel">Required</div>
+              </div>
               <FullNameInput
                 fullName={fullName}
                 onFullNameChange={handleFullNameChange}
               />
               <div className="emailNumber">
                 <div id="email">
-                  <label className="input-text">Email</label>
+                <div className="topSubtitle">
+              <label className="input-text" id="employerReq">Email</label>
+              <div className="subLabel">Optional</div>
+              </div>
                   <EmailInput email={email} onEmailChange={handleEmailChange} />
                 </div>
                 <div id="phoneNumber">
-                  <label className="input-text">Phone</label>
+                <div className="topSubtitle">
+              <label className="input-text" id="employerReq">Phone</label>
+              <div className="subLabel">Optional</div>
+              </div>
                   <PhoneInput
                     phoneNumber={phoneNumber}
                     onPhoneChange={handlePhoneChange}
                   />
                 </div>
               </div>
-              <label className="input-text">Address</label>
+              <div className="topSubtitle">
+              <label className="input-text" id="employerReq">Address</label>
+              <div className="subLabel">Recommended</div>
+              </div>
               <AddressInput
                 address={address}
                 onAddressChange={handleAddressChange}
               />
-              <label className="input-text">Summary</label>
+              <div className="topSubtitle">
+              <label className="input-text" id="employerReq">Summary</label>
+              <div className="subLabel">Recommended</div>
+              </div>
               <CareerInput
                 careerSummary={careerSummary}
                 onCareerSummaryChange={handleCareerSummaryChange}
@@ -436,27 +453,36 @@ const [isProfessionalPresentChecked, setIsProfessionalPresentChecked] = useState
 
 
           <div className="collapsible">
-          <div className="titleSection" onClick={collapseProfessional}>
+          <div className="titleSection" id="profTitle" onClick={collapseProfessional}>
             <div className="titleWhite">Professional Experience</div>
-            <img src="./expand.svg" alt="Expand" className="expand-icon" /> 
+            <img src="./expand.svg" alt="Expand" className="expand-icon open" id="professionalIcon"/> 
             </div>
-            <div id="allProf">
+            <div className="collapsed" id="allProf">
             <div className="profInputs">
             <div className="professional" id="prof">
+              <div className="topSubtitle">
               <label className="input-text">Job Title</label>
+              <div className="subLabel" id="jobReq">Required</div>
+              </div>
               <PositionInput
                 className="professional"
                 currentPosition={position}
                 onPositionChange={(newPosition) => setPosition(newPosition)}
                 onSavePosition={handleSavePosition}
               />
+              <div className="topSubtitle">
               <label className="input-text">Employer</label>
+              <div className="subLabel" id="employerReq">Required</div>
+              </div>
               <EmployerInput
                 className="professional"
                 employer={employer}
                 onEmployerChange={(newEmployer) => setEmployer(newEmployer)}
               />
+              <div className="topSubtitle">
               <label className="input-text">Address</label>
+              <div className="subLabel">Recommended</div>
+              </div>
               <CityInput
                 className="professional"
                 city={city}
@@ -465,7 +491,10 @@ const [isProfessionalPresentChecked, setIsProfessionalPresentChecked] = useState
             </div>
             <div className="datePickers">
               <div className="professional">
-                <label className="input-text">Start Date</label>
+              <div className="topSubtitle">
+              <label className="input-text">Start Date</label>
+              <div className="subLabel">Recommended</div>
+              </div>
                 <div className="selectInputs">
                   <StartMonthInput
                     className="professional"
@@ -483,7 +512,10 @@ const [isProfessionalPresentChecked, setIsProfessionalPresentChecked] = useState
               </div>
 
               <div className="professional">
-                <label className="input-text" id="endLabelProfessional">End Date</label>
+              <div className="topSubtitle">
+              <label className="input-text" id="endLabelProfessional">End Date</label>
+              <div className="subLabel">Optional</div>
+              </div>
                 <div className="selectInputs" id="endMonthYear">
                   <EndMonthInput
                     className="professional"
@@ -548,12 +580,12 @@ const [isProfessionalPresentChecked, setIsProfessionalPresentChecked] = useState
 
 
           <div className="collapsible">
-          <div className="titleSection" onClick={collapseEducation}>
-            <div className="titleWhite">Education</div>
-            <img src="./expand.svg" alt="Expand" className="expand-icon"  id="educationIcon"/> 
+          <div className="titleSection eduTitle" onClick={collapseEducation}>
+            <div className="titleWhite">Education History </div>
+            <img src="./expand.svg" alt="Expand" className="expand-icon open"  id="educationIcon"/> 
             </div>
-            <div className ="education" id="edu">
-              <label className="input-text">Education</label>
+            <div className="education collapsed" id="edu">
+              <label className="input-text">Degree</label>
               <DegreeInput
                 degree={degree}
                 onDegreeChange={handleDegreeChange}
@@ -563,15 +595,16 @@ const [isProfessionalPresentChecked, setIsProfessionalPresentChecked] = useState
                 school={school}
                 onSchoolChange={handleSchoolChange}
               />
-              <div className="education emailNumber">
-                <div className="education" id="city">
+              <div id="educationBottom">
+              <div className="emailNumber">
+                <div id="city">
                   <label className="input-text">City</label>
                   <SchoolCityInput
                     schoolCity={schoolCity}
                     onSchoolCityChange={handleSchoolCityChange}
                   />
                 </div>
-                <div className="education" id="country">
+                <div id="country">
                   <label className="input-text">Country</label>
                   <SchoolCountryInput
                     schoolCountry={schoolCountry}
@@ -579,20 +612,21 @@ const [isProfessionalPresentChecked, setIsProfessionalPresentChecked] = useState
                   />
                 </div>
               </div>
-              <div className="education emailNumber">
-                <div className="education" id="startDate">
+              <div className="emailNumber">
+                <div id="startDate">
                   <label className="input-text">Start Date</label>
                   <SchoolStartDateInput
                     schoolStartDate={schoolStartDate}
                     onSchoolStartChange={handleSchoolStartDateChange}
                   />
                 </div>
-                <div className="education" id="endDate">
+                <div id="endDate">
                   <label className="input-text">End Date</label>
                   <SchoolEndDateInput
                     schoolEndDate={schoolEndDate}
                     onSchoolEndChange={handleSchoolEndDateChange}
                   />
+                </div>
                 </div>
               </div>
             </div>
