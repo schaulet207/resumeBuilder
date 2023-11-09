@@ -130,8 +130,59 @@ const handleEmployerDescriptionChange = (newDescription) => {
     setSchoolEndDate(newSchoolEndDate);
   };
 
+  // Set helper variables
   let profKey = 0; // Key for professional experience
   let profHistoryInfo;
+
+  // Display logic for resume sections on right half of screen
+  let divider1 = " • ";
+  let divider2 = " • ";
+  let divider3 = <hr />;
+
+  // Check and update divider1
+  if (address === "" || (phoneNumber === "" && email === "")) {
+    divider1 = null;
+  }
+
+  // Check and update divider2
+  if (phoneNumber === "" || email === "") {
+    divider2 = null;
+  }
+
+  // If address phone and email are empty, remove divider3, otherwise keep it
+  if (address === "" && phoneNumber === "" && email === "" && fullName === "") {
+    divider3 = null;
+  } else {
+    divider3 = <hr />;
+  }
+
+  const topSpacing = document.getElementsByClassName("spacing");
+
+if (address === "" && phoneNumber === "" && email === "" && fullName === "") {
+  // Add the "hide" class to all elements with the "spacing" class
+  for (const element of topSpacing) {
+    element.classList.add("hide");
+  }
+} else {
+  // Remove the "hide" class from all elements with the "spacing" class
+  for (const element of topSpacing) {
+    element.classList.remove("hide");
+  }
+}
+
+const careerSummarySpacing = document.getElementsByClassName("careerSummarySpacing");
+if (careerSummary === "") {
+  // Add the "hide" class to all elements with the "careerSummarySpacing" class
+  for (const element of careerSummarySpacing) {
+    element.classList.add("hide");
+  }
+} else {
+  // Remove the "hide" class from all elements with the "careerSummarySpacing" class
+  for (const element of careerSummarySpacing) {
+    element.classList.remove("hide");
+  }
+}
+
 
     function collapseEducation() {
       const educationCollapsible = document.querySelector("#edu");
@@ -144,7 +195,7 @@ const handleEmployerDescriptionChange = (newDescription) => {
 
     function collapseProfessional() {
       const profCollapsible = document.querySelector("#allProf");
-      const educationIcon = document.querySelector("#professionalIcon");
+      const professionalIcon = document.querySelector("#professionalIcon");
       if (profCollapsible) {
         profCollapsible.classList.toggle("collapsed");
         professionalIcon.classList.toggle("open");
@@ -299,6 +350,7 @@ const clearInputFields2 = () => {
   clearQuillHTML();
   // If the present checkbox is checked, returns to unchecked
   handleCheckboxChange(false);
+  collapseProfessional();
 
   const profCollapsible = document.querySelector(".profInputs");
   const addProfButton = document.querySelector("#addProf");
@@ -564,7 +616,6 @@ const [isProfessionalPresentChecked, setIsProfessionalPresentChecked] = useState
             </div>
           </div>
 
-
           <div className="collapsible">
           <div className="titleSection" id="profTitle" onClick={collapseProfessional}>
             <div className="titleWhite">Professional Experience</div>
@@ -757,35 +808,36 @@ const [isProfessionalPresentChecked, setIsProfessionalPresentChecked] = useState
                   '@import url(https://themes.googleusercontent.com/fonts/css?kit=-lTUqgJg2dxbe4D7B5DEIA3jn2WilaVUapNOYl4762s);.lst-kix_wgli50ijih94-8>li:before{content:"\\0025a0   "}.lst-kix_wgli50ijih94-5>li:before{content:"\\0025a0   "}.lst-kix_oz2sfjwt9xlu-8>li:before{content:"\\0025a0   "}.lst-kix_wgli50ijih94-6>li:before{content:"\\0025cf   "}.lst-kix_wgli50ijih94-7>li:before{content:"\\0025cb   "}.lst-kix_oz2sfjwt9xlu-7>li:before{content:"\\0025cb   "}.lst-kix_wgli50ijih94-1>li:before{content:"\\0025cb   "}.lst-kix_wgli50ijih94-0>li:before{content:"\\0025cf   "}.lst-kix_wgli50ijih94-2>li:before{content:"\\0025a0   "}.lst-kix_wgli50ijih94-4>li:before{content:"\\0025cb   "}.lst-kix_wgli50ijih94-3>li:before{content:"\\0025cf   "}ul.lst-kix_oz2sfjwt9xlu-0{list-style-type:none}ul.lst-kix_wgli50ijih94-8{list-style-type:none}ul.lst-kix_oz2sfjwt9xlu-1{list-style-type:none}ul.lst-kix_oz2sfjwt9xlu-2{list-style-type:none}ul.lst-kix_wgli50ijih94-6{list-style-type:none}ul.lst-kix_oz2sfjwt9xlu-3{list-style-type:none}ul.lst-kix_wgli50ijih94-7{list-style-type:none}.lst-kix_yogqjw9c8tuq-3>li:before{content:"\\0025cf   "}.lst-kix_yogqjw9c8tuq-5>li:before{content:"\\0025a0   "}.lst-kix_yogqjw9c8tuq-4>li:before{content:"\\0025cb   "}ul.lst-kix_oz2sfjwt9xlu-8{list-style-type:none}ul.lst-kix_wgli50ijih94-0{list-style-type:none}.lst-kix_oz2sfjwt9xlu-0>li:before{content:"\\0025cf   "}.lst-kix_oz2sfjwt9xlu-1>li:before{content:"\\0025cb   "}ul.lst-kix_wgli50ijih94-1{list-style-type:none}.lst-kix_yogqjw9c8tuq-7>li:before{content:"\\0025cb   "}ul.lst-kix_oz2sfjwt9xlu-4{list-style-type:none}ul.lst-kix_wgli50ijih94-4{list-style-type:none}ul.lst-kix_oz2sfjwt9xlu-5{list-style-type:none}ul.lst-kix_wgli50ijih94-5{list-style-type:none}ul.lst-kix_oz2sfjwt9xlu-6{list-style-type:none}ul.lst-kix_wgli50ijih94-2{list-style-type:none}ul.lst-kix_oz2sfjwt9xlu-7{list-style-type:none}ul.lst-kix_wgli50ijih94-3{list-style-type:none}.lst-kix_yogqjw9c8tuq-6>li:before{content:"\\0025cf   "}.lst-kix_oz2sfjwt9xlu-4>li:before{content:"\\0025cb   "}.lst-kix_oz2sfjwt9xlu-5>li:before{content:"\\0025a0   "}.lst-kix_bm5i44a1j1vy-2>li:before{content:"\\0025a0   "}.lst-kix_bm5i44a1j1vy-4>li:before{content:"\\0025cb   "}.lst-kix_oz2sfjwt9xlu-2>li:before{content:"\\0025a0   "}.lst-kix_oz2sfjwt9xlu-6>li:before{content:"\\0025cf   "}.lst-kix_bm5i44a1j1vy-3>li:before{content:"\\0025cf   "}.lst-kix_yogqjw9c8tuq-8>li:before{content:"\\0025a0   "}.lst-kix_bm5i44a1j1vy-0>li:before{content:"\\0025cf   "}ul.lst-kix_bm5i44a1j1vy-6{list-style-type:none}ul.lst-kix_bm5i44a1j1vy-7{list-style-type:none}ul.lst-kix_bm5i44a1j1vy-4{list-style-type:none}ul.lst-kix_bm5i44a1j1vy-5{list-style-type:none}ul.lst-kix_bm5i44a1j1vy-2{list-style-type:none}.lst-kix_oz2sfjwt9xlu-3>li:before{content:"\\0025cf   "}ul.lst-kix_bm5i44a1j1vy-3{list-style-type:none}ul.lst-kix_bm5i44a1j1vy-0{list-style-type:none}.lst-kix_bm5i44a1j1vy-1>li:before{content:"\\0025cb   "}ul.lst-kix_bm5i44a1j1vy-1{list-style-type:none}ul.lst-kix_bm5i44a1j1vy-8{list-style-type:none}ul.lst-kix_yogqjw9c8tuq-8{list-style-type:none}ul.lst-kix_yogqjw9c8tuq-6{list-style-type:none}.lst-kix_bm5i44a1j1vy-6>li:before{content:"\\0025cf   "}ul.lst-kix_yogqjw9c8tuq-7{list-style-type:none}ul.lst-kix_yogqjw9c8tuq-4{list-style-type:none}ul.lst-kix_yogqjw9c8tuq-5{list-style-type:none}ul.lst-kix_yogqjw9c8tuq-2{list-style-type:none}.lst-kix_bm5i44a1j1vy-5>li:before{content:"\\0025a0   "}ul.lst-kix_yogqjw9c8tuq-3{list-style-type:none}ul.lst-kix_yogqjw9c8tuq-0{list-style-type:none}ul.lst-kix_yogqjw9c8tuq-1{list-style-type:none}.lst-kix_bm5i44a1j1vy-7>li:before{content:"\\0025cb   "}.lst-kix_bm5i44a1j1vy-8>li:before{content:"\\0025a0   "}.lst-kix_yogqjw9c8tuq-1>li:before{content:"\\0025cb   "}.lst-kix_yogqjw9c8tuq-2>li:before{content:"\\0025a0   "}.lst-kix_yogqjw9c8tuq-0>li:before{content:"\\0025cf   "}li.li-bullet-0:before{margin-left:-18pt;white-space:nowrap;display:inline-block;min-width:18pt}ol{margin:0;padding:0}table td,table th{padding:0}.c22{margin-left:36pt;padding-top:0.5pt;padding-left:0pt;padding-bottom:0pt;line-height:1.05;orphans:2;widows:2;text-align:left}.c4{margin-left:36pt;padding-top:0pt;padding-left:0pt;padding-bottom:0pt;line-height:1.05;orphans:2;widows:2;text-align:left}.c9{padding-top:0pt;padding-bottom:0pt;line-height:1.05;orphans:2;widows:2;text-align:right;height:11pt}.c6{padding-top:0pt;padding-bottom:0pt;line-height:1.05;orphans:2;widows:2;text-align:left;height:11pt}.c18{padding-top:0pt;padding-bottom:0pt;line-height:1.1500000000000001;orphans:2;widows:2;text-align:left;height:11pt}.c14{color:#000000;font-weight:400;text-decoration:none;vertical-align:baseline;font-size:11pt;font-family:"Arial"}.c8{padding-top:0pt;padding-bottom:0pt;line-height:1.05;orphans:2;widows:2;text-align:left}.c19{padding-top:0pt;padding-bottom:0.5pt;line-height:1.05;orphans:2;widows:2;text-align:left}.c3{color:#000000;text-decoration:none;vertical-align:baseline;font-size:10pt;font-style:normal}.c7{color:#000000;text-decoration:none;vertical-align:baseline;font-size:12pt;font-style:normal}.c1{color:#000000;text-decoration:none;vertical-align:baseline;font-size:11pt;font-style:normal}.c15{color:#000000;text-decoration:none;vertical-align:baseline;font-size:11pt}.c17{background-color:#ffffff;max-width:504pt;padding:12pt 12pt 12pt 12pt}.c10{text-decoration-skip-ink:none;-webkit-text-decoration-skip:none;text-decoration:underline}.c0{font-weight:400;font-family:"Montserrat"}.c21{color:inherit;text-decoration:inherit}.c12{padding:0;margin:0}.c2{font-weight:700;font-family:"Montserrat"}.c16{color:#1155cc}.c5{font-style:italic}.c11{font-size:12pt}.c13{font-size:14pt}.c20{font-size:10pt}.title{padding-top:0pt;color:#000000;font-size:26pt;padding-bottom:3pt;font-family:"Arial";line-height:1.1500000000000001;page-break-after:avoid;orphans:2;widows:2;text-align:left}.subtitle{padding-top:0pt;color:#666666;font-size:15pt;padding-bottom:16pt;font-family:"Arial";line-height:1.1500000000000001;page-break-after:avoid;orphans:2;widows:2;text-align:left}li{color:#000000;font-size:11pt;font-family:"Arial"}p{margin:0;color:#000000;font-size:11pt;font-family:"Arial"}h1{padding-top:20pt;color:#000000;font-size:20pt;padding-bottom:6pt;font-family:"Arial";line-height:1.1500000000000001;page-break-after:avoid;orphans:2;widows:2;text-align:left}h2{padding-top:18pt;color:#000000;font-size:16pt;padding-bottom:6pt;font-family:"Arial";line-height:1.1500000000000001;page-break-after:avoid;orphans:2;widows:2;text-align:left}h3{padding-top:16pt;color:#434343;font-size:14pt;padding-bottom:4pt;font-family:"Arial";line-height:1.1500000000000001;page-break-after:avoid;orphans:2;widows:2;text-align:left}h4{padding-top:14pt;color:#666666;font-size:12pt;padding-bottom:4pt;font-family:"Arial";line-height:1.1500000000000001;page-break-after:avoid;orphans:2;widows:2;text-align:left}h5{padding-top:12pt;color:#666666;font-size:11pt;padding-bottom:4pt;font-family:"Arial";line-height:1.1500000000000001;page-break-after:avoid;orphans:2;widows:2;text-align:left}h6{padding-top:12pt;color:#666666;font-size:11pt;padding-bottom:4pt;font-family:"Arial";line-height:1.1500000000000001;page-break-after:avoid;font-style:italic;orphans:2;widows:2;text-align:left}',
               }}
             />
-            <p className="c18">
+            <p className="c18 spacing hide">
               <span className="c5 c14" />
             </p>
-            <p className="c8" id="oneLine">
+            <p className="c8 spacing hide" id="oneLine">
               <span className="c0">
-                {address} • {phoneNumber} •{" "}
+                {address} {divider1} {phoneNumber} {divider2}{" "}
               </span>
-              <span className="c10 c0 c16">
+              <span className="c10 c0 c16 spacing hide">
                 <a className="c21">{email}</a>
               </span>
-              <span className="c2 c13"></span>
-              <span className="c2 c13" id="begin">
+              <span className="c2 c13 spacing hide"></span>
+              <span className="c2 c13 spacing hide" id="begin">
                 {fullName}
               </span>
-              <span className="c1 c0">&nbsp;</span>
+              <span className="c1 c0 spacing hide">&nbsp;</span>
             </p>
-            <hr />
+            {divider3}
+            <p className="c9 careerSummarySpacing hide">
+              <span className="c1 c0" />
+            </p>
+            <div className="display careerSummarySpacing hide" id="careerHide">
             <p className="c9">
               <span className="c1 c0" />
             </p>
-            <p className="c9">
-              <span className="c1 c0" />
+            <p className="c8 careerSummarySpacing hide">
+              <span className="c2 c11 careerSummarySpacing hide">CAREER SUMMARY</span>
             </p>
-            <p className="c8">
-              <span className="c2 c11">CAREER SUMMARY</span>
-            </p>
-            <hr />
-            <p className="c9">
-              <span className="c7 c2" />
+            <hr className="careerSummarySpacing hide"/>
+            <p className="c9 careerSummarySpacing hide">
+              <span className="c7 c2 careerSummarySpacing hide" />
             </p>
             <p className="c8">
               <span className="c3 c0">{careerSummary}</span>
@@ -793,6 +845,7 @@ const [isProfessionalPresentChecked, setIsProfessionalPresentChecked] = useState
             <p className="c6">
               <span className="c3 c0" />
             </p>
+            </div>
             <p className="c8">
               <span className="c2 c11">PROFESSIONAL EXPERIENCE</span>
             </p>

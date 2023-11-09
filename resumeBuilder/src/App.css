@@ -651,6 +651,14 @@ padding-inline-start: 40px;
   width: 40px;
 }
 
+.hide {
+  display: none;
+}
+
+.display {
+  display: inline;
+}
+
 .profInputs {
   display: none;
 }
