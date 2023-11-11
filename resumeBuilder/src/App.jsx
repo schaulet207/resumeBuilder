@@ -133,6 +133,21 @@ const handleEmployerDescriptionChange = (newDescription) => {
   // Set helper variables
   let profKey = 0; // Key for professional experience
   let profHistoryInfo;
+  let saveProfessionalExperience = [];
+  let showProfessionalExperience = null;
+
+  function ProfessionalExperienceInput({ professionalExperience, onProfessionalExperienceChange }) {
+    return (
+      <input
+        className="inputs"
+        type="text"
+        placeholder="Enter professional experience"
+        value={professionalExperience}
+        onChange={(e) => onProfessionalExperienceChange(e.target.value)}
+        id="professionalExperienceInput"
+      />
+    );
+  }
 
   // Display logic for resume sections on right half of screen
   let divider1 = " • ";
@@ -182,6 +197,9 @@ if (careerSummary === "") {
     element.classList.remove("hide");
   }
 }
+
+let divider4 = document.querySelector("#divider4");
+// If start month
 
 
     function collapseEducation() {
@@ -469,7 +487,14 @@ const [isProfessionalPresentChecked, setIsProfessionalPresentChecked] = useState
       }
     );
 
+    const newProfessionalExperience =
+      document.getElementById("newProfExperience");
+    // Push the new professional section data to the saveProfessionalExperience array
+    saveProfessionalExperience.push(newProfessionalExperience);
+    console.log(saveProfessionalExperience);
+      let showProfessionalExperience = "YO";
     clearInputFields();
+    console.log(showProfessionalExperience + "2");
 
     // If the present checkbox is checked, returns to unchecked
     handleCheckboxChange(false);
@@ -856,18 +881,21 @@ const [isProfessionalPresentChecked, setIsProfessionalPresentChecked] = useState
             <p className="c6">
               <span className="c1 c2" />
             </p>
+            <div id="savedProfExperience">{showProfessionalExperience}</div>
+            <div id="newProfExperience">
             <p className="c8">
               <span className="c2">{employer}</span>
-              <span className="c0">&nbsp;- </span>
+              <span className="c0" id="divider4">&nbsp;- </span>
               <span className="c3 c0">{city}</span>
             </p>
             <p className="c8">
+            <div id="employerMonths">
               <span className="c0 c5">{position}</span>
               <span className="c0">
-                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{startMonth}{" "}
+                {startMonth}{" "}
                 {startYear} - {endMonth} {endYear}
               </span>
-              <span className="c1 c2"></span>
+            </div>
             </p>
             <div
               className="employer-description"
@@ -876,6 +904,7 @@ const [isProfessionalPresentChecked, setIsProfessionalPresentChecked] = useState
             <p className="c6">
               <span className="c1 c0" />
             </p>
+            </div>
             <p className="c8">
               <span className="c2">Cambridge Innovation Center</span>
               <span className="c0">&nbsp;- </span>
