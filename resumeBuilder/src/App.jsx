@@ -153,6 +153,8 @@ const handleEmployerDescriptionChange = (newDescription) => {
   let divider1 = " • ";
   let divider2 = " • ";
   let divider3 = <hr />;
+  let divider4 = " - ";
+  let divider5 = " - ";
 
   // Check and update divider1
   if (address === "" || (phoneNumber === "" && email === "")) {
@@ -198,9 +200,19 @@ if (careerSummary === "") {
   }
 }
 
-let divider4 = document.querySelector("#divider4");
-// If start month
+// If employer or city are empty, divider4 = null, otherwise divider4 = " - "
+if (employer === "" || city === "") {
+  divider4 = null;
+} else {
+  divider4 = " - ";
+}
 
+// If start month and start year are empty, or if endmonth and endyear are empty, remove class hide divider4, otherwise add it
+if ((startMonth === "" && startYear === "") || (endMonth === "" && endYear === "")) {
+  divider5 = null;
+} else {
+  divider5 = " - ";
+}
 
     function collapseEducation() {
       const educationCollapsible = document.querySelector("#edu");
@@ -885,17 +897,17 @@ const [isProfessionalPresentChecked, setIsProfessionalPresentChecked] = useState
             <div id="newProfExperience">
             <p className="c8">
               <span className="c2">{employer}</span>
-              <span className="c0" id="divider4">&nbsp;- </span>
+              <span className="c0" id="divider4">{divider4}</span>
               <span className="c3 c0">{city}</span>
             </p>
             <p className="c8">
-            <div id="employerMonths">
+            <span id="employerMonths">
               <span className="c0 c5">{position}</span>
               <span className="c0">
                 {startMonth}{" "}
-                {startYear} - {endMonth} {endYear}
+                {startYear} {divider5} {endMonth} {endYear}
               </span>
-            </div>
+            </span>
             </p>
             <div
               className="employer-description"
