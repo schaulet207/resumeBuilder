@@ -499,14 +499,13 @@ const [isProfessionalPresentChecked, setIsProfessionalPresentChecked] = useState
       }
     );
 
-    const newProfessionalExperience =
-      document.getElementById("newProfExperience");
-    // Push the new professional section data to the saveProfessionalExperience array
-    saveProfessionalExperience.push(newProfessionalExperience);
-    console.log(saveProfessionalExperience);
-      let showProfessionalExperience = "YO";
+    const professionalSection = document.querySelector("#newProfExperience");
+    showProfessionalExperience = professionalSection.innerHTML;
+    const saveProf = document.querySelector("#savedProfExperience");
+    saveProf.innerHTML += showProfessionalExperience;
+
+
     clearInputFields();
-    console.log(showProfessionalExperience + "2");
 
     // If the present checkbox is checked, returns to unchecked
     handleCheckboxChange(false);
