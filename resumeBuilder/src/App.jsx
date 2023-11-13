@@ -250,6 +250,7 @@ if ((startMonth === "" && startYear === "") || (endMonth === "" && endYear === "
   const [endMonths, setEndMonths] = useState([]); // An array to store start months
   const [endYears, setEndYears] = useState([]); // An array to store start years
   const [presents, setPresents] = useState([]); // An array to store presents  
+  const [employerDescriptions, setEmployerDescriptions] = useState([]); // An array to store employer descriptions
 
   function showProfInputs() {
     const profSectionInputs = document.querySelector('.profInputs');
@@ -479,31 +480,51 @@ const [isProfessionalPresentChecked, setIsProfessionalPresentChecked] = useState
     addProfButton.style.display = "inline";
 
     // Create an object with state arrays and their corresponding functions
-    const stateArrays = {
-      positions: [positions, setPositions, position],
-      employers: [employers, setEmployers, employer],
-      cities: [cities, setCities, city],
-      startMonths: [startMonths, setStartMonths, startMonth], // Add startMonths
-      startYears: [startYears, setStartYears, startYear], // Add startYears
-      endMonths: [endMonths, setEndMonths, endMonth], // Add endMonths
-      endYears: [endYears, setEndYears, endYear], // Add endYears
-      presents: [presents, setPresents, present],
-    };
+// Push values to state arrays
+positions.push(position);
+employers.push(employer);
+cities.push(city);
+startMonths.push(startMonth);
+startYears.push(startYear);
+endMonths.push(endMonth);
+endYears.push(endYear);
+presents.push(present);
+employerDescriptions.push(employerDescription);
+
+// Create the stateArrays object
+const stateArrays = {
+  positions,
+  employers,
+  cities,
+  startMonths,
+  startYears,
+  endMonths,
+  endYears,
+  presents,
+  employerDescriptions,
+};
 
     // Loop through the stateArrays object and update the arrays and log their values
-    Object.entries(stateArrays).forEach(
-      ([stateName, [stateArray, setState, value]]) => {
-        const updatedStateArray = [...stateArray, { [stateName]: value }];
-        setState(updatedStateArray);
-        profSection[stateName] = updatedStateArray;
-      }
-    );
+    // Object.entries(stateArrays).forEach(
+    //   ([stateName, [stateArray, setState, value]]) => {
+    //     const updatedStateArray = [...stateArray, { [stateName]: value }];
+    //     setState(updatedStateArray);
+    //     profSection[stateName] = updatedStateArray;
+    //   }
+    // );
+
+    let x = stateArrays.positions.length;
+    let y = positions.length;
+
+    console.log(x);
+    console.log(y);
+    console.log(positions[0]);
 
     const professionalSection = document.querySelector("#newProfExperience");
     showProfessionalExperience = professionalSection.innerHTML;
+
     const saveProf = document.querySelector("#savedProfExperience");
     saveProf.innerHTML += showProfessionalExperience;
-
 
     clearInputFields();
 
@@ -892,7 +913,6 @@ const [isProfessionalPresentChecked, setIsProfessionalPresentChecked] = useState
             <p className="c6">
               <span className="c1 c2" />
             </p>
-            <div id="savedProfExperience">{showProfessionalExperience}</div>
             <div id="newProfExperience">
             <p className="c8">
               <span className="c2">{employer}</span>
@@ -916,6 +936,7 @@ const [isProfessionalPresentChecked, setIsProfessionalPresentChecked] = useState
               <span className="c1 c0" />
             </p>
             </div>
+            <div id="savedProfExperience">{showProfessionalExperience}</div>
             <p className="c8">
               <span className="c2">Cambridge Innovation Center</span>
               <span className="c0">&nbsp;- </span>
