@@ -230,6 +230,19 @@ if ((startMonth === "" && startYear === "") || (endMonth === "" && endYear === "
         profCollapsible.classList.toggle("collapsed");
         professionalIcon.classList.toggle("open");
       }
+      if (positions.length > 0) {
+        const allProf = document.querySelector("#allProf");
+        if (allProf) {
+          allProf.style.paddingBottom = "80px";
+        }
+
+        // Set top for #addProfButton
+        const addProfButton = document.querySelector("#addProf");
+        if (addProfButton) {
+          addProfButton.style.top = "60px";
+        }
+        console.log("yoooo");
+      }
     }
 
     function collapsePersonal() {
@@ -263,6 +276,7 @@ if ((startMonth === "" && startYear === "") || (endMonth === "" && endYear === "
       profSectionInputs.style.display = 'inline';
       addProfButton.style.display = 'none';
       profHistory.style.display = 'none';
+      allProf.style.paddingBottom = '8px';
     }
     if ((profSectionInputs.style.display === 'inline') && (addProfBottom.style.paddingBottom === '80px')) {
       addProfBottom.style.paddingBottom = '8px';
@@ -274,7 +288,6 @@ if ((startMonth === "" && startYear === "") || (endMonth === "" && endYear === "
   // Helper function to adjust spacing in Professional section after saving a new position
   function toggleHeight() {
     const addProfBottom = document.querySelector("#addButtonProf");
-    console.log("toggleheight");
     // Check if the element has the class "heightAdjust"
     if (addProfBottom.classList.contains("heightAdjust")) {
       // If it has the class, remove it
@@ -388,6 +401,8 @@ const clearInputFields2 = () => {
   // If the present checkbox is checked, returns to unchecked
   handleCheckboxChange(false);
   collapseProfessional();
+  const profHistory = document.querySelector('#profHist');
+  profHistory.style.display = 'inline';
 
   const profCollapsible = document.querySelector(".profInputs");
   const addProfButton = document.querySelector("#addProf");
@@ -496,7 +511,7 @@ const [isProfessionalPresentChecked, setIsProfessionalPresentChecked] = useState
     startYears.push(startYear);
     endMonths.push(endMonth);
     endYears.push(endYear);
-    presents.push(present);
+    presents.push(isProfessionalPresentChecked);
     employerDescriptions.push(employerDescription);
 
     // Create the stateArrays object
@@ -597,7 +612,7 @@ const [isProfessionalPresentChecked, setIsProfessionalPresentChecked] = useState
     profHistoryInfo = newProfHistoryEntry.innerHTML;
 
     // Append the new <div> element to the professional history section
-    profHistory.appendChild(newProfHistoryEntry); 
+    profHistory.appendChild(newProfHistoryEntry);
 
     // Function to handle visibility button click
     function visiButtonClick(event) {
@@ -634,18 +649,63 @@ const [isProfessionalPresentChecked, setIsProfessionalPresentChecked] = useState
     // Attach click event handlers in a loop to the editProfSection buttons
     for (let i = 1; i < positions.length + 1; i++) {
       let editSection = document.querySelector(`#editProfEntry${i}`);
-      
+
       if (editSection) {
-        editSection.onclick = editProfSection;
+        editSection.onclick = function (event) {
+          // Check if the clicked element or its parent has the classes 'visible' or 'hidden'
+          const clickedElement = event.target || event.currentTarget;
+          if (
+            !clickedElement.classList.contains("visible") &&
+            !clickedElement.classList.contains("hidden")
+          ) {
+            editProfSection(event);
+          }
+        };
       }
     }
 
     // A function to edit the professional sections onclick
     function editProfSection(event) {
       const dataAttribute = event.currentTarget.dataset.attribute;
-      console.log(dataAttribute)
-    }
+      showProfInputs();
+      setPosition(positions[dataAttribute - 1]);
+      setEmployer(employers[dataAttribute - 1]);
 
+      if (cities[dataAttribute - 1] !== undefined) {
+        setCity(cities[dataAttribute - 1]);
+      }
+
+      if (startMonths[dataAttribute - 1] !== undefined) {
+        setStartMonth(startMonths[dataAttribute - 1]);
+      }
+
+      if (startYears[dataAttribute - 1] !== undefined) {
+        setStartYear(startYears[dataAttribute - 1]);
+      }
+
+      if (endMonths[dataAttribute - 1] !== undefined) {
+        setEndMonth(endMonths[dataAttribute - 1]);
+      }
+
+      if (endYears[dataAttribute - 1] !== undefined) {
+        setEndYear(endYears[dataAttribute - 1]);
+      }
+
+      if (presents[dataAttribute - 1] === true) {
+        const presentCheckbox = document.querySelector(
+          "#professionalPresentField"
+        );
+        if (presentCheckbox) {
+          handleCheckboxChange(true);
+        }
+      }
+
+      if (employerDescriptions[dataAttribute - 1] !== undefined) {
+        const qleditor = document.querySelector("#employerDescriptionQlEditor");
+        qleditor.innerHTML = employerDescriptions[dataAttribute - 1];
+      }
+      console.log(dataAttribute);
+    }
 
     // Adjust button spacing
     const addProfExp = document.querySelector("#addProf");
@@ -658,15 +718,20 @@ const [isProfessionalPresentChecked, setIsProfessionalPresentChecked] = useState
     <div className="App">
       <div className="left-half">
         <div className="accordion">
-        <div className="collapsible">
-          <div className="titleSection" onClick={collapsePersonal}>
-            <div className="titleWhite">Personal Details</div>
-            <img src="./expand.svg" alt="Expand" className="expand-icon" id="personalIcon"/> 
+          <div className="collapsible">
+            <div className="titleSection" onClick={collapsePersonal}>
+              <div className="titleWhite">Personal Details</div>
+              <img
+                src="./expand.svg"
+                alt="Expand"
+                className="expand-icon"
+                id="personalIcon"
+              />
             </div>
             <div className="personal" id="pers">
-            <div className="topSubtitle">
-              <label className="input-text">Full Name</label>
-              <div className="subLabel">Required</div>
+              <div className="topSubtitle">
+                <label className="input-text">Full Name</label>
+                <div className="subLabel">Required</div>
               </div>
               <FullNameInput
                 fullName={fullName}
@@ -674,17 +739,17 @@ const [isProfessionalPresentChecked, setIsProfessionalPresentChecked] = useState
               />
               <div className="emailNumber">
                 <div id="email">
-                <div className="topSubtitle">
-              <label className="input-text">Email</label>
-              <div className="subLabel">Optional</div>
-              </div>
+                  <div className="topSubtitle">
+                    <label className="input-text">Email</label>
+                    <div className="subLabel">Optional</div>
+                  </div>
                   <EmailInput email={email} onEmailChange={handleEmailChange} />
                 </div>
                 <div id="phoneNumber">
-                <div className="topSubtitle">
-              <label className="input-text">Phone</label>
-              <div className="subLabel">Optional</div>
-              </div>
+                  <div className="topSubtitle">
+                    <label className="input-text">Phone</label>
+                    <div className="subLabel">Optional</div>
+                  </div>
                   <PhoneInput
                     phoneNumber={phoneNumber}
                     onPhoneChange={handlePhoneChange}
@@ -692,16 +757,16 @@ const [isProfessionalPresentChecked, setIsProfessionalPresentChecked] = useState
                 </div>
               </div>
               <div className="topSubtitle">
-              <label className="input-text">Address</label>
-              <div className="subLabel">Recommended</div>
+                <label className="input-text">Address</label>
+                <div className="subLabel">Recommended</div>
               </div>
               <AddressInput
                 address={address}
                 onAddressChange={handleAddressChange}
               />
               <div className="topSubtitle">
-              <label className="input-text">Summary</label>
-              <div className="subLabel">Recommended</div>
+                <label className="input-text">Summary</label>
+                <div className="subLabel">Recommended</div>
               </div>
               <CareerInput
                 careerSummary={careerSummary}
@@ -711,135 +776,167 @@ const [isProfessionalPresentChecked, setIsProfessionalPresentChecked] = useState
           </div>
 
           <div className="collapsible">
-          <div className="titleSection" id="profTitle" onClick={collapseProfessional}>
-            <div className="titleWhite">Professional Experience</div>
-            <img src="./expand.svg" alt="Expand" className="expand-icon open" id="professionalIcon"/> 
+            <div
+              className="titleSection"
+              id="profTitle"
+              onClick={collapseProfessional}
+            >
+              <div className="titleWhite">Professional Experience</div>
+              <img
+                src="./expand.svg"
+                alt="Expand"
+                className="expand-icon open"
+                id="professionalIcon"
+              />
             </div>
             <div className="collapsed" id="allProf">
-            <div className="profInputs">
-            <div className="professional" id="prof">
-              <div className="topSubtitle">
-              <label className="input-text">Job Title</label>
-              <div className="subLabel" id="jobReq">Required</div>
-              </div>
-              <PositionInput
-                className="professional"
-                currentPosition={position}
-                onPositionChange={(newPosition) => setPosition(newPosition)}
-                onSavePosition={handleSavePosition}
-              />
-              <div className="topSubtitle">
-              <label className="input-text">Employer</label>
-              <div className="subLabel" id="employerReq">Required</div>
-              </div>
-              <EmployerInput
-                className="professional"
-                employer={employer}
-                onEmployerChange={(newEmployer) => setEmployer(newEmployer)}
-              />
-              <div className="topSubtitle">
-              <label className="input-text">Address</label>
-              <div className="subLabel">Recommended</div>
-              </div>
-              <CityInput
-                className="professional"
-                city={city}
-                onCityChange={(newCity) => setCity(newCity)}
-              />
-            </div>
-            <div className="datePickers">
-              <div className="professional">
-              <div className="topSubtitle">
-              <label className="input-text">Start Date</label>
-              <div className="subLabel">Recommended</div>
-              </div>
-                <div className="selectInputs">
-                  <StartMonthInput
+              <div className="profInputs">
+                <div className="professional" id="prof">
+                  <div className="topSubtitle">
+                    <label className="input-text">Job Title</label>
+                    <div className="subLabel" id="jobReq">
+                      Required
+                    </div>
+                  </div>
+                  <PositionInput
                     className="professional"
-                    startMonth={startMonth}
-                    onMonthChange={(newStartMonth) =>
-                      setStartMonth(newStartMonth)
-                    }
+                    currentPosition={position}
+                    onPositionChange={(newPosition) => setPosition(newPosition)}
+                    onSavePosition={handleSavePosition}
                   />
-                  <StartYearInput
+                  <div className="topSubtitle">
+                    <label className="input-text">Employer</label>
+                    <div className="subLabel" id="employerReq">
+                      Required
+                    </div>
+                  </div>
+                  <EmployerInput
                     className="professional"
-                    startYear={startYear}
-                    onYearChange={(newStartYear) => setStartYear(newStartYear)}
+                    employer={employer}
+                    onEmployerChange={(newEmployer) => setEmployer(newEmployer)}
+                  />
+                  <div className="topSubtitle">
+                    <label className="input-text">Address</label>
+                    <div className="subLabel">Recommended</div>
+                  </div>
+                  <CityInput
+                    className="professional"
+                    city={city}
+                    onCityChange={(newCity) => setCity(newCity)}
                   />
                 </div>
-              </div>
+                <div className="datePickers">
+                  <div className="professional">
+                    <div className="topSubtitle">
+                      <label className="input-text">Start Date</label>
+                      <div className="subLabel">Recommended</div>
+                    </div>
+                    <div className="selectInputs">
+                      <StartMonthInput
+                        className="professional"
+                        startMonth={startMonth}
+                        onMonthChange={(newStartMonth) =>
+                          setStartMonth(newStartMonth)
+                        }
+                      />
+                      <StartYearInput
+                        className="professional"
+                        startYear={startYear}
+                        onYearChange={(newStartYear) =>
+                          setStartYear(newStartYear)
+                        }
+                      />
+                    </div>
+                  </div>
 
-              <div className="professional">
-              <div className="topSubtitle">
-              <label className="input-text" id="endLabelProfessional">End Date</label>
-              <div className="subLabel" id="endOpt">Optional</div>
-              </div>
-                <div className="selectInputs" id="endMonthYear">
-                  <EndMonthInput
-                    className="professional"
-                    endMonth={endMonth}
-                    onMonthChange={(newEndMonth) => setEndMonth(newEndMonth)}
-                    disabled={isProfessionalPresentChecked} // Set the disabled attribute based on the condition
-                  />
-                  <EndYearInput
-                    className="professional"
-                    endYear={endYear}
-                    onYearChange={(newEndYear) => setEndYear(newEndYear)}
-                    disabled={isProfessionalPresentChecked} // Set the disabled attribute based on the condition
+                  <div className="professional">
+                    <div className="topSubtitle">
+                      <label className="input-text" id="endLabelProfessional">
+                        End Date
+                      </label>
+                      <div className="subLabel" id="endOpt">
+                        Optional
+                      </div>
+                    </div>
+                    <div className="selectInputs" id="endMonthYear">
+                      <EndMonthInput
+                        className="professional"
+                        endMonth={endMonth}
+                        onMonthChange={(newEndMonth) =>
+                          setEndMonth(newEndMonth)
+                        }
+                        disabled={isProfessionalPresentChecked} // Set the disabled attribute based on the condition
+                      />
+                      <EndYearInput
+                        className="professional"
+                        endYear={endYear}
+                        onYearChange={(newEndYear) => setEndYear(newEndYear)}
+                        disabled={isProfessionalPresentChecked} // Set the disabled attribute based on the condition
+                      />
+                    </div>
+                  </div>
+                </div>
+                <div className="presentCheck">
+                  <h3 className="isPresent" style={{ textAlign: "center" }}>
+                    Is present?
+                  </h3>
+                  <PresentInput
+                    present={isProfessionalPresentChecked}
+                    onPresentChange={handleCheckboxChange}
+                    id="professionalPresentField"
                   />
                 </div>
-              </div>
-            </div>
-            <div className="presentCheck">
-              <h3 className="isPresent" style={{ textAlign: "center" }}>
-                Is present?
-              </h3>
-              <PresentInput
-                present={isProfessionalPresentChecked}
-                onPresentChange={handleCheckboxChange}
-                id="professionalPresentField"
-              />
-            </div>
 
-            <EmployerDescriptionInput
-              employerDescription={employerDescription} // Pass the state variable
-              onEmployerDescriptionChange={handleEmployerDescriptionChange} // Pass the change handler
-            />
-            <button className="cancelButton" onClick={clearInputFields2}>
-              Cancel
-            </button>
-            <button
-              className="saveButton"
-              onClick={() =>
-                handleSaveAll(
-                  positions,
-                  employers,
-                  cities,
-                  countries,
-                  startMonths,
-                  startYears,
-                  endMonths,
-                  endYears,
-                  presents,
-                )
-              }
-            >
-              Save
-            </button>
-            </div>
-            <div>
-              <div id="profHist"></div>
-            </div>
-            <div id="addButtonProf">
-              <button className="addButton" id="addProf" onClick={showProfInputs}>+ Professional Experience</button>
-            </div>
+                <EmployerDescriptionInput
+                  employerDescription={employerDescription} // Pass the state variable
+                  onEmployerDescriptionChange={handleEmployerDescriptionChange} // Pass the change handler
+                />
+                <button className="cancelButton" onClick={clearInputFields2}>
+                  Cancel
+                </button>
+                <button
+                  className="saveButton"
+                  onClick={() =>
+                    handleSaveAll(
+                      positions,
+                      employers,
+                      cities,
+                      countries,
+                      startMonths,
+                      startYears,
+                      endMonths,
+                      endYears,
+                      presents
+                    )
+                  }
+                >
+                  Save
+                </button>
+              </div>
+              <div>
+                <div id="profHist"></div>
+              </div>
+              <div id="addButtonProf">
+                <button
+                  className="addButton"
+                  id="addProf"
+                  onClick={showProfInputs}
+                >
+                  + Professional Experience
+                </button>
+              </div>
             </div>
           </div>
 
           <div className="collapsible">
-          <div className="titleSection eduTitle" onClick={collapseEducation}>
-            <div className="titleWhite">Education History </div>
-            <img src="./expand.svg" alt="Expand" className="expand-icon open"  id="educationIcon"/> 
+            <div className="titleSection eduTitle" onClick={collapseEducation}>
+              <div className="titleWhite">Education History </div>
+              <img
+                src="./expand.svg"
+                alt="Expand"
+                className="expand-icon open"
+                id="educationIcon"
+              />
             </div>
             <div className="education collapsed" id="edu">
               <label className="input-text">Degree</label>
@@ -853,37 +950,37 @@ const [isProfessionalPresentChecked, setIsProfessionalPresentChecked] = useState
                 onSchoolChange={handleSchoolChange}
               />
               <div id="educationBottom">
-              <div className="emailNumber">
-                <div id="city">
-                  <label className="input-text">City</label>
-                  <SchoolCityInput
-                    schoolCity={schoolCity}
-                    onSchoolCityChange={handleSchoolCityChange}
-                  />
+                <div className="emailNumber">
+                  <div id="city">
+                    <label className="input-text">City</label>
+                    <SchoolCityInput
+                      schoolCity={schoolCity}
+                      onSchoolCityChange={handleSchoolCityChange}
+                    />
+                  </div>
+                  <div id="country">
+                    <label className="input-text">Country</label>
+                    <SchoolCountryInput
+                      schoolCountry={schoolCountry}
+                      onSchoolCountryChange={handleSchoolCountryChange}
+                    />
+                  </div>
                 </div>
-                <div id="country">
-                  <label className="input-text">Country</label>
-                  <SchoolCountryInput
-                    schoolCountry={schoolCountry}
-                    onSchoolCountryChange={handleSchoolCountryChange}
-                  />
-                </div>
-              </div>
-              <div className="emailNumber">
-                <div id="startDate">
-                  <label className="input-text">Start Date</label>
-                  <SchoolStartDateInput
-                    schoolStartDate={schoolStartDate}
-                    onSchoolStartChange={handleSchoolStartDateChange}
-                  />
-                </div>
-                <div id="endDate">
-                  <label className="input-text">End Date</label>
-                  <SchoolEndDateInput
-                    schoolEndDate={schoolEndDate}
-                    onSchoolEndChange={handleSchoolEndDateChange}
-                  />
-                </div>
+                <div className="emailNumber">
+                  <div id="startDate">
+                    <label className="input-text">Start Date</label>
+                    <SchoolStartDateInput
+                      schoolStartDate={schoolStartDate}
+                      onSchoolStartChange={handleSchoolStartDateChange}
+                    />
+                  </div>
+                  <div id="endDate">
+                    <label className="input-text">End Date</label>
+                    <SchoolEndDateInput
+                      schoolEndDate={schoolEndDate}
+                      onSchoolEndChange={handleSchoolEndDateChange}
+                    />
+                  </div>
                 </div>
               </div>
             </div>
@@ -922,22 +1019,24 @@ const [isProfessionalPresentChecked, setIsProfessionalPresentChecked] = useState
               <span className="c1 c0" />
             </p>
             <div className="display careerSummarySpacing hide" id="careerHide">
-            <p className="c9">
-              <span className="c1 c0" />
-            </p>
-            <p className="c8 careerSummarySpacing hide">
-              <span className="c2 c11 careerSummarySpacing hide">CAREER SUMMARY</span>
-            </p>
-            <hr className="careerSummarySpacing hide"/>
-            <p className="c9 careerSummarySpacing hide">
-              <span className="c7 c2 careerSummarySpacing hide" />
-            </p>
-            <p className="c8">
-              <span className="c3 c0">{careerSummary}</span>
-            </p>
-            <p className="c6">
-              <span className="c3 c0" />
-            </p>
+              <p className="c9">
+                <span className="c1 c0" />
+              </p>
+              <p className="c8 careerSummarySpacing hide">
+                <span className="c2 c11 careerSummarySpacing hide">
+                  CAREER SUMMARY
+                </span>
+              </p>
+              <hr className="careerSummarySpacing hide" />
+              <p className="c9 careerSummarySpacing hide">
+                <span className="c7 c2 careerSummarySpacing hide" />
+              </p>
+              <p className="c8">
+                <span className="c3 c0">{careerSummary}</span>
+              </p>
+              <p className="c6">
+                <span className="c3 c0" />
+              </p>
             </div>
             <p className="c8">
               <span className="c2 c11">PROFESSIONAL EXPERIENCE</span>
@@ -950,27 +1049,32 @@ const [isProfessionalPresentChecked, setIsProfessionalPresentChecked] = useState
               <span className="c1 c2" />
             </p>
             <div id="newProfExperience">
-            <p className="c8">
-              <span className="c2">{employer}</span>
-              <span className="c0" id="divider4">{divider4}</span>
-              <span className="c3 c0">{city}</span>
-            </p>
-            <p className="c8">
-            <span id="employerMonths">
-              <span className="c0 c5">{position}</span>
-              <span className="c0">
-                {startMonth}{" "}
-                {startYear} {divider5} {endMonth} {endYear}
-              </span>
-            </span>
-            </p>
-            <div
-              className="employer-description"
-              dangerouslySetInnerHTML={{ __html: employerDescription }}
-            />
-            <p className="c6">
-              <span className="c1 c0" />
-            </p>
+              <p className="c8">
+                <span className="c2">{employer}</span>
+                <span className="c0" id="divider4">
+                  {divider4}
+                </span>
+                <span className="c3 c0">{city}</span>
+              </p>
+              <p className="c8">
+                <span id="employerMonths">
+                  <span className="c0 c5">{position}</span>
+                  <span className="c0">
+                    {startMonth} {startYear} {divider5}{" "}
+                    <span className={endMonth === "Present" ? "bold" : ""}>
+                      {endMonth}
+                    </span>{" "}
+                    {endYear}
+                  </span>
+                </span>
+              </p>
+              <div
+                className="employer-description"
+                dangerouslySetInnerHTML={{ __html: employerDescription }}
+              />
+              <p className="c6">
+                <span className="c1 c0" />
+              </p>
             </div>
             <div id="savedProfExperience">{showProfessionalExperience}</div>
             <p className="c8">

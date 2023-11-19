@@ -318,8 +318,8 @@ button:hover {
   cursor: pointer;
 }
 
-.editSection {
-  
+.bold {
+  font-weight: bold;
 }
 
 #begin {
@@ -650,6 +650,7 @@ padding-inline-start: 40px;
   bottom: 20px;
   height: 40px;
   width: 40px;
+  z-index: 1;
 }
 
 .hidden {
@@ -657,6 +658,7 @@ padding-inline-start: 40px;
   bottom: 20px;
   height: 40px;
   width: 40px;
+  z-index: 1;
 }
 
 .hide {
