@@ -226,6 +226,7 @@ if ((startMonth === "" && startYear === "") || (endMonth === "" && endYear === "
     function collapseProfessional() {
       const profCollapsible = document.querySelector("#allProf");
       const professionalIcon = document.querySelector("#professionalIcon");
+      const profSectionInputs = document.querySelector('.profInputs');
       if (profCollapsible) {
         profCollapsible.classList.toggle("collapsed");
         professionalIcon.classList.toggle("open");
@@ -233,7 +234,8 @@ if ((startMonth === "" && startYear === "") || (endMonth === "" && endYear === "
       if (positions.length > 0) {
         const allProf = document.querySelector("#allProf");
         if (allProf) {
-          allProf.style.paddingBottom = "80px";
+          allProf.style.paddingBottom = "8px";
+          console.log("3");
         }
 
         // Set top for #addProfButton
@@ -241,7 +243,6 @@ if ((startMonth === "" && startYear === "") || (endMonth === "" && endYear === "
         if (addProfButton) {
           addProfButton.style.top = "60px";
         }
-        console.log("yoooo");
       }
     }
 
@@ -407,7 +408,7 @@ const clearInputFields2 = () => {
   const profCollapsible = document.querySelector(".profInputs");
   const addProfButton = document.querySelector("#addProf");
   const addButtonProf = document.querySelector('#addButtonProf');
-  addButtonProf.style.paddingBottom = "12px";
+  addButtonProf.style.paddingBottom = "80px";
   profCollapsible.style.display = "none";
   addProfButton.style.display = "inline";
   addProfButton.style.top = "0px";
