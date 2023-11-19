@@ -255,19 +255,23 @@ if ((startMonth === "" && startYear === "") || (endMonth === "" && endYear === "
   function showProfInputs() {
     const profSectionInputs = document.querySelector('.profInputs');
     const addProfButton = document.querySelector('#addProf');
+    const profHistory = document.querySelector('#profHist');
+    const addProfBottom = document.querySelector("#addButtonProf");
     profSectionInputs.style.display = 'none';
     toggleHeight();
-  
     if (profSectionInputs.style.display === 'none') {
       profSectionInputs.style.display = 'inline';
       addProfButton.style.display = 'none';
+      profHistory.style.display = 'none';
     }
   }
+
+
 
   // Helper function to adjust spacing in Professional section after saving a new position
   function toggleHeight() {
     const addProfBottom = document.querySelector("#addButtonProf");
-  
+    console.log("toggleheight");
     // Check if the element has the class "heightAdjust"
     if (addProfBottom.classList.contains("heightAdjust")) {
       // If it has the class, remove it
@@ -365,7 +369,6 @@ if ((startMonth === "" && startYear === "") || (endMonth === "" && endYear === "
     handleEmployerDescriptionChange(""); // Clear the Quill editor content
     clearQuillHTML();
   };
-  
 
 // Clear all the Professional section input fields AND hide the Professional section
 const clearInputFields2 = () => {
@@ -479,30 +482,29 @@ const [isProfessionalPresentChecked, setIsProfessionalPresentChecked] = useState
     profSectionInputs.style.display = "none";
     addProfButton.style.display = "inline";
 
-    // Create an object with state arrays and their corresponding functions
-// Push values to state arrays
-positions.push(position);
-employers.push(employer);
-cities.push(city);
-startMonths.push(startMonth);
-startYears.push(startYear);
-endMonths.push(endMonth);
-endYears.push(endYear);
-presents.push(present);
-employerDescriptions.push(employerDescription);
+    // Push values to state arrays
+    positions.push(position);
+    employers.push(employer);
+    cities.push(city);
+    startMonths.push(startMonth);
+    startYears.push(startYear);
+    endMonths.push(endMonth);
+    endYears.push(endYear);
+    presents.push(present);
+    employerDescriptions.push(employerDescription);
 
-// Create the stateArrays object
-const stateArrays = {
-  positions,
-  employers,
-  cities,
-  startMonths,
-  startYears,
-  endMonths,
-  endYears,
-  presents,
-  employerDescriptions,
-};
+    // Create the stateArrays object
+    const stateArrays = {
+      positions,
+      employers,
+      cities,
+      startMonths,
+      startYears,
+      endMonths,
+      endYears,
+      presents,
+      employerDescriptions,
+    };
 
     // Loop through the stateArrays object and update the arrays and log their values
     // Object.entries(stateArrays).forEach(
@@ -513,16 +515,9 @@ const stateArrays = {
     //   }
     // );
 
-    let x = stateArrays.positions.length;
-    let y = positions.length;
-
-    console.log(x);
-    console.log(y);
-    console.log(positions[0]);
-
+    // Create a new <div> element to hold the professional section information in right-half
     const professionalSection = document.querySelector("#newProfExperience");
-    showProfessionalExperience = professionalSection.innerHTML;
-
+    const showProfessionalExperience = `<div id="profKey${positions.length}">${professionalSection.innerHTML}</div>`;
     const saveProf = document.querySelector("#savedProfExperience");
     saveProf.innerHTML += showProfessionalExperience;
 
@@ -533,12 +528,19 @@ const stateArrays = {
 
     // Select the professional history section
     const profHistory = document.querySelector("#profHist");
+    profHistory.style.display = "inline";
 
     // Create a new <div> element to hold the professional history information
+    let historyEntry = 1;
     const newProfHistoryEntry = document.createElement("div");
     newProfHistoryEntry.className = "profHistoryEntry";
     newProfHistoryEntry.innerHTML =
       "<hr id='topLine'>" +
+      '<span class="editSection" id="editProfEntry' +
+      positions.length +
+      '" data-attribute=' +
+      positions.length +
+      ">" +
       '<div id="top-top">' +
       '<div id="top-left">' +
       position +
@@ -549,6 +551,7 @@ const stateArrays = {
       "</div>" +
       "</div>" +
       '<div id="bottom-bottom">' +
+      "</span>" +
       '<div id="bottom-row">' +
       '<div id="bottom-left">' +
       " " +
@@ -571,44 +574,72 @@ const stateArrays = {
       '"' +
       'class="toggle-button"' +
       ">" +
-      '<img src="visibility_FILL.svg" alt="Visible" class="visible" id="visi' +
+      '<img src="visibility_FILL.svg" alt="Visible" class="visible visiButton" id="visi' +
       positions.length +
-      '"' +
-      'style="display: inline;">' +
-      '<img src="visibility_off.svg" alt="Hidden" class="hidden" id="hid' +
+      '" data-attribute="' +
       positions.length +
-      '"' +
-      'style="display: none;">' +
+      '" style="display: inline;">' +
+      '<img src="visibility_off.svg" alt="Hidden" class="hidden hidButton" id="hid' +
+      positions.length +
+      '" data-attribute="' +
+      positions.length +
+      '" style="display: none;">' +
       "</div>" +
       "</div>" +
       "<hr>";
     // Create a variable that stores all the professional history information
     profHistoryInfo = newProfHistoryEntry.innerHTML;
 
-    // Attach the click event listener to a parent element that exists when the page loads (e.g., profHistory).
-    profHistory.addEventListener("click", (event) => {
-      const target = event.target;
-
-      if (
-        target.id === `profSection${positions.length}` ||
-        target.id === `visi${positions.length}` ||
-        target.id === `hid${positions.length}`
-      ) {
-        const visibleIcon = document.querySelector(`#visi${positions.length}`);
-        const hiddenIcon = document.querySelector(`#hid${positions.length}`);
-
-        if (visibleIcon.style.display === "inline") {
-          visibleIcon.style.display = "none";
-          hiddenIcon.style.display = "inline";
-        } else {
-          visibleIcon.style.display = "inline";
-          hiddenIcon.style.display = "none";
-        }
-      }
-    });
-
     // Append the new <div> element to the professional history section
-    profHistory.appendChild(newProfHistoryEntry);
+    profHistory.appendChild(newProfHistoryEntry); 
+
+    // Function to handle visibility button click
+    function visiButtonClick(event) {
+      const dataAttribute = event.currentTarget.dataset.attribute;
+      let visibleIcon = document.querySelector(`#visi${dataAttribute}`);
+      let hiddenIcon = document.querySelector(`#hid${dataAttribute}`);
+      let rightSection = document.querySelector(`#profKey${dataAttribute}`);
+
+      if (visibleIcon.style.display === "inline") {
+        visibleIcon.style.display = "none";
+        hiddenIcon.style.display = "inline";
+        rightSection.style.display = "none";
+      } else {
+        visibleIcon.style.display = "inline";
+        hiddenIcon.style.display = "none";
+        rightSection.style.display = "inline";
+      }
+    }
+
+    // Attach click event handlers in a loop to the visibility buttons
+    for (let i = 1; i < positions.length + 1; i++) {
+      let visibleIcon = document.querySelector(`#visi${i}`);
+      let hiddenIcon = document.querySelector(`#hid${i}`);
+
+      if (visibleIcon) {
+        visibleIcon.onclick = visiButtonClick;
+      }
+
+      if (hiddenIcon) {
+        hiddenIcon.onclick = visiButtonClick;
+      }
+    }
+
+    // Attach click event handlers in a loop to the editProfSection buttons
+    for (let i = 1; i < positions.length + 1; i++) {
+      let editSection = document.querySelector(`#editProfEntry${i}`);
+      
+      if (editSection) {
+        editSection.onclick = editProfSection;
+      }
+    }
+
+    // A function to edit the professional sections onclick
+    function editProfSection(event) {
+      const dataAttribute = event.currentTarget.dataset.attribute;
+      console.log(dataAttribute)
+    }
+
 
     // Adjust button spacing
     const addProfExp = document.querySelector("#addProf");
@@ -798,7 +829,6 @@ const stateArrays = {
             </div>
             </div>
           </div>
-
 
           <div className="collapsible">
           <div className="titleSection eduTitle" onClick={collapseEducation}>

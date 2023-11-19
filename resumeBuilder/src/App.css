@@ -314,6 +314,14 @@ button:hover {
   justify-content: space-between;
 }
 
+.editSection:hover {
+  cursor: pointer;
+}
+
+.editSection {
+  
+}
+
 #begin {
   float: right;
   white-space: nowrap;
