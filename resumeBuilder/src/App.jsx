@@ -264,6 +264,9 @@ if ((startMonth === "" && startYear === "") || (endMonth === "" && endYear === "
       addProfButton.style.display = 'none';
       profHistory.style.display = 'none';
     }
+    if ((profSectionInputs.style.display === 'inline') && (addProfBottom.style.paddingBottom === '80px')) {
+      addProfBottom.style.paddingBottom = '8px';
+    }
   }
 
 
@@ -388,8 +391,11 @@ const clearInputFields2 = () => {
 
   const profCollapsible = document.querySelector(".profInputs");
   const addProfButton = document.querySelector("#addProf");
+  const addButtonProf = document.querySelector('#addButtonProf');
+  addButtonProf.style.paddingBottom = "12px";
   profCollapsible.style.display = "none";
   addProfButton.style.display = "inline";
+  addProfButton.style.top = "0px";
 
   // Get the div that will house the validation error messages
   const jobRequired = document.querySelector("#jobReq");
