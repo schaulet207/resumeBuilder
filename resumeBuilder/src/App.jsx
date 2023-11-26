@@ -439,7 +439,6 @@ const clearInputFields2 = () => {
 
   const profHistory = document.querySelector('#profHist');
   profHistory.style.display = 'inline';
-
   // This is a hacky way to get the dataAttribute from the previous edit function. I'm sure there's a better way to do this.
   let profEdit = profHistory.getAttribute('data-attribute');
 
@@ -620,10 +619,6 @@ const [isProfessionalPresentChecked, setIsProfessionalPresentChecked] = useState
     // If the present checkbox is checked, returns to unchecked
     handleCheckboxChange(false);
 
-    // Select the professional history section
-    const profHistory = document.querySelector("#profHist");
-    profHistory.style.display = "inline";
-
     // Create a new <div> element to hold the professional history information
     let historyEntry = 1;
     const newProfHistoryEntry = document.createElement("div");
@@ -742,6 +737,13 @@ const [isProfessionalPresentChecked, setIsProfessionalPresentChecked] = useState
       const dataAttribute = event.currentTarget.dataset.attribute;
       // This is a hacky way of passing the data-attribute to clearinputfields2. I'm sure there's a better way of doing this.
       const profHistory = document.getElementById("profHist");
+
+      // Reset the visibility icon to visible
+      let visibleIcon = document.querySelector(`#visi${dataAttribute}`);
+      let hiddenIcon = document.querySelector(`#hid${dataAttribute}`);
+      visibleIcon.style.display = "inline";
+      hiddenIcon.style.display = "none";
+
       if (profHistory) {
         profHistory.setAttribute("data-attribute", dataAttribute);
       }
