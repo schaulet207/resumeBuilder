@@ -135,6 +135,7 @@ const handleEmployerDescriptionChange = (newDescription) => {
   let profHistoryInfo;
   let saveProfessionalExperience = [];
   let showProfessionalExperience = null;
+  let profEdit = false;
 
   function ProfessionalExperienceInput({ professionalExperience, onProfessionalExperienceChange }) {
     return (
@@ -214,6 +215,38 @@ if ((startMonth === "" && startYear === "") || (endMonth === "" && endYear === "
   divider5 = " - ";
 }
 
+  // A variable to hold all of the professional experience
+  const newProfSaved = (
+    <div>
+      <p className="c8">
+        <span className="c2">{employer}</span>
+        <span className="c0" id="divider4">
+          {divider4}
+        </span>
+        <span className="c3 c0">{city}</span>
+      </p>
+      <p className="c8">
+        <span id="employerMonths">
+          <span className="c0 c5">{position}</span>
+          <span className="c0">
+            {startMonth} {startYear} {divider5}{" "}
+            <span className={endMonth === "Present" ? "bold" : ""}>
+              {endMonth}
+            </span>{" "}
+            {endYear}
+          </span>
+        </span>
+      </p>
+      <div
+        className="employer-description"
+        dangerouslySetInnerHTML={{ __html: employerDescription }}
+      />
+      <p className="c6">
+        <span className="c1 c0" />
+      </p>
+    </div>
+  );
+
     function collapseEducation() {
       const educationCollapsible = document.querySelector("#edu");
       const educationIcon = document.querySelector("#educationIcon");
@@ -235,7 +268,6 @@ if ((startMonth === "" && startYear === "") || (endMonth === "" && endYear === "
         const allProf = document.querySelector("#allProf");
         if (allProf) {
           allProf.style.paddingBottom = "8px";
-          console.log("3");
         }
 
         // Set top for #addProfButton
@@ -271,6 +303,8 @@ if ((startMonth === "" && startYear === "") || (endMonth === "" && endYear === "
     const addProfButton = document.querySelector('#addProf');
     const profHistory = document.querySelector('#profHist');
     const addProfBottom = document.querySelector("#addButtonProf");
+    const professionalSection = document.querySelector("#newProfExperience");
+    professionalSection.style.display = "inline";
     profSectionInputs.style.display = 'none';
     toggleHeight();
     if (profSectionInputs.style.display === 'none') {
@@ -282,6 +316,7 @@ if ((startMonth === "" && startYear === "") || (endMonth === "" && endYear === "
     if ((profSectionInputs.style.display === 'inline') && (addProfBottom.style.paddingBottom === '80px')) {
       addProfBottom.style.paddingBottom = '8px';
     }
+
   }
 
 
@@ -402,13 +437,17 @@ const clearInputFields2 = () => {
   // If the present checkbox is checked, returns to unchecked
   handleCheckboxChange(false);
   collapseProfessional();
+
   const profHistory = document.querySelector('#profHist');
   profHistory.style.display = 'inline';
 
+  // Get the div that will house the validation error messages
   const profCollapsible = document.querySelector(".profInputs");
   const addProfButton = document.querySelector("#addProf");
   const addButtonProf = document.querySelector('#addButtonProf');
-  addButtonProf.style.paddingBottom = "80px";
+  if (positions.length > 0) {
+    addButtonProf.style.paddingBottom = "80px";
+  }
   profCollapsible.style.display = "none";
   addProfButton.style.display = "inline";
   addProfButton.style.top = "0px";
@@ -418,6 +457,28 @@ const clearInputFields2 = () => {
   const employerRequired = document.querySelector("#employerReq");
   const positionBorder = document.querySelector("#position");
   const employerBorder = document.querySelector("#employerInput");
+  // const dataAttribute = document.querySelector("#dataAttribute").value;
+
+  // Reverse swapping newProxExp and editProfEntryRH
+  // function reverseSwap() {
+  //   const newProfExp = document.querySelector("#newProfExperience");
+  //   const editProfEntryRH = document.querySelector(
+  //     "#profKey" + dataAttribute
+  //   );
+
+  //   if (newProfExp && editProfEntryRH) {
+  //     const parent1 = editProfEntryRH.parentNode;
+  //     const parent2 = newProfExp.parentNode;
+  //     const nextSibling1 = editProfEntryRH.nextSibling;
+
+  //     parent2.insertBefore(editProfEntryRH, newProfExp);
+
+  //     if (nextSibling1) {
+  //       parent1.insertBefore(newProfExp, nextSibling1);
+  //     } else {
+  //       parent1.appendChild(newProfExp);
+  //     }
+  //   }
 
   // Reset the error messages
   jobRequired.className = "subLabel";
@@ -425,8 +486,25 @@ const clearInputFields2 = () => {
   positionBorder.style.border = "1px solid rgb(61, 61, 64)";
   employerBorder.style.border = "1px solid rgb(61, 61, 64)";
 
+  // Hide the professional section on the right
+  const professionalSection = document.querySelector("#newProfExperience");
+  professionalSection.style.display = "none";
+
   // Reset the height of the Professional history section
   toggleHeight();
+
+  // If edit mode is on, does a couple of additional things
+  // if (editMode === true) {
+  //   reverseSwap();
+    
+  //   }
+      
+
+  //   // Reset the edit mode
+  //   setEditMode(false);
+    
+  // }
+
 };
 
 // Pass variables to actively see whether the checkbox is checked or not
@@ -527,15 +605,6 @@ const [isProfessionalPresentChecked, setIsProfessionalPresentChecked] = useState
       presents,
       employerDescriptions,
     };
-
-    // Loop through the stateArrays object and update the arrays and log their values
-    // Object.entries(stateArrays).forEach(
-    //   ([stateName, [stateArray, setState, value]]) => {
-    //     const updatedStateArray = [...stateArray, { [stateName]: value }];
-    //     setState(updatedStateArray);
-    //     profSection[stateName] = updatedStateArray;
-    //   }
-    // );
 
     // Create a new <div> element to hold the professional section information in right-half
     const professionalSection = document.querySelector("#newProfExperience");
@@ -668,7 +737,33 @@ const [isProfessionalPresentChecked, setIsProfessionalPresentChecked] = useState
     // A function to edit the professional sections onclick
     function editProfSection(event) {
       const dataAttribute = event.currentTarget.dataset.attribute;
+      const newProfExp = document.querySelector("#newProfExperience");
+      const editProfEntryRH = document.querySelector(
+        "#profKey" + dataAttribute
+      );
+
+      // Set a variable (profEdit) to true so that the save and cancel buttons know which functions to run
+      profEdit = true;
+      console.log(profEdit);
+
+      // Swap the newProfExperience and the editProfEntry sections so you can see your changes in realtime on the right side
+      if (newProfExp && editProfEntryRH) {
+        const parent1 = editProfEntryRH.parentNode;
+        const parent2 = newProfExp.parentNode;
+        const nextSibling2 = newProfExp.nextSibling;
+
+        parent1.insertBefore(newProfExp, editProfEntryRH);
+
+        if (nextSibling2) {
+          parent2.insertBefore(editProfEntryRH, nextSibling2);
+        } else {
+          parent2.appendChild(editProfEntryRH);
+        }
+      }
+
       showProfInputs();
+      editProfEntryRH.style.display = "none";
+
       setPosition(positions[dataAttribute - 1]);
       setEmployer(employers[dataAttribute - 1]);
 
@@ -713,6 +808,9 @@ const [isProfessionalPresentChecked, setIsProfessionalPresentChecked] = useState
     const addProfBottom = document.querySelector("#addButtonProf");
     addProfExp.style.top = "60px";
     addProfBottom.style.paddingBottom = "80px";
+
+    // Hide the new professional section on right-half until the professional inputs are showing again
+    professionalSection.style.display = "none";
   };
 
   return (
@@ -1049,35 +1147,10 @@ const [isProfessionalPresentChecked, setIsProfessionalPresentChecked] = useState
             <p className="c6">
               <span className="c1 c2" />
             </p>
-            <div id="newProfExperience">
-              <p className="c8">
-                <span className="c2">{employer}</span>
-                <span className="c0" id="divider4">
-                  {divider4}
-                </span>
-                <span className="c3 c0">{city}</span>
-              </p>
-              <p className="c8">
-                <span id="employerMonths">
-                  <span className="c0 c5">{position}</span>
-                  <span className="c0">
-                    {startMonth} {startYear} {divider5}{" "}
-                    <span className={endMonth === "Present" ? "bold" : ""}>
-                      {endMonth}
-                    </span>{" "}
-                    {endYear}
-                  </span>
-                </span>
-              </p>
-              <div
-                className="employer-description"
-                dangerouslySetInnerHTML={{ __html: employerDescription }}
-              />
-              <p className="c6">
-                <span className="c1 c0" />
-              </p>
-            </div>
             <div id="savedProfExperience">{showProfessionalExperience}</div>
+            <div id="newProfExperience">
+              {newProfSaved}
+            </div>
             <p className="c8">
               <span className="c2">Cambridge Innovation Center</span>
               <span className="c0">&nbsp;- </span>
