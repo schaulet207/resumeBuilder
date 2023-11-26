@@ -135,7 +135,6 @@ const handleEmployerDescriptionChange = (newDescription) => {
   let profHistoryInfo;
   let saveProfessionalExperience = [];
   let showProfessionalExperience = null;
-  let profEdit = false;
 
   function ProfessionalExperienceInput({ professionalExperience, onProfessionalExperienceChange }) {
     return (
@@ -441,6 +440,9 @@ const clearInputFields2 = () => {
   const profHistory = document.querySelector('#profHist');
   profHistory.style.display = 'inline';
 
+  // This is a hacky way to get the dataAttribute from the previous edit function. I'm sure there's a better way to do this.
+  let profEdit = profHistory.getAttribute('data-attribute');
+
   // Get the div that will house the validation error messages
   const profCollapsible = document.querySelector(".profInputs");
   const addProfButton = document.querySelector("#addProf");
@@ -457,29 +459,33 @@ const clearInputFields2 = () => {
   const employerRequired = document.querySelector("#employerReq");
   const positionBorder = document.querySelector("#position");
   const employerBorder = document.querySelector("#employerInput");
-  // const dataAttribute = document.querySelector("#dataAttribute").value;
+
+  // Reset the height of the Professional history section
+  toggleHeight();
 
   // Reverse swapping newProxExp and editProfEntryRH
-  // function reverseSwap() {
-  //   const newProfExp = document.querySelector("#newProfExperience");
-  //   const editProfEntryRH = document.querySelector(
-  //     "#profKey" + dataAttribute
-  //   );
+  function reverseSwap() {
+    const newProfExp = document.querySelector("#newProfExperience");
+    const profHistory = document.querySelector('#profHist');
+    let profEdit = profHistory.getAttribute('data-attribute');
+    const editProfEntryRH = document.querySelector(
+      "#profKey" + profEdit
+    );
 
-  //   if (newProfExp && editProfEntryRH) {
-  //     const parent1 = editProfEntryRH.parentNode;
-  //     const parent2 = newProfExp.parentNode;
-  //     const nextSibling1 = editProfEntryRH.nextSibling;
+    if (newProfExp && editProfEntryRH) {
+      const parent1 = editProfEntryRH.parentNode;
+      const parent2 = newProfExp.parentNode;
+      const nextSibling1 = editProfEntryRH.nextSibling;
 
-  //     parent2.insertBefore(editProfEntryRH, newProfExp);
+      parent2.insertBefore(editProfEntryRH, newProfExp);
 
-  //     if (nextSibling1) {
-  //       parent1.insertBefore(newProfExp, nextSibling1);
-  //     } else {
-  //       parent1.appendChild(newProfExp);
-  //     }
-  //   }
-
+      if (nextSibling1) {
+        parent1.insertBefore(newProfExp, nextSibling1);
+      } else {
+        parent1.appendChild(newProfExp);
+      }
+    }
+  }
   // Reset the error messages
   jobRequired.className = "subLabel";
   employerRequired.className = "subLabel";
@@ -490,21 +496,18 @@ const clearInputFields2 = () => {
   const professionalSection = document.querySelector("#newProfExperience");
   professionalSection.style.display = "none";
 
-  // Reset the height of the Professional history section
-  toggleHeight();
-
   // If edit mode is on, does a couple of additional things
-  // if (editMode === true) {
-  //   reverseSwap();
-    
-  //   }
-      
-
-  //   // Reset the edit mode
-  //   setEditMode(false);
-    
-  // }
-
+  if (profEdit !== null) {
+    reverseSwap();
+    const editProfEntryRH = document.querySelector(
+      "#profKey" + profEdit
+    );
+    editProfEntryRH.classList.remove("hide");
+    editProfEntryRH.style.display = "block";
+    }
+    // Reset the edit mode
+    profEdit = null;
+    profHistory.setAttribute('data-attribute', profEdit);
 };
 
 // Pass variables to actively see whether the checkbox is checked or not
@@ -737,14 +740,16 @@ const [isProfessionalPresentChecked, setIsProfessionalPresentChecked] = useState
     // A function to edit the professional sections onclick
     function editProfSection(event) {
       const dataAttribute = event.currentTarget.dataset.attribute;
+      // This is a hacky way of passing the data-attribute to clearinputfields2. I'm sure there's a better way of doing this.
+      const profHistory = document.getElementById("profHist");
+      if (profHistory) {
+        profHistory.setAttribute("data-attribute", dataAttribute);
+      }
+
       const newProfExp = document.querySelector("#newProfExperience");
       const editProfEntryRH = document.querySelector(
         "#profKey" + dataAttribute
       );
-
-      // Set a variable (profEdit) to true so that the save and cancel buttons know which functions to run
-      profEdit = true;
-      console.log(profEdit);
 
       // Swap the newProfExperience and the editProfEntry sections so you can see your changes in realtime on the right side
       if (newProfExp && editProfEntryRH) {
@@ -800,7 +805,6 @@ const [isProfessionalPresentChecked, setIsProfessionalPresentChecked] = useState
         const qleditor = document.querySelector("#employerDescriptionQlEditor");
         qleditor.innerHTML = employerDescriptions[dataAttribute - 1];
       }
-      console.log(dataAttribute);
     }
 
     // Adjust button spacing
