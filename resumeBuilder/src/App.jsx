@@ -496,7 +496,7 @@ const clearInputFields2 = () => {
   const professionalSection = document.querySelector("#newProfExperience");
   professionalSection.style.display = "none";
 
-  // If edit mode is on, does a couple of additional things
+  // If profEdit variable exists, reverse swaps the live edited section on the right-half from the professional entry you were editing
   if (profEdit !== null) {
     reverseSwap();
     const editProfEntryRH = document.querySelector(
@@ -507,7 +507,7 @@ const clearInputFields2 = () => {
     }
     // Reset the edit mode
     profEdit = null;
-    profHistory.setAttribute('data-attribute', profEdit);
+    profHistory.removeAttribute('data-attribute');
 };
 
 // Pass variables to actively see whether the checkbox is checked or not
