@@ -162,3 +162,6 @@ export function EmployerDescriptionInput({
     />
   );
 }
+
+// Declare and initialize profExpEntries and export it immediately
+export const profExpEntries = [];

@@ -16,7 +16,8 @@ import {
   EndMonthInput,
   EndYearInput,
   PresentInput,
-  EmployerDescriptionInput
+  EmployerDescriptionInput,
+  profExpEntries
 } from "./Professional";
 import {
   DegreeInput,
@@ -263,7 +264,7 @@ if ((startMonth === "" && startYear === "") || (endMonth === "" && endYear === "
         profCollapsible.classList.toggle("collapsed");
         professionalIcon.classList.toggle("open");
       }
-      if (positions.length > 0) {
+      if (profExpEntries.length > 0) {
         const allProf = document.querySelector("#allProf");
         if (allProf) {
           allProf.style.paddingBottom = "8px";
@@ -446,7 +447,7 @@ const clearInputFields2 = () => {
   const profCollapsible = document.querySelector(".profInputs");
   const addProfButton = document.querySelector("#addProf");
   const addButtonProf = document.querySelector('#addButtonProf');
-  if (positions.length > 0) {
+  if (profExpEntries.length > 0) {
     addButtonProf.style.paddingBottom = "80px";
   }
   profCollapsible.style.display = "none";
@@ -539,148 +540,16 @@ const [isProfessionalPresentChecked, setIsProfessionalPresentChecked] = useState
 
 // A function to save all the Professional section data
   const handleSaveAll = () => {
-    // Get and trim the values of Job Title and Employer fields
-    const jobTitleValue = position.trim();
-    const employerValue = employer.trim();
+    // Hacky way of getting the data attribute of the field being edited from the profHist element
+    const profHistory = document.getElementById("profHist");
+    const dataAttribute = profHistory.getAttribute("data-attribute");
+    console.log(dataAttribute);
 
-    // Get the div that will house the validation error messages
-    const jobRequired = document.querySelector("#jobReq");
-    const employerRequired = document.querySelector("#employerReq");
-    const positionBorder = document.querySelector("#position");
-    const employerBorder = document.querySelector("#employerInput");
-    const presentInput = document.querySelector("#professionalPresentField");
-
-    // Check if the Job Title and Employer fields are not empty
-    if (!jobTitleValue && !employerValue) {
-      jobRequired.className = "error";
-      employerRequired.className = "error";
-      positionBorder.style.border = "1px solid red";
-      employerBorder.style.border = "1px solid red";
-      return;
-    } else if (!jobTitleValue) {
-      jobRequired.className = "error";
-      positionBorder.style.border = "1px solid red";
-      return;
-    } else if (!employerValue) {
-      employerRequired.className = "error";
-      employerBorder.style.border = "1px solid red";
-      return;
-    }
-
-    // Reset the error messages
-    jobRequired.className = "subLabel";
-    employerRequired.className = "subLabel";
-    positionBorder.style.border = "1px solid rgb(61, 61, 64)";
-    employerBorder.style.border = "1px solid rgb(61, 61, 64)";
-
-    // Helper function to toggle the height of the professional experience section
-    toggleHeight();
-
-    // Create an object to store professional section data
-    const profSection = {};
-
-    const profSectionInputs = document.querySelector(".profInputs");
-    const addProfButton = document.querySelector("#addProf");
-    profSectionInputs.style.display = "none";
-    addProfButton.style.display = "inline";
-
-    // Push values to state arrays
-    positions.push(position);
-    employers.push(employer);
-    cities.push(city);
-    startMonths.push(startMonth);
-    startYears.push(startYear);
-    endMonths.push(endMonth);
-    endYears.push(endYear);
-    presents.push(isProfessionalPresentChecked);
-    employerDescriptions.push(employerDescription);
-
-    // Create the stateArrays object
-    const stateArrays = {
-      positions,
-      employers,
-      cities,
-      startMonths,
-      startYears,
-      endMonths,
-      endYears,
-      presents,
-      employerDescriptions,
-    };
-
-    // Create a new <div> element to hold the professional section information in right-half
-    const professionalSection = document.querySelector("#newProfExperience");
-    const showProfessionalExperience = `<div id="profKey${positions.length}">${professionalSection.innerHTML}</div>`;
-    const saveProf = document.querySelector("#savedProfExperience");
-    saveProf.innerHTML += showProfessionalExperience;
-
-    clearInputFields();
-
-    // If the present checkbox is checked, returns to unchecked
-    handleCheckboxChange(false);
-
-    // Create a new <div> element to hold the professional history information
-    let historyEntry = 1;
-    const newProfHistoryEntry = document.createElement("div");
-    newProfHistoryEntry.className = "profHistoryEntry";
-    newProfHistoryEntry.innerHTML =
-      "<hr id='topLine'>" +
-      '<span class="editSection" id="editProfEntry' +
-      positions.length +
-      '" data-attribute=' +
-      positions.length +
-      ">" +
-      '<div id="top-top">' +
-      '<div id="top-left">' +
-      position +
-      "</div>" +
-      '<div id="top-right">' +
-      ", " +
-      employer +
-      "</div>" +
-      "</div>" +
-      '<div id="bottom-bottom">' +
-      "</span>" +
-      '<div id="bottom-row">' +
-      '<div id="bottom-left">' +
-      " " +
-      startMonth +
-      " " +
-      startYear +
-      " - " +
-      endMonth +
-      " " +
-      endYear +
-      "</div>" +
-      "|" +
-      '<div id="bottom-right">' +
-      city +
-      "</div>" +
-      "</div>" +
-      "<div id=" +
-      '"profSection' +
-      positions.length +
-      '"' +
-      'class="toggle-button"' +
-      ">" +
-      '<img src="visibility_FILL.svg" alt="Visible" class="visible visiButton" id="visi' +
-      positions.length +
-      '" data-attribute="' +
-      positions.length +
-      '" style="display: inline;">' +
-      '<img src="visibility_off.svg" alt="Hidden" class="hidden hidButton" id="hid' +
-      positions.length +
-      '" data-attribute="' +
-      positions.length +
-      '" style="display: none;">' +
-      "</div>" +
-      "</div>" +
-      "<hr>";
-    // Create a variable that stores all the professional history information
-    profHistoryInfo = newProfHistoryEntry.innerHTML;
-
-    // Append the new <div> element to the professional history section
-    profHistory.appendChild(newProfHistoryEntry);
+    // Reset the visibility icon to visible when saving, in case the user had previously hidden it. Only do this when editing
+    //   let visibleIcon = document.querySelector(`#visi${dataAttribute}`);
+    //   let hiddenIcon = document.querySelector(`#hid${dataAttribute}`);
+    //   visibleIcon.style.display = "inline";
+    //   hiddenIcon.style.display = "none";
 
     // Function to handle visibility button click
     function visiButtonClick(event) {
@@ -700,38 +569,6 @@ const [isProfessionalPresentChecked, setIsProfessionalPresentChecked] = useState
       }
     }
 
-    // Attach click event handlers in a loop to the visibility buttons
-    for (let i = 1; i < positions.length + 1; i++) {
-      let visibleIcon = document.querySelector(`#visi${i}`);
-      let hiddenIcon = document.querySelector(`#hid${i}`);
-
-      if (visibleIcon) {
-        visibleIcon.onclick = visiButtonClick;
-      }
-
-      if (hiddenIcon) {
-        hiddenIcon.onclick = visiButtonClick;
-      }
-    }
-
-    // Attach click event handlers in a loop to the editProfSection buttons
-    for (let i = 1; i < positions.length + 1; i++) {
-      let editSection = document.querySelector(`#editProfEntry${i}`);
-
-      if (editSection) {
-        editSection.onclick = function (event) {
-          // Check if the clicked element or its parent has the classes 'visible' or 'hidden'
-          const clickedElement = event.target || event.currentTarget;
-          if (
-            !clickedElement.classList.contains("visible") &&
-            !clickedElement.classList.contains("hidden")
-          ) {
-            editProfSection(event);
-          }
-        };
-      }
-    }
-
     // A function to edit the professional sections onclick
     function editProfSection(event) {
       const dataAttribute = event.currentTarget.dataset.attribute;
@@ -748,6 +585,7 @@ const [isProfessionalPresentChecked, setIsProfessionalPresentChecked] = useState
         profHistory.setAttribute("data-attribute", dataAttribute);
       }
 
+      // Get the newProfExperience and the editProfEntry sections to swap their positions
       const newProfExp = document.querySelector("#newProfExperience");
       const editProfEntryRH = document.querySelector(
         "#profKey" + dataAttribute
@@ -809,15 +647,213 @@ const [isProfessionalPresentChecked, setIsProfessionalPresentChecked] = useState
       }
     }
 
-    // Adjust button spacing
-    const addProfExp = document.querySelector("#addProf");
-    const addProfBottom = document.querySelector("#addButtonProf");
-    addProfExp.style.top = "60px";
-    addProfBottom.style.paddingBottom = "80px";
+    // If dataAttribute is null, then the user is adding a new entry, does the following:
+    if (dataAttribute === null) {
+      // Get and trim the values of Job Title and Employer fields
+      const jobTitleValue = position.trim();
+      const employerValue = employer.trim();
 
-    // Hide the new professional section on right-half until the professional inputs are showing again
-    professionalSection.style.display = "none";
-  };
+      // Select the professional history section
+      profHistory.style.display = "inline";
+      // This is a hacky way to get the dataAttribute from the previous edit function. I'm sure there's a better way to do this.
+      let profEdit = profHistory.getAttribute("data-attribute");
+
+      // Get the div that will house the validation error messages
+      const jobRequired = document.querySelector("#jobReq");
+      const employerRequired = document.querySelector("#employerReq");
+      const positionBorder = document.querySelector("#position");
+      const employerBorder = document.querySelector("#employerInput");
+      const presentInput = document.querySelector("#professionalPresentField");
+
+      // Check if the Job Title and Employer fields are not empty
+      if (!jobTitleValue && !employerValue) {
+        jobRequired.className = "error";
+        employerRequired.className = "error";
+        positionBorder.style.border = "1px solid red";
+        employerBorder.style.border = "1px solid red";
+        return;
+      } else if (!jobTitleValue) {
+        jobRequired.className = "error";
+        positionBorder.style.border = "1px solid red";
+        return;
+      } else if (!employerValue) {
+        employerRequired.className = "error";
+        employerBorder.style.border = "1px solid red";
+        return;
+      }
+
+      // Reset the error messages
+      jobRequired.className = "subLabel";
+      employerRequired.className = "subLabel";
+      positionBorder.style.border = "1px solid rgb(61, 61, 64)";
+      employerBorder.style.border = "1px solid rgb(61, 61, 64)";
+
+      // Helper function to toggle the height of the professional experience section
+      toggleHeight();
+
+      // Clears all the input fields
+      clearInputFields();
+      // If the present checkbox is checked, returns to unchecked
+      handleCheckboxChange(false);
+
+      const profSectionInputs = document.querySelector(".profInputs");
+      const addProfButton = document.querySelector("#addProf");
+      profSectionInputs.style.display = "none";
+      addProfButton.style.display = "inline";
+
+      // Push values to arrays
+      positions.push(position);
+      employers.push(employer);
+      cities.push(city);
+      startMonths.push(startMonth);
+      startYears.push(startYear);
+      endMonths.push(endMonth);
+      endYears.push(endYear);
+      presents.push(isProfessionalPresentChecked);
+      employerDescriptions.push(employerDescription);
+
+      // Create the profExp object
+      let profExpObject = {
+        position: position,
+        employer: employer,
+        city: city,
+        startMonth: startMonth,
+        startYear: startYear,
+        endMonth: endMonth,
+        endYear: endYear,
+        present: isProfessionalPresentChecked,
+        employerDescription: employerDescription,
+      };
+
+      // Push the profExpObject to the profExpEntries array
+      profExpEntries.push(profExpObject);
+      console.log(profExpEntries);
+
+      // Create a new <div> element to hold the professional section information in right-half
+      const professionalSection = document.querySelector("#newProfExperience");
+      const showProfessionalExperience = `<div id="profKey${profExpEntries.length}">${professionalSection.innerHTML}</div>`;
+      const saveProf = document.querySelector("#savedProfExperience");
+      saveProf.innerHTML += showProfessionalExperience;
+
+      // Create a new <div> element to hold the professional history information
+      const newProfHistoryEntry = document.createElement("div");
+      newProfHistoryEntry.className = "profHistoryEntry";
+      newProfHistoryEntry.innerHTML =
+        "<hr id='topLine'>" +
+        '<span class="editSection" id="editProfEntry' +
+        profExpEntries.length +
+        '" data-attribute=' +
+        profExpEntries.length +
+        ">" +
+        '<div id="top-top">' +
+        '<div id="top-left">' +
+        position +
+        "</div>" +
+        '<div id="top-right">' +
+        ", " +
+        employer +
+        "</div>" +
+        "</div>" +
+        '<div id="bottom-bottom">' +
+        "</span>" +
+        '<div id="bottom-row">' +
+        '<div id="bottom-left">' +
+        " " +
+        startMonth +
+        " " +
+        startYear +
+        " - " +
+        endMonth +
+        " " +
+        endYear +
+        "</div>" +
+        "|" +
+        '<div id="bottom-right">' +
+        city +
+        "</div>" +
+        "</div>" +
+        "<div id=" +
+        '"profSection' +
+        profExpEntries.length +
+        '"' +
+        'class="toggle-button"' +
+        ">" +
+        '<img src="visibility_FILL.svg" alt="Visible" class="visible visiButton" id="visi' +
+        profExpEntries.length +
+        '" data-attribute="' +
+        profExpEntries.length +
+        '" style="display: inline;">' +
+        '<img src="visibility_off.svg" alt="Hidden" class="hidden hidButton" id="hid' +
+        profExpEntries.length +
+        '" data-attribute="' +
+        profExpEntries.length +
+        '" style="display: none;">' +
+        "</div>" +
+        "</div>" +
+        "<hr>";
+
+      // Create a variable that stores all the professional history information
+      profHistoryInfo = newProfHistoryEntry.innerHTML;
+
+      // Append the new <div> element to the professional history section
+      profHistory.appendChild(newProfHistoryEntry);
+
+      // Attach click event handlers in a loop to the visibility buttons
+      for (let i = 1; i < profExpEntries.length + 1; i++) {
+        let visibleIcon = document.querySelector(`#visi${i}`);
+        let hiddenIcon = document.querySelector(`#hid${i}`);
+
+        if (visibleIcon) {
+          visibleIcon.onclick = visiButtonClick;
+        }
+
+        if (hiddenIcon) {
+          hiddenIcon.onclick = visiButtonClick;
+        }
+      }
+
+      // Attach click event handlers in a loop to the editProfSection buttons
+      for (let i = 1; i < profExpEntries.length + 1; i++) {
+        let editSection = document.querySelector(`#editProfEntry${i}`);
+
+        if (editSection) {
+          editSection.onclick = function (event) {
+            // Check if the clicked element or its parent has the classes 'visible' or 'hidden'
+            const clickedElement = event.target || event.currentTarget;
+            if (
+              !clickedElement.classList.contains("visible") &&
+              !clickedElement.classList.contains("hidden")
+            ) {
+              editProfSection(event);
+            }
+          };
+        }
+      }
+
+      // Adjust button spacing
+      const addProfExp = document.querySelector("#addProf");
+      const addProfBottom = document.querySelector("#addButtonProf");
+      addProfExp.style.top = "60px";
+      addProfBottom.style.paddingBottom = "80px";
+
+      // Hide the new professional section on right-half until the professional inputs are showing again
+      professionalSection.style.display = "none";
+    } else {
+      console.log("You're trying to save a section you're editing");
+      // Instead of pushing values to the state arrays, use data-attribute - 1 to update the values in the state arrays
+      positions[dataAttribute - 1] = position;
+      employers[dataAttribute - 1] = employer;
+      cities[dataAttribute - 1] = city;
+      startMonths[dataAttribute - 1] = startMonth;
+      startYears[dataAttribute - 1] = startYear;
+      endMonths[dataAttribute - 1] = endMonth;
+      endYears[dataAttribute - 1] = endYear;
+      presents[dataAttribute - 1] = isProfessionalPresentChecked;
+      employerDescriptions[dataAttribute - 1] = employerDescription;
+
+      console.log(profExpEntries);
+    }
+  } 
 
   return (
     <div className="App">
