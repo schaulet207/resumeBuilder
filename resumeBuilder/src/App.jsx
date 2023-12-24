@@ -540,16 +540,9 @@ const [isProfessionalPresentChecked, setIsProfessionalPresentChecked] = useState
 
 // A function to save all the Professional section data
   const handleSaveAll = () => {
-    // Hacky way of getting the data attribute of the field being edited from the profHist element
+    // Hacky way of getting the data attribute of the field being edited from the profHist element. Since doing this, I've realized that I just need to initialize the variable dataAttribute outside of the App function. For now, this works.
     const profHistory = document.getElementById("profHist");
     const dataAttribute = profHistory.getAttribute("data-attribute");
-    console.log(dataAttribute);
-
-    // Reset the visibility icon to visible when saving, in case the user had previously hidden it. Only do this when editing
-    //   let visibleIcon = document.querySelector(`#visi${dataAttribute}`);
-    //   let hiddenIcon = document.querySelector(`#hid${dataAttribute}`);
-    //   visibleIcon.style.display = "inline";
-    //   hiddenIcon.style.display = "none";
 
     // Function to handle visibility button click
     function visiButtonClick(event) {
@@ -572,7 +565,7 @@ const [isProfessionalPresentChecked, setIsProfessionalPresentChecked] = useState
     // A function to edit the professional sections onclick
     function editProfSection(event) {
       const dataAttribute = event.currentTarget.dataset.attribute;
-      // This is a hacky way of passing the data-attribute to clearinputfields2. I'm sure there's a better way of doing this.
+      // This is a hacky way of passing the data-attribute to clearinputfields2. Since doing this, I've realized that I just need to initialize the variable dataAttribute outside of the App function. For now, this works.
       const profHistory = document.getElementById("profHist");
 
       // Reset the visibility icon to visible
@@ -606,32 +599,29 @@ const [isProfessionalPresentChecked, setIsProfessionalPresentChecked] = useState
         }
       }
 
+      // Shows all the professional section input fields on the left
       showProfInputs();
+      // Hides the original field on the right being edited, so that real-time edits are shown in the correct placement of the element being edited
       editProfEntryRH.style.display = "none";
 
+      // Fills all the Professional input fields on the left side with the correct data being edited
       setPosition(positions[dataAttribute - 1]);
       setEmployer(employers[dataAttribute - 1]);
-
       if (cities[dataAttribute - 1] !== undefined) {
         setCity(cities[dataAttribute - 1]);
       }
-
       if (startMonths[dataAttribute - 1] !== undefined) {
         setStartMonth(startMonths[dataAttribute - 1]);
       }
-
       if (startYears[dataAttribute - 1] !== undefined) {
         setStartYear(startYears[dataAttribute - 1]);
       }
-
       if (endMonths[dataAttribute - 1] !== undefined) {
         setEndMonth(endMonths[dataAttribute - 1]);
       }
-
       if (endYears[dataAttribute - 1] !== undefined) {
         setEndYear(endYears[dataAttribute - 1]);
       }
-
       if (presents[dataAttribute - 1] === true) {
         const presentCheckbox = document.querySelector(
           "#professionalPresentField"
@@ -640,7 +630,6 @@ const [isProfessionalPresentChecked, setIsProfessionalPresentChecked] = useState
           handleCheckboxChange(true);
         }
       }
-
       if (employerDescriptions[dataAttribute - 1] !== undefined) {
         const qleditor = document.querySelector("#employerDescriptionQlEditor");
         qleditor.innerHTML = employerDescriptions[dataAttribute - 1];
@@ -665,7 +654,7 @@ const [isProfessionalPresentChecked, setIsProfessionalPresentChecked] = useState
       const employerBorder = document.querySelector("#employerInput");
       const presentInput = document.querySelector("#professionalPresentField");
 
-      // Check if the Job Title and Employer fields are not empty
+      // Controls the validation errors
       if (!jobTitleValue && !employerValue) {
         jobRequired.className = "error";
         employerRequired.className = "error";
@@ -682,7 +671,7 @@ const [isProfessionalPresentChecked, setIsProfessionalPresentChecked] = useState
         return;
       }
 
-      // Reset the error messages
+      // Reset the validation error messages
       jobRequired.className = "subLabel";
       employerRequired.className = "subLabel";
       positionBorder.style.border = "1px solid rgb(61, 61, 64)";
@@ -696,6 +685,7 @@ const [isProfessionalPresentChecked, setIsProfessionalPresentChecked] = useState
       // If the present checkbox is checked, returns to unchecked
       handleCheckboxChange(false);
 
+      // Hides the professional section inputs and replaces it with the add button
       const profSectionInputs = document.querySelector(".profInputs");
       const addProfButton = document.querySelector("#addProf");
       profSectionInputs.style.display = "none";
@@ -727,7 +717,6 @@ const [isProfessionalPresentChecked, setIsProfessionalPresentChecked] = useState
 
       // Push the profExpObject to the profExpEntries array
       profExpEntries.push(profExpObject);
-      console.log(profExpEntries);
 
       // Create a new <div> element to hold the professional section information in right-half
       const professionalSection = document.querySelector("#newProfExperience");
@@ -794,7 +783,6 @@ const [isProfessionalPresentChecked, setIsProfessionalPresentChecked] = useState
 
       // Create a variable that stores all the professional history information
       profHistoryInfo = newProfHistoryEntry.innerHTML;
-
       // Append the new <div> element to the professional history section
       profHistory.appendChild(newProfHistoryEntry);
 
@@ -840,6 +828,10 @@ const [isProfessionalPresentChecked, setIsProfessionalPresentChecked] = useState
       professionalSection.style.display = "none";
     } else {
       console.log("You're trying to save a section you're editing");
+      console.log(profExpEntries);
+      console.log(dataAttribute);
+      // Data attribute is NOT null here
+
       // Instead of pushing values to the state arrays, use data-attribute - 1 to update the values in the state arrays
       positions[dataAttribute - 1] = position;
       employers[dataAttribute - 1] = employer;
@@ -851,7 +843,72 @@ const [isProfessionalPresentChecked, setIsProfessionalPresentChecked] = useState
       presents[dataAttribute - 1] = isProfessionalPresentChecked;
       employerDescriptions[dataAttribute - 1] = employerDescription;
 
-      console.log(profExpEntries);
+      // Reset the visibility icon to visible when saving, in case the user had previously hidden it. Only do this when editing
+      let visibleIcon = document.querySelector(`#visi${dataAttribute}`);
+      let hiddenIcon = document.querySelector(`#hid${dataAttribute}`);
+      visibleIcon.style.display = "inline";
+      hiddenIcon.style.display = "none";
+
+      // Displays the professional history section
+      profHistory.style.display = "inline";
+      // This is a hacky way to get the dataAttribute from the previous edit function. I'm sure there's a better way to do this.
+      let profEdit = profHistory.getAttribute("data-attribute");
+
+      // Get the div that will house the validation error messages
+      const jobRequired = document.querySelector("#jobReq");
+      const employerRequired = document.querySelector("#employerReq");
+      const positionBorder = document.querySelector("#position");
+      const employerBorder = document.querySelector("#employerInput");
+      const presentInput = document.querySelector("#professionalPresentField");
+
+      // Get and trim the values of Job Title and Employer fields
+      const jobTitleValue = position.trim();
+      const employerValue = employer.trim();
+
+      // Check if the Job Title and Employer fields are not empty
+      if (!jobTitleValue && !employerValue) {
+        jobRequired.className = "error";
+        employerRequired.className = "error";
+        positionBorder.style.border = "1px solid red";
+        employerBorder.style.border = "1px solid red";
+        return;
+      } else if (!jobTitleValue) {
+        jobRequired.className = "error";
+        positionBorder.style.border = "1px solid red";
+        return;
+      } else if (!employerValue) {
+        employerRequired.className = "error";
+        employerBorder.style.border = "1px solid red";
+        return;
+      }
+
+      // Reset the error messages
+      jobRequired.className = "subLabel";
+      employerRequired.className = "subLabel";
+      positionBorder.style.border = "1px solid rgb(61, 61, 64)";
+      employerBorder.style.border = "1px solid rgb(61, 61, 64)";
+
+      // Helper function to toggle the height of the professional experience section
+      toggleHeight();
+
+      // Adjust button spacing
+      const addProfExp = document.querySelector("#addProf");
+      const addProfBottom = document.querySelector("#addButtonProf");
+      addProfExp.style.top = "60px";
+      addProfBottom.style.paddingBottom = "80px";
+
+      
+      // Clears all the input fields
+      clearInputFields();
+      // If the present checkbox is checked, returns to unchecked
+      handleCheckboxChange(false);
+      // Hides the input field and displays the "Add Professional" button
+      const profSectionInputs = document.querySelector(".profInputs");
+      const addProfButton = document.querySelector("#addProf");
+      profSectionInputs.style.display = "none";
+      addProfButton.style.display = "inline";
+
+      
     }
   } 
 
