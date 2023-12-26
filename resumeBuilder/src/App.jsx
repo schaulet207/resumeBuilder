@@ -497,8 +497,11 @@ const clearInputFields2 = () => {
 
   // If profEdit variable exists, reverse swaps the live edited section on the right-half from the professional entry you were editing
   if (profEdit !== null) {
-    // Gets the sections again
+    console.log("This is where things get wonky");
     let dataAttribute = profEdit;
+    console.log("dataAttribute =  " + dataAttribute);
+    console.log("ProfEdit =  " + profEdit);
+    // Gets the sections again
     const newProfExp = document.querySelector("#newProfExperience");
     const editProfEntryRH = document.querySelector(
       "#profKey" + dataAttribute
@@ -507,16 +510,18 @@ const clearInputFields2 = () => {
       "#savedProfExperience"
     );
 
-    // Returns newProfExp to the correct position, and returns the edited entry on right-half to the correct order
-    if (newProfExp && editProfEntryRH && savedProfExperience) {
-      // Swaps newProfExp with editProfEntryRH
-      newProfExp.replaceWith(editProfEntryRH);
+    // Returns newProfExp to the correct position, and returns the edited entry on right-half to the correct order. Only runs if newProfExp not already in the correct position
+    if (savedProfExperience.nextSibling !== newProfExp) {
+      if (newProfExp && editProfEntryRH && savedProfExperience) {
+        // Swaps newProfExp with editProfEntryRH
+        newProfExp.replaceWith(editProfEntryRH);
 
-      // Get the parent of savedProfExperience
-      const parent = savedProfExperience.parentNode;
+        // Get the parent of savedProfExperience
+        const parent = savedProfExperience.parentNode;
 
-      // Move newProfExp to be the sibling immediately after savedProfExperience
-      parent.insertBefore(newProfExp, savedProfExperience.nextSibling);
+        // Move newProfExp to be the sibling immediately after savedProfExperience
+        parent.insertBefore(newProfExp, savedProfExperience.nextSibling);
+      }
     }
    
     editProfEntryRH.classList.remove("hide");
