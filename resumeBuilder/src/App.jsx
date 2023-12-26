@@ -471,12 +471,11 @@ const clearInputFields2 = () => {
     const editProfEntryRH = document.querySelector(
       "#profKey" + profEdit
     );
-
+    
     if (newProfExp && editProfEntryRH) {
       const parent1 = editProfEntryRH.parentNode;
       const parent2 = newProfExp.parentNode;
       const nextSibling1 = editProfEntryRH.nextSibling;
-
       parent2.insertBefore(editProfEntryRH, newProfExp);
 
       if (nextSibling1) {
@@ -498,16 +497,37 @@ const clearInputFields2 = () => {
 
   // If profEdit variable exists, reverse swaps the live edited section on the right-half from the professional entry you were editing
   if (profEdit !== null) {
-    reverseSwap();
+    // Gets the sections again
+    let dataAttribute = profEdit;
+    const newProfExp = document.querySelector("#newProfExperience");
     const editProfEntryRH = document.querySelector(
-      "#profKey" + profEdit
+      "#profKey" + dataAttribute
     );
+    const savedProfExperience = document.querySelector(
+      "#savedProfExperience"
+    );
+
+    // Returns newProfExp to the correct position, and returns the edited entry on right-half to the correct order
+    if (newProfExp && editProfEntryRH && savedProfExperience) {
+      // Swaps newProfExp with editProfEntryRH
+      newProfExp.replaceWith(editProfEntryRH);
+
+      // Get the parent of savedProfExperience
+      const parent = savedProfExperience.parentNode;
+
+      // Move newProfExp to be the sibling immediately after savedProfExperience
+      parent.insertBefore(newProfExp, savedProfExperience.nextSibling);
+    }
+   
     editProfEntryRH.classList.remove("hide");
     editProfEntryRH.style.display = "block";
+
     }
+
     // Reset the edit mode
     profEdit = null;
     profHistory.removeAttribute('data-attribute');
+
 };
 
 // Pass variables to actively see whether the checkbox is checked or not
@@ -827,9 +847,6 @@ const [isProfessionalPresentChecked, setIsProfessionalPresentChecked] = useState
       // Hide the new professional section on right-half until the professional inputs are showing again
       professionalSection.style.display = "none";
     } else {
-      console.log("You're trying to save a section you're editing");
-      console.log(profExpEntries);
-      console.log(dataAttribute);
       // Data attribute is NOT null here
 
       // Instead of pushing values to the state arrays, use data-attribute - 1 to update the values in the state arrays
@@ -897,17 +914,51 @@ const [isProfessionalPresentChecked, setIsProfessionalPresentChecked] = useState
       addProfExp.style.top = "60px";
       addProfBottom.style.paddingBottom = "80px";
 
-      
       // Clears all the input fields
       clearInputFields();
+
       // If the present checkbox is checked, returns to unchecked
       handleCheckboxChange(false);
+
       // Hides the input field and displays the "Add Professional" button
       const profSectionInputs = document.querySelector(".profInputs");
       const addProfButton = document.querySelector("#addProf");
       profSectionInputs.style.display = "none";
       addProfButton.style.display = "inline";
 
+      // Gets the sections again
+      const newProfExp = document.querySelector("#newProfExperience");
+      const editProfEntryRH = document.querySelector(
+        "#profKey" + dataAttribute
+      );
+      const savedProfExperience = document.querySelector(
+        "#savedProfExperience"
+      );
+
+      // Returns newProfExp to the correct position, and returns the edited entry on right-half to the correct order
+      if (newProfExp && editProfEntryRH && savedProfExperience) {
+        // Swaps newProfExp with editProfEntryRH
+        newProfExp.replaceWith(editProfEntryRH);
+
+        // Get the parent of savedProfExperience
+        const parent = savedProfExperience.parentNode;
+
+        // Move newProfExp to be the sibling immediately after savedProfExperience
+        parent.insertBefore(newProfExp, savedProfExperience.nextSibling);
+      }
+
+      // Displays inline the correct profKey section based on data attribute
+      editProfEntryRH.style.display = "inline";
+
+      // Hides the newProfExp section in the RH
+      newProfExp.style.display = "none";
+
+      // Sets the innerHTML of editProfEntryRH to be equal to that of newProfExp
+      if (newProfExp && editProfEntryRH) {
+        editProfEntryRH.innerHTML = newProfExp.innerHTML;
+      }
+
+      // Reset the edit mode
       
     }
   } 
