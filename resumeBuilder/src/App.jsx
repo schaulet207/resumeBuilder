@@ -630,6 +630,7 @@ const [isProfessionalPresentChecked, setIsProfessionalPresentChecked] = useState
       editProfEntryRH.style.display = "none";
 
       // Fills all the Professional input fields on the left side with the correct data being edited
+      console.log(endYears[dataAttribute - 1]);
       setPosition(positions[dataAttribute - 1]);
       setEmployer(employers[dataAttribute - 1]);
       if (cities[dataAttribute - 1] !== undefined) {
@@ -760,10 +761,14 @@ const [isProfessionalPresentChecked, setIsProfessionalPresentChecked] = useState
         profExpEntries.length +
         ">" +
         '<div id="top-top">' +
-        '<div id="top-left">' +
+        '<div class="top-left" id="jobTitle' +
+        positions.length +
+        '">' +
         position +
         "</div>" +
-        '<div id="top-right">' +
+        '<div class="top-right" id="employer' +
+        positions.length +
+        '">' +
         ", " +
         employer +
         "</div>" +
@@ -771,7 +776,9 @@ const [isProfessionalPresentChecked, setIsProfessionalPresentChecked] = useState
         '<div id="bottom-bottom">' +
         "</span>" +
         '<div id="bottom-row">' +
-        '<div id="bottom-left">' +
+        '<div class="bottom-left" id="professionalDates' +
+        positions.length +
+        '">' +
         " " +
         startMonth +
         " " +
@@ -782,7 +789,9 @@ const [isProfessionalPresentChecked, setIsProfessionalPresentChecked] = useState
         endYear +
         "</div>" +
         "|" +
-        '<div id="bottom-right">' +
+        '<div class="bottom-right" id="professionalAddress' +
+        positions.length +
+        '">' +
         city +
         "</div>" +
         "</div>" +
@@ -963,9 +972,47 @@ const [isProfessionalPresentChecked, setIsProfessionalPresentChecked] = useState
         editProfEntryRH.innerHTML = newProfExp.innerHTML;
       }
 
-      // Reset the edit mode
-      
+      // --- Update the left-hand section based on the edits made ---
+      const jobTitleUpdate = document.querySelector(`#jobTitle${dataAttribute}`);
+      const employerUpdate = document.querySelector(`#employer${dataAttribute}`);
+      const professionalDatesUpdate = document.querySelector(`#professionalDates${dataAttribute}`);
+      const professionalAddressUpdate = document.querySelector(`#professionalAddress${dataAttribute}`);
+
+      // Update based on the current professional input field values
+      jobTitleUpdate.innerHTML = position;
+      employerUpdate.innerHTML = ", " + employer;
+      professionalDatesUpdate.innerHTML =
+        startMonth + " " + startYear + " - " + endMonth + " " + endYear;
+      professionalAddressUpdate.innerHTML = city;
+
+      // Update both the professional arrays based on these changes
+      positions[dataAttribute - 1] = position;
+      employers[dataAttribute - 1] = employer;
+      cities[dataAttribute - 1] = city;
+      startMonths[dataAttribute - 1] = startMonth;
+      startYears[dataAttribute - 1] = startYear;
+      endMonths[dataAttribute - 1] = endMonth;
+      endYears[dataAttribute - 1] = endYear;
+      presents[dataAttribute - 1] = isProfessionalPresentChecked;
+      employerDescriptions[dataAttribute - 1] = employerDescription;
+
+      // Create the new profExp object
+      let profExpObject = {
+        position: position,
+        employer: employer,
+        city: city,
+        startMonth: startMonth,
+        startYear: startYear,
+        endMonth: endMonth,
+        endYear: endYear,
+        present: isProfessionalPresentChecked,
+        employerDescription: employerDescription,
+      };
+
+      // Replace the old profExp object with the new one
+      profExpEntries[dataAttribute - 1] = profExpObject;
     }
+    
   } 
 
   return (
@@ -1306,209 +1353,6 @@ const [isProfessionalPresentChecked, setIsProfessionalPresentChecked] = useState
             <div id="newProfExperience">
               {newProfSaved}
             </div>
-            <p className="c8">
-              <span className="c2">Cambridge Innovation Center</span>
-              <span className="c0">&nbsp;- </span>
-              <span className="c3 c0">Cambridge, MA</span>
-            </p>
-            <p className="c8">
-              <span className="c0 c5">Capital Projects Manager</span>
-              <span className="c0">
-                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;June
-              </span>
-              <span className="c2">&nbsp;</span>
-              <span className="c0">2018</span>
-              <span className="c2">&nbsp;- </span>
-              <span className="c0">October</span>
-              <span className="c2">&nbsp;</span>
-              <span className="c1 c0">2022</span>
-            </p>
-            <p className="c8">
-              <span className="c3 c0">
-                Managed the Capital Projects team, responsible for overseeing
-                various people, projects and priorities across a global
-                co-working and innovation services campus.
-              </span>
-            </p>
-            <ul className="c12 lst-kix_bm5i44a1j1vy-0 start">
-              <li className="c4 li-bullet-0">
-                <span className="c3 c0">
-                  Aligned with cross-functional teams to identify client needs
-                  and market opportunities, leading to the design and
-                  development of new services that increased retention by 20%.
-                </span>
-              </li>
-              <li className="c4 li-bullet-0">
-                <span className="c3 c0">
-                  Utilized QuickBase data analytics to identify bottlenecks in
-                  the project request pipeline, leading to process improvements
-                  that reduced request backlogs by 25%.
-                </span>
-              </li>
-              <li className="c4 li-bullet-0">
-                <span className="c3 c0">
-                  Developed annual capital projects budget with corresponding
-                  project priorities at each CIC location across a global campus
-                  serving 3,000+ clients.
-                </span>
-              </li>
-              <li className="c4 li-bullet-0">
-                <span className="c3 c0">
-                  Employed agile methodologies to enhance product development
-                  processes, resulting in faster project delivery and improved
-                  customer satisfaction.
-                </span>
-              </li>
-            </ul>
-            <p className="c6">
-              <span className="c1 c0" />
-            </p>
-            <p className="c8">
-              <span className="c2">ExploreNow</span>
-              <span className="c0">&nbsp;- </span>
-              <span className="c3 c0">Cambridge, MA</span>
-            </p>
-            <p className="c8">
-              <span className="c0 c5">Co-F</span>
-              <span className="c0 c5">ounder</span>
-              <span className="c0">
-                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;January 2017
-              </span>
-              <span className="c2">&nbsp;</span>
-              <span className="c0">-</span>
-              <span className="c2">&nbsp;</span>
-              <span className="c0">May</span>
-              <span className="c2">&nbsp;</span>
-              <span className="c1 c0">2018</span>
-            </p>
-            <p className="c8">
-              <span className="c3 c0">
-                Created an interactive live-streaming website that allowed users
-                to connect to robots and explore locations.
-              </span>
-            </p>
-            <ul className="c12 lst-kix_wgli50ijih94-0 start">
-              <li className="c4 li-bullet-0">
-                <span className="c3 c0">
-                  Managed the development of an interactive live-streaming
-                  service, connecting hosts and clients globally.
-                </span>
-              </li>
-              <li className="c4 li-bullet-0">
-                <span className="c3 c0">
-                  Facilitated product scoping meetings and technical
-                  documentation.
-                </span>
-              </li>
-              <li className="c4 li-bullet-0">
-                <span className="c3 c0">
-                  Oversaw various pre-sales efforts across the organization.
-                </span>
-              </li>
-            </ul>
-            <p className="c8">
-              <span className="c2">DivcoWest</span>
-              <span className="c0">&nbsp;- </span>
-              <span className="c3 c0">Cambridge, MA</span>
-            </p>
-            <p className="c8">
-              <span className="c0 c5">Services Coordinator</span>
-              <span className="c0">
-                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;May 2015
-              </span>
-              <span className="c2">&nbsp;</span>
-              <span className="c0">-</span>
-              <span className="c2">&nbsp;</span>
-              <span className="c0">December</span>
-              <span className="c2">&nbsp;</span>
-              <span className="c1 c0">2016</span>
-            </p>
-            <p className="c8">
-              <span className="c0 c3">
-                Led tenant services and improved operational efficiency at One
-                Kendall Square, Cambridge, a unique campus of industry-leading
-                tech firms, research institutions, and startups.
-              </span>
-            </p>
-            <ul className="c12 lst-kix_wgli50ijih94-0">
-              <li className="c4 li-bullet-0">
-                <span className="c3 c0">
-                  Acted as the primary liaison between property management and
-                  tenants, effectively communicating updates, policies, and
-                  addressing tenant inquiries, fostering strong tenant relations
-                  and satisfaction.
-                </span>
-              </li>
-              <li className="c4 li-bullet-0">
-                <span className="c3 c0">
-                  Implemented streamlined processes for building maintenance,
-                  security, and cleaning services, resulting in increased
-                  efficiency, cost-effectiveness, and improved overall tenant
-                  experience.
-                </span>
-              </li>
-              <li className="c4 li-bullet-0">
-                <span className="c3 c0">
-                  Utilized the building management work order system to
-                  meticulously track and analyze data related to service
-                  requests and maintenance tasks, facilitating data-driven
-                  decision-making and proactive problem-solving for property
-                  management and tenants.
-                </span>
-              </li>
-            </ul>
-            <p className="c6">
-              <span className="c3 c0" />
-            </p>
-            <p className="c8">
-              <span className="c2">Finishing Touch Painting</span>
-              <span className="c0">&nbsp;- </span>
-              <span className="c3 c0">Lexington, MA</span>
-            </p>
-            <p className="c8">
-              <span className="c0 c5">Owner / Managing Director</span>
-              <span className="c0">
-                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;August 2011 -
-              </span>
-              <span className="c2">&nbsp;</span>
-              <span className="c0">September</span>
-              <span className="c2">&nbsp;</span>
-              <span className="c0 c1">2014</span>
-            </p>
-            <p className="c8">
-              <span className="c3 c0">
-                Founded and managed a local interior/exterior house painting
-                company during summers while pursuing my college education.
-              </span>
-            </p>
-            <ul className="c12 lst-kix_wgli50ijih94-0">
-              <li className="c4 li-bullet-0">
-                <span className="c3 c0">
-                  Successfully managed over twenty projects from lead to
-                  close-out, generating revenue exceeding $35,000 annually.
-                </span>
-              </li>
-              <li className="c4 li-bullet-0">
-                <span className="c3 c0">
-                  Conducted comprehensive project assessments, including labor,
-                  budgeting, and pricing.
-                </span>
-              </li>
-              <li className="c4 li-bullet-0">
-                <span className="c3 c0">
-                  Managed all marketing campaigns and efforts.
-                </span>
-              </li>
-              <li className="c4 li-bullet-0">
-                <span className="c3 c0">
-                  Supervised a team of three employees, ensuring efficiency and
-                  quality.
-                </span>
-              </li>
-            </ul>
-            <p className="c6">
-              <span className="c3 c0" />
-            </p>
             <p className="c8">
               <span className="c2 c11">EDUCATION </span>
             </p>

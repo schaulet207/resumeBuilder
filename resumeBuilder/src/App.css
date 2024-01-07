@@ -582,7 +582,7 @@ padding-inline-start: 40px;
   flex-direction: row;
 }
 
-#top-right {
+.top-right {
   font-style: italic;
   font-weight: normal;
 }
@@ -602,14 +602,14 @@ padding-inline-start: 40px;
   gap: 12px;
 }
 
-#bottom-left {
+.bottom-left {
   display: flex;
   flex-direction: row;
   align-items: flex-end;
   font-size: 18px;
 }
 
-#bottom-right {
+.bottom-right {
   display: flex;
   flex-direction: row;
   align-items: flex-end;
