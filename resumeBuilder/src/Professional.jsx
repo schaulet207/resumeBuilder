@@ -43,7 +43,7 @@ export function CityInput({ city, onCityChange }) {
     <input
       className="inputs"
       type="text"
-      placeholder="Enter City, Country"
+      placeholder="Enter City, State"
       value={city}
       onChange={(e) => onCityChange(e.target.value)}
     />

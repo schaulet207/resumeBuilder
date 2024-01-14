@@ -22,10 +22,12 @@ import {
 import {
   DegreeInput,
   SchoolInput,
-  SchoolCityInput,
-  SchoolCountryInput,
-  SchoolStartDateInput,
-  SchoolEndDateInput,
+  SchoolAddressInput,
+  SchoolStartMonthInput,
+  SchoolStartYearInput,
+  SchoolEndMonthInput,
+  SchoolEndYearInput,
+  MajorInput
 } from "./Education";
 // import { QuillEditor } from './QuillEditor';
 
@@ -71,25 +73,25 @@ function App() {
     setCity(newCity);
   };
 
-  const [startMonth, setStartMonth] = useState(""); // Updated from startDate
-  const handleStartMonthChange = (newStartMonth) => {
+  let [startMonth, setStartMonth] = useState(""); // Updated from startDate
+  let handleStartMonthChange = (newStartMonth) => {
     setStartMonth(newStartMonth);
   };
 
-  const [startYear, setStartYear] = useState(""); // Updated from Start Year
-  const handleStartYearChange = (newStartYear) => {
+  let [startYear, setStartYear] = useState(""); // Updated from Start Year
+  let handleStartYearChange = (newStartYear) => {
     setStartYear(newStartYear);
   };
 
-  const [endMonth, setEndMonth] = useState(""); // New state for end month
-const handleEndMonthChange = (newEndMonth) => {
-  setEndMonth(newEndMonth);
-};
+  let [endMonth, setEndMonth] = useState(""); // New state for end month
+  let handleEndMonthChange = (newEndMonth) => {
+    setEndMonth(newEndMonth);
+  };
 
-const [endYear, setEndYear] = useState(""); // New state for end year
-const handleEndYearChange = (newEndYear) => {
-  setEndYear(newEndYear);
-};
+  let [endYear, setEndYear] = useState(""); // New state for end year
+  let handleEndYearChange = (newEndYear) => {
+    setEndYear(newEndYear);
+  };
 
   const [present, setPresent] = useState(false);
   const handlePresentChange = (newPresent) => {
@@ -111,19 +113,34 @@ const handleEmployerDescriptionChange = (newDescription) => {
     setSchool(newSchool);
   };
 
-  const [schoolCity, setSchoolCity] = useState("");
-  const handleSchoolCityChange = (newSchoolCity) => {
-    setSchoolCity(newSchoolCity);
+  const [schoolAddress, setSchoolAddress] = useState("");
+  const handleSchoolAddressChange = (newSchoolAddress) => {
+    setSchoolAddress(newSchoolAddress);
   };
 
-  const [schoolCountry, setSchoolCountry] = useState("");
-  const handleSchoolCountryChange = (newSchoolCountry) => {
-    setSchoolCountry(newSchoolCountry);
+
+  let [schoolStartMonth, setSchoolStartMonth] = useState(""); // Initialized with empty string
+
+  let handleSchoolStartMonthChange = (newSchoolStartMonth) => {
+    setSchoolStartMonth(newSchoolStartMonth);
   };
 
-  const [schoolStartDate, setSchoolStartDate] = useState("");
-  const handleSchoolStartDateChange = (newSchoolStartDate) => {
-    setSchoolStartDate(newSchoolStartDate);
+  let [schoolStartYear, setSchoolStartYear] = useState(""); // Initialized with empty string
+
+  let handleSchoolStartYearChange = (newSchoolStartYear) => {
+    setSchoolStartYear(newSchoolStartYear);
+  };
+
+  let [schoolEndMonth, setSchoolEndMonth] = useState(""); // Initialized with empty string
+
+  let handleSchoolEndMonthChange = (newSchoolEndMonth) => {
+    setSchoolEndMonth(newSchoolEndMonth);
+  };
+
+  let [schoolEndYear, setSchoolEndYear] = useState(""); // Initialized with empty string
+
+  let handleSchoolEndYearChange = (newSchoolEndYear) => {
+    setSchoolEndYear(newSchoolEndYear);
   };
 
   const [schoolEndDate, setSchoolEndDate] = useState("");
@@ -131,11 +148,17 @@ const handleEmployerDescriptionChange = (newDescription) => {
     setSchoolEndDate(newSchoolEndDate);
   };
 
+  const [major, setMajor] = useState("");
+  const handleMajorChange = (newMajor) => {
+    setMajor(newMajor);
+  };
+
   // Set helper variables
   let profKey = 0; // Key for professional experience
   let profHistoryInfo;
   let saveProfessionalExperience = [];
   let showProfessionalExperience = null;
+  let showEducationExperience = null;
 
   function ProfessionalExperienceInput({ professionalExperience, onProfessionalExperienceChange }) {
     return (
@@ -156,6 +179,12 @@ const handleEmployerDescriptionChange = (newDescription) => {
   let divider3 = <hr />;
   let divider4 = " - ";
   let divider5 = " - ";
+  let divider6 = " - ";
+  let divider7 = ", ";
+  // Space between schoolStartMonth and schoolStartYear
+  let divider8 = " ";
+  // Space between schoolEndMonth and schoolEndYear
+  let divider9 = " ";
 
   // Check and update divider1
   if (address === "" || (phoneNumber === "" && email === "")) {
@@ -215,6 +244,54 @@ if ((startMonth === "" && startYear === "") || (endMonth === "" && endYear === "
   divider5 = " - ";
 }
 
+// Hide professional or education dates if no valid options are selected from the dropdowns
+if (startMonth === "Month") {
+  startMonth = "";
+}
+
+if (startYear === "Year") {
+  startYear = "";
+}
+
+if (endMonth === "Month") {
+  endMonth = "";
+}
+
+if (endYear === "Year") {
+  endYear = "";
+}
+
+if (schoolStartMonth === "Month") {
+  schoolStartMonth = "";
+}
+
+if (schoolStartYear === "Year") {
+  schoolStartYear = "";
+}
+
+if (schoolEndMonth === "Month") {
+  schoolEndMonth = "";
+}
+
+if (schoolEndYear === "Year") {
+  schoolEndYear = "";
+}
+
+// If schoolStartMonth & schoolStartYear are empty, or schoolEndMonth and schoolEndYear are empty, then divider6 = null. Otherwise divider6 = " - "
+if ((schoolStartMonth === "" && schoolStartYear === "") || (schoolEndMonth === "" && schoolEndYear === "")) {
+  divider6 = null;
+} else {
+  divider6 = " - ";
+}
+
+// If degree or major are empty, divider7 = null, otherwise divider7 = ", "
+if (degree === "" || major === "") {
+  divider7 = null;
+} else {
+  divider7 = ", ";
+}
+
+
   // A variable to hold all of the professional experience
   const newProfSaved = (
     <div>
@@ -247,6 +324,30 @@ if ((startMonth === "" && startYear === "") || (endMonth === "" && endYear === "
     </div>
   );
 
+  const newEducationSaved = (
+    <div>
+      <p id="schoolDates" className="c8">
+        <span className="c0 c10 ">{school}</span>
+        <span className="c1 c0">
+          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+          {schoolStartMonth} {divider8} {schoolStartYear}
+          {divider6}
+          {schoolEndMonth} {divider9} {schoolEndYear}
+        </span>
+      </p>
+      <p className="c8">
+        <span className="c0">{degree}</span>
+        <span className="c15 c0 c5">
+          {divider7}
+          {major}
+        </span>
+      </p>
+      <p className="c6">
+        <span className="c0 c5 c15" />
+      </p>
+    </div>
+  );
+
     function collapseEducation() {
       const educationCollapsible = document.querySelector("#edu");
       const educationIcon = document.querySelector("#educationIcon");
@@ -254,6 +355,29 @@ if ((startMonth === "" && startYear === "") || (endMonth === "" && endYear === "
         educationCollapsible.classList.toggle("collapsed");
         educationIcon.classList.toggle("open");
       }
+      // Here's what this may look like soon
+      // function collapseEducation() {
+      //   const educationCollapsible = document.querySelector("#edu");
+      //   const educationIcon = document.querySelector("#educationIcon");
+      //   const eduSectionInputs = document.querySelector('.eduInputs'); // Assuming there's a class for education inputs
+      //   if (educationCollapsible) {
+      //     educationCollapsible.classList.toggle("collapsed");
+      //     educationIcon.classList.toggle("open");
+      
+      //     if (eduExpEntries && eduExpEntries.length > 0) { // Assuming eduExpEntries is a list like profExpEntries
+      //       const allEdu = document.querySelector("#edu");
+      //       if (allEdu) {
+      //         allEdu.style.paddingBottom = "8px";
+      //       }
+      
+      //       // Set top for #addEduButton, assuming there's a button to add education entries
+      //       const addEduButton = document.querySelector("#addEdu");
+      //       if (addEduButton) {
+      //         addEduButton.style.top = "60px";
+      //       }
+      //     }
+      //   }
+      // }
     }
 
     function collapseProfessional() {
@@ -1008,12 +1132,13 @@ const [isProfessionalPresentChecked, setIsProfessionalPresentChecked] = useState
         present: isProfessionalPresentChecked,
         employerDescription: employerDescription,
       };
-
       // Replace the old profExp object with the new one
       profExpEntries[dataAttribute - 1] = profExpObject;
     }
     
   } 
+
+
 
   return (
     <div className="App">
@@ -1240,47 +1365,72 @@ const [isProfessionalPresentChecked, setIsProfessionalPresentChecked] = useState
               />
             </div>
             <div className="education collapsed" id="edu">
-              <label className="input-text">Degree</label>
-              <DegreeInput
-                degree={degree}
-                onDegreeChange={handleDegreeChange}
-              />
+            <div className="topSubtitle">
               <label className="input-text">School</label>
+              <div className="subLabel">Required</div>
+              </div>
               <SchoolInput
                 school={school}
                 onSchoolChange={handleSchoolChange}
               />
+              <div className="topSubtitle">
+              <label className="input-text">Degree</label>
+              <div className="subLabel">Recommended</div>
+              </div>
+              <DegreeInput
+                degree={degree}
+                onDegreeChange={handleDegreeChange}
+              />
+              <div className="topSubtitle">
+              <label className="input-text">Field of Study</label>
+              <div className="subLabel">Recommended</div>
+              </div>
+              <MajorInput major={major} onMajorChange={handleMajorChange} />
               <div id="educationBottom">
                 <div className="emailNumber">
                   <div id="city">
-                    <label className="input-text">City</label>
-                    <SchoolCityInput
-                      schoolCity={schoolCity}
-                      onSchoolCityChange={handleSchoolCityChange}
-                    />
-                  </div>
-                  <div id="country">
-                    <label className="input-text">Country</label>
-                    <SchoolCountryInput
-                      schoolCountry={schoolCountry}
-                      onSchoolCountryChange={handleSchoolCountryChange}
+                  <div className="topSubtitle">
+                    <label className="input-text">Address</label>
+                    <div className="subLabel">Optional</div>
+                    </div>
+                    <SchoolAddressInput
+                      schoolAddress={schoolAddress}
+                      onSchoolAddressChange={handleSchoolAddressChange}
                     />
                   </div>
                 </div>
                 <div className="emailNumber">
                   <div id="startDate">
+                  <div className="topSubtitle">
                     <label className="input-text">Start Date</label>
-                    <SchoolStartDateInput
-                      schoolStartDate={schoolStartDate}
-                      onSchoolStartChange={handleSchoolStartDateChange}
+                    <div className="subLabel">Optional</div>
+                    </div>
+                    <div className="selectInputs2">
+                    <SchoolStartMonthInput
+                      schoolStartMonth={schoolStartMonth}
+                      onSchoolStartMonthChange={handleSchoolStartMonthChange}
                     />
+                    <SchoolStartYearInput
+                      schoolStartYear={schoolStartYear}
+                      onSchoolStartYearChange={handleSchoolStartYearChange}
+                    />
+                    </div>
                   </div>
                   <div id="endDate">
+                  <div className="topSubtitle">
                     <label className="input-text">End Date</label>
-                    <SchoolEndDateInput
-                      schoolEndDate={schoolEndDate}
-                      onSchoolEndChange={handleSchoolEndDateChange}
+                    <div className="subLabel">Optional</div>
+                    </div>
+                    <div className="selectInputs2">
+                    <SchoolEndMonthInput
+                      schoolEndMonth={schoolEndMonth}
+                      onSchoolEndMonthChange={handleSchoolEndMonthChange}
                     />
+                    <SchoolEndYearInput
+                      schoolEndYear={schoolEndYear}
+                      onSchoolEndYearChange={handleSchoolEndYearChange}
+                    />
+                    </div>
                   </div>
                 </div>
               </div>
@@ -1350,9 +1500,7 @@ const [isProfessionalPresentChecked, setIsProfessionalPresentChecked] = useState
               <span className="c1 c2" />
             </p>
             <div id="savedProfExperience">{showProfessionalExperience}</div>
-            <div id="newProfExperience">
-              {newProfSaved}
-            </div>
+            <div id="newProfExperience">{newProfSaved}</div>
             <p className="c8">
               <span className="c2 c11">EDUCATION </span>
             </p>
@@ -1361,23 +1509,8 @@ const [isProfessionalPresentChecked, setIsProfessionalPresentChecked] = useState
             <p className="c6">
               <span className="c2 c7" />
             </p>
-            <p className="c8">
-              <span className="c0 c10">
-                University of Massachusetts, Amherst
-              </span>
-              <span className="c1 c0">
-                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;May 2015{" "}
-              </span>
-            </p>
-            <p className="c8">
-              <span className="c0">Bachelor of Science</span>
-              <span className="c15 c0 c5">
-                , Building &amp; Construction Technology
-              </span>
-            </p>
-            <p className="c6">
-              <span className="c0 c5 c15" />
-            </p>
+            <div id="savedEducationExperience">{showEducationExperience}</div>
+            <div id="newEducationExperience">{newEducationSaved}</div>
             <p className="c8">
               <span className="c2 c11">SKILLS</span>
             </p>

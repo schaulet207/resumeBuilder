@@ -207,6 +207,11 @@
  gap: 12px;
 }
 
+.address {
+  width: 95.8%;
+  margin-top: 12px;
+}
+
 html {
   height: 100vh;
 }
@@ -308,7 +313,7 @@ button:hover {
   cursor: pointer;
 }
 
-#userInfo, #employerMonths {
+#userInfo, #employerMonths, #schoolDates {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
@@ -331,6 +336,10 @@ button:hover {
   width: 95%;
 }
 
+.educationInputs {
+  width: 95%;
+}
+
 .datePickers {
   display: flex;
   flex-direction: row;
@@ -338,6 +347,14 @@ button:hover {
 }
 
 .selectInputs {
+  display: flex;
+  flex-direction: row;
+  gap: 8px;
+  z-index: 1;
+}
+
+.selectInputs2 {
+  padding-top: 12px;
   display: flex;
   flex-direction: row;
   gap: 8px;
