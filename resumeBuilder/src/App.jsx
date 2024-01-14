@@ -694,6 +694,10 @@ const [isProfessionalPresentChecked, setIsProfessionalPresentChecked] = useState
       endLabel.classList.remove('hide-section');
       endOpt.classList.remove('hide-section');
       presentSection.classList.remove('move-section');
+      const endMonthField = document.querySelector('#endMonthField');
+      const endYearField = document.querySelector('#endYearField');
+      endMonthField.value = 'Month';
+      endYearField.value = '';
     }
   };
 
