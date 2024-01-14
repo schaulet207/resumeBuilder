@@ -291,6 +291,11 @@ if (degree === "" || major === "") {
   divider7 = ", ";
 }
 
+// A function that determines when to display the professionalExperienceHeader
+function showProfessionalExperienceHeader() {
+  const professionalExperienceHeader = document.querySelector('#professionalExperienceHeader');
+  professionalExperienceHeader.classList.remove("hide");
+}
 
   // A variable to hold all of the professional experience
   const newProfSaved = (
@@ -657,6 +662,11 @@ const clearInputFields2 = () => {
     profEdit = null;
     profHistory.removeAttribute('data-attribute');
 
+    // If profExpEntries is 0 (ie. cancelled on the first entry), hide the professional header
+    if (profExpEntries.length < 1) {
+      const professionalExperienceHeader = document.querySelector('#professionalExperienceHeader');
+      professionalExperienceHeader.classList.add("hide");
+    }
 };
 
 // Pass variables to actively see whether the checkbox is checked or not
@@ -1167,14 +1177,14 @@ const [isProfessionalPresentChecked, setIsProfessionalPresentChecked] = useState
                 <div id="email">
                   <div className="topSubtitle">
                     <label className="input-text">Email</label>
-                    <div className="subLabel">Optional</div>
+                    <div className="subLabel">Recommended</div>
                   </div>
                   <EmailInput email={email} onEmailChange={handleEmailChange} />
                 </div>
                 <div id="phoneNumber">
                   <div className="topSubtitle">
                     <label className="input-text">Phone</label>
-                    <div className="subLabel">Optional</div>
+                    <div className="subLabel">Recommended</div>
                   </div>
                   <PhoneInput
                     phoneNumber={phoneNumber}
@@ -1192,7 +1202,7 @@ const [isProfessionalPresentChecked, setIsProfessionalPresentChecked] = useState
               />
               <div className="topSubtitle">
                 <label className="input-text">Summary</label>
-                <div className="subLabel">Recommended</div>
+                <div className="subLabel">Optional</div>
               </div>
               <CareerInput
                 careerSummary={careerSummary}
@@ -1346,9 +1356,12 @@ const [isProfessionalPresentChecked, setIsProfessionalPresentChecked] = useState
                 <button
                   className="addButton"
                   id="addProf"
-                  onClick={showProfInputs}
+                  onClick={() => {
+                    showProfInputs();
+                    showProfessionalExperienceHeader();
+                  }}
                 >
-                  + Professional Experience
+                  Add Professional Experience
                 </button>
               </div>
             </div>
@@ -1365,33 +1378,33 @@ const [isProfessionalPresentChecked, setIsProfessionalPresentChecked] = useState
               />
             </div>
             <div className="education collapsed" id="edu">
-            <div className="topSubtitle">
-              <label className="input-text">School</label>
-              <div className="subLabel">Required</div>
+              <div className="topSubtitle">
+                <label className="input-text">School</label>
+                <div className="subLabel">Required</div>
               </div>
               <SchoolInput
                 school={school}
                 onSchoolChange={handleSchoolChange}
               />
               <div className="topSubtitle">
-              <label className="input-text">Degree</label>
-              <div className="subLabel">Recommended</div>
+                <label className="input-text">Degree</label>
+                <div className="subLabel">Recommended</div>
               </div>
               <DegreeInput
                 degree={degree}
                 onDegreeChange={handleDegreeChange}
               />
               <div className="topSubtitle">
-              <label className="input-text">Field of Study</label>
-              <div className="subLabel">Recommended</div>
+                <label className="input-text">Field of Study</label>
+                <div className="subLabel">Recommended</div>
               </div>
               <MajorInput major={major} onMajorChange={handleMajorChange} />
               <div id="educationBottom">
                 <div className="emailNumber">
                   <div id="city">
-                  <div className="topSubtitle">
-                    <label className="input-text">Address</label>
-                    <div className="subLabel">Optional</div>
+                    <div className="topSubtitle">
+                      <label className="input-text">Address</label>
+                      <div className="subLabel">Optional</div>
                     </div>
                     <SchoolAddressInput
                       schoolAddress={schoolAddress}
@@ -1401,35 +1414,35 @@ const [isProfessionalPresentChecked, setIsProfessionalPresentChecked] = useState
                 </div>
                 <div className="emailNumber">
                   <div id="startDate">
-                  <div className="topSubtitle">
-                    <label className="input-text">Start Date</label>
-                    <div className="subLabel">Optional</div>
+                    <div className="topSubtitle">
+                      <label className="input-text">Start Date</label>
+                      <div className="subLabel">Optional</div>
                     </div>
                     <div className="selectInputs2">
-                    <SchoolStartMonthInput
-                      schoolStartMonth={schoolStartMonth}
-                      onSchoolStartMonthChange={handleSchoolStartMonthChange}
-                    />
-                    <SchoolStartYearInput
-                      schoolStartYear={schoolStartYear}
-                      onSchoolStartYearChange={handleSchoolStartYearChange}
-                    />
+                      <SchoolStartMonthInput
+                        schoolStartMonth={schoolStartMonth}
+                        onSchoolStartMonthChange={handleSchoolStartMonthChange}
+                      />
+                      <SchoolStartYearInput
+                        schoolStartYear={schoolStartYear}
+                        onSchoolStartYearChange={handleSchoolStartYearChange}
+                      />
                     </div>
                   </div>
                   <div id="endDate">
-                  <div className="topSubtitle">
-                    <label className="input-text">End Date</label>
-                    <div className="subLabel">Optional</div>
+                    <div className="topSubtitle">
+                      <label className="input-text">End Date</label>
+                      <div className="subLabel">Optional</div>
                     </div>
                     <div className="selectInputs2">
-                    <SchoolEndMonthInput
-                      schoolEndMonth={schoolEndMonth}
-                      onSchoolEndMonthChange={handleSchoolEndMonthChange}
-                    />
-                    <SchoolEndYearInput
-                      schoolEndYear={schoolEndYear}
-                      onSchoolEndYearChange={handleSchoolEndYearChange}
-                    />
+                      <SchoolEndMonthInput
+                        schoolEndMonth={schoolEndMonth}
+                        onSchoolEndMonthChange={handleSchoolEndMonthChange}
+                      />
+                      <SchoolEndYearInput
+                        schoolEndYear={schoolEndYear}
+                        onSchoolEndYearChange={handleSchoolEndYearChange}
+                      />
                     </div>
                   </div>
                 </div>
@@ -1489,10 +1502,12 @@ const [isProfessionalPresentChecked, setIsProfessionalPresentChecked] = useState
                 <span className="c3 c0" />
               </p>
             </div>
-            <p className="c8">
-              <span className="c2 c11">PROFESSIONAL EXPERIENCE</span>
-            </p>
-            <hr />
+            <div id="professionalExperienceHeader" className="hide">
+              <p className="c8">
+                <span className="c2 c11">PROFESSIONAL EXPERIENCE</span>
+              </p>
+              <hr />
+            </div>
             <p className="c9">
               <span className="c1 c2" />
             </p>
