@@ -376,7 +376,6 @@ function App() {
       educationIcon.classList.toggle("open");
 
       if (eduExpEntries && eduExpEntries.length > 0) {
-        console.log("Education section collapsed");
         // Assuming eduExpEntries is a list like profExpEntries
         const allEdu = document.querySelector("#edu");
         if (allEdu) {
@@ -718,10 +717,7 @@ function App() {
 
     // If profEdit variable exists, reverse swaps the live edited section on the right-half from the professional entry you were editing
     if (profEdit !== null) {
-      console.log("This is where things get wonky");
       let dataAttribute = profEdit;
-      console.log("dataAttribute =  " + dataAttribute);
-      console.log("ProfEdit =  " + profEdit);
       // Gets the sections again
       const newProfExp = document.querySelector("#newProfExperience");
       const editProfEntryRH = document.querySelector(
@@ -1255,10 +1251,85 @@ function App() {
 
   // A function to save all the education section data
   const handleSaveEdu = () => {
+
+     // Hacky way of getting the data attribute of the field being edited from the eduHist element.
+    const eduHistory = document.getElementById("eduHist");
+    const dataAttributeEdu = eduHistory.getAttribute("data-attribute");
+
+    // Function to handle visibility button click
+    function visiButtonClick(event) {
+      const dataAttributeEdu = event.currentTarget.dataset.attribute;
+      let visibleIcon = document.querySelector(`#visi${dataAttributeEdu}`);
+      let hiddenIcon = document.querySelector(`#hid${dataAttributeEdu}`);
+      let rightSection = document.querySelector(`#eduKey${dataAttributeEdu}`);
+
+      if (visibleIcon.style.display === "inline") {
+        visibleIcon.style.display = "none";
+        hiddenIcon.style.display = "inline";
+        rightSection.style.display = "none";
+      } else {
+        visibleIcon.style.display = "inline";
+        hiddenIcon.style.display = "none";
+        rightSection.style.display = "inline";
+      }
+    }
+
+    // A function to edit the education sections onclick
+    function editEduSection(event) {
+
+      // Hacky way of getting the data attribute of the field being edited from the profHist element. Since doing this, I've realized that I just need to initialize the variable dataAttribute outside of the App function. For now, this works.
+      const dataAttributeEdu = event.currentTarget.dataset.attribute;
+      const eduHistory = document.getElementById("eduHist");
+
+      // Reset the visibility icon to visible when saving, in case the user had previously hidden it. Only do this when editing
+      let visibleIcon = document.querySelector(`#visi${dataAttributeEdu}`);
+      let hiddenIcon = document.querySelector(`#hid${dataAttributeEdu}`);
+      visibleIcon.style.display = "inline";
+      hiddenIcon.style.display = "none";
+
+      if (eduHistory) {
+        eduHistory.setAttribute("data-attribute", dataAttributeEdu);
+      }
+
+      // Get the newEduExperience and the editEduEntry sections to swap their positions
+      const newEduExp = document.querySelector("#newEduExperience");
+      const editEduEntryRH = document.querySelector(
+        "#eduKey" + dataAttributeEdu
+      );
+
+      // Swap the newEduExperience and the editEduEntry sections so you can see your changes in realtime on the right side
+      if (newEduExp && editEduEntryRH) {
+        const parent1 = editEduEntryRH.parentNode;
+        const parent2 = newEduExp.parentNode;
+        const nextSibling2 = newEduExp.nextSibling;
+
+        parent1.insertBefore(newEduExp, editEduEntryRH);
+
+        if (nextSibling2) {
+          parent2.insertBefore(editEduEntryRH, nextSibling2);
+        } else {
+          parent2.appendChild(editEduEntryRH);
+        }
+      }
+
+      // Shows all the education section input fields on the left
+      showEduInputs();
+      // Hides the original field on the right being edited, so that real-time edits are shown in the correct placement of the element being edited
+      editEduEntryRH.style.display = "none";
+
+      // Fills all the education input fields on the left side with the correct data being edited
+      setDegree(degrees[dataAttributeEdu - 1]);
+      setSchool(schools[dataAttributeEdu - 1]);
+      setSchoolAddress(schoolAddresses[dataAttributeEdu - 1]);
+      setSchoolStartMonth(schoolStartMonths[dataAttributeEdu - 1]);
+      setSchoolStartYear(schoolStartYears[dataAttributeEdu - 1]);
+      setSchoolEndMonth(schoolEndMonths[dataAttributeEdu - 1]);
+      setSchoolEndYear(schoolEndYears[dataAttributeEdu - 1]);
+      setMajor(majors[dataAttributeEdu - 1]);
+    }
     
     // If dataAttributeEdu is null, then the user is adding a new entry
-    // if (dataAttributeEdu === null) {
-    // }
+    if (dataAttributeEdu === null) {
     // Get and trim the value of the school fields
     const schoolValue = school.trim();
 
@@ -1283,7 +1354,7 @@ function App() {
     // Clears all the input fields
     clearInputFieldsEdu();
 
-    // push education values to arrays
+    // Push education values to arrays
     schools.push(school);
     degrees.push(degree);
     schoolAddresses.push(schoolAddress);
@@ -1399,24 +1470,6 @@ function App() {
       }
     }
 
-    // Function to handle visibility button click
-    function visiButtonClick(event) {
-      const dataAttribute = event.currentTarget.dataset.attribute;
-      let visibleIcon = document.querySelector(`#visi${dataAttribute}`);
-      let hiddenIcon = document.querySelector(`#hid${dataAttribute}`);
-      let rightSection = document.querySelector(`#eduKey${dataAttribute}`);
-
-      if (visibleIcon.style.display === "inline") {
-        visibleIcon.style.display = "none";
-        hiddenIcon.style.display = "inline";
-        rightSection.style.display = "none";
-      } else {
-        visibleIcon.style.display = "inline";
-        hiddenIcon.style.display = "none";
-        rightSection.style.display = "inline";
-      }
-    }
-
     // Attach click event handlers in a loop to the editEduSection buttons
     for (let i = 1; i < eduExpEntries.length + 1; i++) {
       let editSection = document.querySelector(`#editEduEntry${i}`);
@@ -1444,7 +1497,18 @@ function App() {
     // Hide the new education section on right-half until the education inputs are showing again
     educationSection.style.display = "none";
 
-
+  } else {
+    // Data attribute is NOT null here
+    // Instead of pushing values to the state arrays, use data-attribute - 1 to update the values in the state arrays
+    schools[dataAttributeEdu - 1] = school;
+    degrees[dataAttributeEdu - 1] = degree;
+    schoolAddresses[dataAttributeEdu - 1] = schoolAddress;
+    schoolStartMonths[dataAttributeEdu - 1] = schoolStartMonth;
+    schoolStartYears[dataAttributeEdu - 1] = schoolStartYear;
+    schoolEndMonths[dataAttributeEdu - 1] = schoolEndMonth;
+    schoolEndYears[dataAttributeEdu - 1] = schoolEndYear;
+    majors[dataAttributeEdu - 1] = major;
+  }
   }
 
   return (
@@ -1760,17 +1824,7 @@ function App() {
                           className="saveButton2"
                           onClick={() =>
                             handleSaveEdu()
-                          //   // handleSaveAll(
-                          //   //   positions,
-                          //   //   employers,
-                          //   //   cities,
-                          //   //   countries,
-                          //   //   startMonths,
-                          //   //   startYears,
-                          //   //   endMonths,
-                          //   //   endYears,
-                          //   //   presents
-                          //   // )
+
                           }
                         >
                           Save
