@@ -1404,7 +1404,7 @@ function App() {
       const dataAttribute = event.currentTarget.dataset.attribute;
       let visibleIcon = document.querySelector(`#visi${dataAttribute}`);
       let hiddenIcon = document.querySelector(`#hid${dataAttribute}`);
-      let rightSection = document.querySelector(`#profKey${dataAttribute}`);
+      let rightSection = document.querySelector(`#eduKey${dataAttribute}`);
 
       if (visibleIcon.style.display === "inline") {
         visibleIcon.style.display = "none";
@@ -1443,7 +1443,7 @@ function App() {
 
     // Hide the new education section on right-half until the education inputs are showing again
     educationSection.style.display = "none";
-    
+
 
   }
 
