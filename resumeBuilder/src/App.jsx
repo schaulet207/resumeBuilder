@@ -1221,7 +1221,7 @@ function App() {
         startMonth + " " + startYear + " - " + endMonth + " " + endYear;
       professionalAddressUpdate.innerHTML = city;
 
-      // Update both the professional arrays based on these changes
+      // Update the professional arrays based on these changes
       positions[dataAttribute - 1] = position;
       employers[dataAttribute - 1] = employer;
       cities[dataAttribute - 1] = city;
@@ -1254,7 +1254,8 @@ function App() {
 
      // Hacky way of getting the data attribute of the field being edited from the eduHist element.
     const eduHistory = document.getElementById("eduHist");
-    const dataAttributeEdu = eduHistory.getAttribute("data-attribute");
+    let dataAttributeEdu = eduHistory.getAttribute("data-attribute");
+    console.log("data attribute edu = " + dataAttributeEdu);
 
     // Function to handle visibility button click
     function visiButtonClick(event) {
@@ -1496,9 +1497,10 @@ function App() {
 
     // Hide the new education section on right-half until the education inputs are showing again
     educationSection.style.display = "none";
-
+    console.log("Data Attribute is null")
   } else {
     // Data attribute is NOT null here
+    console.log("Data attribute is NOT null")
     // Instead of pushing values to the state arrays, use data-attribute - 1 to update the values in the state arrays
     schools[dataAttributeEdu - 1] = school;
     degrees[dataAttributeEdu - 1] = degree;
@@ -1508,6 +1510,115 @@ function App() {
     schoolEndMonths[dataAttributeEdu - 1] = schoolEndMonth;
     schoolEndYears[dataAttributeEdu - 1] = schoolEndYear;
     majors[dataAttributeEdu - 1] = major;
+
+    // Reset the visibility icon to visible when saving, in case the user had previously hidden it. Only do this when editing
+    let visibleIcon = document.querySelector(`#visi${dataAttributeEdu}`);
+    let hiddenIcon = document.querySelector(`#hid${dataAttributeEdu}`);
+    visibleIcon.style.display = "inline";
+    hiddenIcon.style.display = "none";
+
+    // Displays the education history section
+    eduHistory.style.display = "inline";
+    // This is a hacky way to get the dataAttribute from the previous edit function. I'm sure there's a better way to do this.
+    let eduEdit = eduHistory.getAttribute("data-attribute");
+
+    // Get the div that will house the validation error message
+    const schoolRequired = document.querySelector("#schoolReq");
+
+    // Get and trim the value of the school field
+    const schoolValue = school.trim();
+
+    // Check if the school field is not empty
+    if (!schoolValue) {
+      schoolRequired.className = "error";
+      return;
+    }
+
+    // Reset the error message
+    schoolRequired.className = "subLabel";
+
+    // Helper function to toggle the height of the education section
+    toggleHeightEdu();
+
+    // Adjust button spacing
+    const addEduExp = document.querySelector("#addEdu");
+    const addEduBottom = document.querySelector("#addButtonEdu");
+    addEduExp.style.top = "60px";
+    addEduBottom.style.paddingBottom = "80px";
+
+    // Clears all the input fields
+    clearInputFieldsEdu();
+
+    // Hides the input field and displays the "Add Education" button
+    const eduSectionInputs = document.querySelector(".eduInputs");
+    const addEduButton = document.querySelector("#addEdu");
+    eduSectionInputs.style.display = "none";
+    addEduButton.style.display = "inline";
+
+    // Gets the sections again
+    const newEduExp = document.querySelector("#newEduExperience");
+    const editEduEntryRH = document.querySelector(
+      "#eduKey" + dataAttributeEdu
+    );
+    const savedEducationExperience = document.querySelector(
+      "#savedEducationExperience"
+    );
+
+    // Returns newEduExp to the correct position, and returns the edited entry on right-half to the correct order
+    if (newEduExp && editEduEntryRH && savedEducationExperience) {
+      // Swaps newEduExp with editEduEntryRH
+      newEduExp.replaceWith(editEduEntryRH);
+
+      // Get the parent of savedEducationExperience
+      const parent = savedEducationExperience.parentNode;
+
+      // Move newEduExp to be the sibling immediately after savedEducationExperience
+      parent.insertBefore(newEduExp, savedEducationExperience.nextSibling);
+    }
+
+    // Displays inline the correct eduKey section based on data attribute
+    editEduEntryRH.style.display = "inline";
+
+    // Hides the newEduExp section in the RH
+    newEduExp.style.display = "none";
+
+    // Sets the innerHTML of editEduEntryRH to be equal to that of newEduExp
+    if (newEduExp && editEduEntryRH) {
+      editEduEntryRH.innerHTML = newEduExp.innerHTML;
+    }
+
+    // --- Update the left-hand section based on the edits made ---
+    const schoolUpdate = document.querySelector(`#school${dataAttributeEdu}`);
+    const degreeUpdate = document.querySelector(`#degree${dataAttributeEdu}`);
+    const eduDatesUpdate = document.querySelector(`#eduDates${dataAttributeEdu}`);
+    const eduAddressUpdate = document.querySelector(`#eduAddress${dataAttributeEdu}`);
+
+    // Update based on the current education input field values
+    schoolUpdate.innerHTML = school;
+    degreeUpdate.innerHTML = ", " + degree;
+    eduDatesUpdate.innerHTML = schoolStartMonth + " " + schoolStartYear + " - " + schoolEndMonth + " " + schoolEndYear;
+    eduAddressUpdate.innerHTML = schoolAddress;
+
+    // Update the education arrays based on these changes
+    schools[dataAttributeEdu - 1] = school;
+    degrees[dataAttributeEdu - 1] = degree;
+    schoolAddresses[dataAttributeEdu - 1] = schoolAddress;
+    majors[dataAttributeEdu - 1] = major;
+
+    // Create the new eduExp object
+    let eduExpObject = {
+      school: school,
+      degree: degree,
+      schoolAddress: schoolAddress,
+      schoolStartMonth: schoolStartMonth,
+      schoolStartYear: schoolStartYear,
+      schoolEndMonth: schoolEndMonth,
+      schoolEndYear: schoolEndYear,
+      major: major,
+    };
+    // Replace the old eduExp object with the new one
+    eduExpEntries[dataAttributeEdu - 1] = eduExpObject;
+    eduHistory.removeAttribute("data-attribute");
   }
   }
 
