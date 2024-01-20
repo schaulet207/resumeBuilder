@@ -84,6 +84,12 @@
   font-size: 17px;
 }
 
+.eduInputText {
+  width: 530px;
+  margin-top: 12px;
+  margin-bottom: 12px;
+}
+
 .input-field {
   border-width: 1px;
   padding: 10px;
@@ -134,7 +140,7 @@
 }
 
 .education {
-  padding: 12px;
+  padding-right: 0px;
   background-color: rgb(32, 34, 34);
   border-radius: 10px;
 }
@@ -210,6 +216,14 @@
 .address {
   width: 95.8%;
   margin-top: 12px;
+}
+
+#position.inputs {
+  width: 96%;
+}
+
+.address.inputs {
+  width: 94%;
 }
 
 html {
@@ -388,11 +402,33 @@ button:hover {
   font-size: 24px;
 }
 
+.saveButton2 {
+  position: relative;
+  margin-top: 20px;
+  height: 60px;
+  width: 120px;
+  top: 15px;
+  right: 39px;
+  border-radius: 20px;
+  font-size: 24px;
+}
+
 .cancelButton {
   position: relative;
   left: 280px;
   height: 60px;
   width: 120px;
+  border-radius: 20px;
+  font-size: 24px;
+  background-color: transparent;
+}
+
+.cancelButton2 {
+  position: relative;
+  height: 60px;
+  width: 120px;
+  top: 15px;
+  right: 56px;
   border-radius: 20px;
   font-size: 24px;
   background-color: transparent;
@@ -643,6 +679,12 @@ padding-inline-start: 40px;
   max-height: 80px;
 }
 
+.eduHistoryEntry {
+  padding: 18px;
+  margin-top: 10px;
+  max-height: 80px;
+}
+
 #topLine {
   position: relative;
   top: 24px;
@@ -690,6 +732,12 @@ padding-inline-start: 40px;
   display: none;
 }
 
+.eduInputs {
+  display: none;
+  padding: 12px;
+  padding-right: 0px;
+}
+
 #profHist {
   display: inline;
 }
@@ -706,7 +754,25 @@ padding-inline-start: 40px;
   margin-top: 8px;
 }
 
+#addEdu {
+  position: relative;
+  width: 160px;
+  height: 56px;
+  font-size: 20px;
+  margin-top: 8px;
+}
+
 #addButtonProf {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 80px;
+  margin-top: 8px;
+  padding-bottom: 12px;
+}
+
+#addButtonEdu {
   display: flex;
   flex-direction: column;
   justify-content: center;

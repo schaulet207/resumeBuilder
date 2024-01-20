@@ -3,7 +3,7 @@ import React from 'react';
 export function DegreeInput({ degree, onDegreeChange }) {
   return (
     <input 
-      className="inputs"
+      className="inputs eduInputText"
       type="text"
       placeholder="Enter Degree"
       value={degree}
@@ -15,7 +15,8 @@ export function DegreeInput({ degree, onDegreeChange }) {
 export function SchoolInput({ school, onSchoolChange }) {
   return (
     <input
-    className="inputs"
+    className="inputs eduInputText"
+      id="school"
       type="text"
       placeholder="Enter School / University"
       value={school}
@@ -118,7 +119,7 @@ export function SchoolEndYearInput({ schoolEndYear, onSchoolEndYearChange }) {
 export function MajorInput({ major, onMajorChange }) {
   return (
     <input
-    className="inputs"
+    className="inputs eduInputText"
       type="text"
       placeholder="Enter Field of Study"
       value={major}
@@ -126,3 +127,6 @@ export function MajorInput({ major, onMajorChange }) {
     />
   );
 }
+
+// Declare and initialize eduExpEntries and export it immediately
+export const eduExpEntries = [];

@@ -27,12 +27,12 @@ import {
   SchoolStartYearInput,
   SchoolEndMonthInput,
   SchoolEndYearInput,
-  MajorInput
+  MajorInput,
+  eduExpEntries
 } from "./Education";
 // import { QuillEditor } from './QuillEditor';
 
 function App() {
-
   const [fullName, setFullName] = useState("");
   const handleFullNameChange = (newFullName) => {
     setFullName(newFullName);
@@ -98,10 +98,10 @@ function App() {
     setPresent(newPresent);
   };
 
-  const [employerDescription, setEmployerDescription] = useState(''); // State for employerDescription
-const handleEmployerDescriptionChange = (newDescription) => {
-  setEmployerDescription(newDescription);
-};
+  const [employerDescription, setEmployerDescription] = useState(""); // State for employerDescription
+  const handleEmployerDescriptionChange = (newDescription) => {
+    setEmployerDescription(newDescription);
+  };
 
   const [degree, setDegree] = useState("");
   const handleDegreeChange = (newDegree) => {
@@ -117,7 +117,6 @@ const handleEmployerDescriptionChange = (newDescription) => {
   const handleSchoolAddressChange = (newSchoolAddress) => {
     setSchoolAddress(newSchoolAddress);
   };
-
 
   let [schoolStartMonth, setSchoolStartMonth] = useState(""); // Initialized with empty string
 
@@ -156,11 +155,15 @@ const handleEmployerDescriptionChange = (newDescription) => {
   // Set helper variables
   let profKey = 0; // Key for professional experience
   let profHistoryInfo;
+  let eduHistoryInfo;
   let saveProfessionalExperience = [];
   let showProfessionalExperience = null;
   let showEducationExperience = null;
 
-  function ProfessionalExperienceInput({ professionalExperience, onProfessionalExperienceChange }) {
+  function ProfessionalExperienceInput({
+    professionalExperience,
+    onProfessionalExperienceChange,
+  }) {
     return (
       <input
         className="inputs"
@@ -205,97 +208,107 @@ const handleEmployerDescriptionChange = (newDescription) => {
 
   const topSpacing = document.getElementsByClassName("spacing");
 
-if (address === "" && phoneNumber === "" && email === "" && fullName === "") {
-  // Add the "hide" class to all elements with the "spacing" class
-  for (const element of topSpacing) {
-    element.classList.add("hide");
+  if (address === "" && phoneNumber === "" && email === "" && fullName === "") {
+    // Add the "hide" class to all elements with the "spacing" class
+    for (const element of topSpacing) {
+      element.classList.add("hide");
+    }
+  } else {
+    // Remove the "hide" class from all elements with the "spacing" class
+    for (const element of topSpacing) {
+      element.classList.remove("hide");
+    }
   }
-} else {
-  // Remove the "hide" class from all elements with the "spacing" class
-  for (const element of topSpacing) {
-    element.classList.remove("hide");
+
+  const careerSummarySpacing = document.getElementsByClassName(
+    "careerSummarySpacing"
+  );
+  if (careerSummary === "") {
+    // Add the "hide" class to all elements with the "careerSummarySpacing" class
+    for (const element of careerSummarySpacing) {
+      element.classList.add("hide");
+    }
+  } else {
+    // Remove the "hide" class from all elements with the "careerSummarySpacing" class
+    for (const element of careerSummarySpacing) {
+      element.classList.remove("hide");
+    }
   }
-}
 
-const careerSummarySpacing = document.getElementsByClassName("careerSummarySpacing");
-if (careerSummary === "") {
-  // Add the "hide" class to all elements with the "careerSummarySpacing" class
-  for (const element of careerSummarySpacing) {
-    element.classList.add("hide");
+  // If employer or city are empty, divider4 = null, otherwise divider4 = " - "
+  if (employer === "" || city === "") {
+    divider4 = null;
+  } else {
+    divider4 = " - ";
   }
-} else {
-  // Remove the "hide" class from all elements with the "careerSummarySpacing" class
-  for (const element of careerSummarySpacing) {
-    element.classList.remove("hide");
+
+  // If start month and start year are empty, or if endmonth and endyear are empty, remove class hide divider4, otherwise add it
+  if (
+    (startMonth === "" && startYear === "") ||
+    (endMonth === "" && endYear === "")
+  ) {
+    divider5 = null;
+  } else {
+    divider5 = " - ";
   }
-}
 
-// If employer or city are empty, divider4 = null, otherwise divider4 = " - "
-if (employer === "" || city === "") {
-  divider4 = null;
-} else {
-  divider4 = " - ";
-}
+  // Hide professional or education dates if no valid options are selected from the dropdowns
+  if (startMonth === "Month") {
+    startMonth = "";
+  }
 
-// If start month and start year are empty, or if endmonth and endyear are empty, remove class hide divider4, otherwise add it
-if ((startMonth === "" && startYear === "") || (endMonth === "" && endYear === "")) {
-  divider5 = null;
-} else {
-  divider5 = " - ";
-}
+  if (startYear === "Year") {
+    startYear = "";
+  }
 
-// Hide professional or education dates if no valid options are selected from the dropdowns
-if (startMonth === "Month") {
-  startMonth = "";
-}
+  if (endMonth === "Month") {
+    endMonth = "";
+  }
 
-if (startYear === "Year") {
-  startYear = "";
-}
+  if (endYear === "Year") {
+    endYear = "";
+  }
 
-if (endMonth === "Month") {
-  endMonth = "";
-}
+  if (schoolStartMonth === "Month") {
+    schoolStartMonth = "";
+  }
 
-if (endYear === "Year") {
-  endYear = "";
-}
+  if (schoolStartYear === "Year") {
+    schoolStartYear = "";
+  }
 
-if (schoolStartMonth === "Month") {
-  schoolStartMonth = "";
-}
+  if (schoolEndMonth === "Month") {
+    schoolEndMonth = "";
+  }
 
-if (schoolStartYear === "Year") {
-  schoolStartYear = "";
-}
+  if (schoolEndYear === "Year") {
+    schoolEndYear = "";
+  }
 
-if (schoolEndMonth === "Month") {
-  schoolEndMonth = "";
-}
+  // If schoolStartMonth & schoolStartYear are empty, or schoolEndMonth and schoolEndYear are empty, then divider6 = null. Otherwise divider6 = " - "
+  if (
+    (schoolStartMonth === "" && schoolStartYear === "") ||
+    (schoolEndMonth === "" && schoolEndYear === "")
+  ) {
+    divider6 = null;
+  } else {
+    divider6 = " - ";
+  }
 
-if (schoolEndYear === "Year") {
-  schoolEndYear = "";
-}
+  // If degree or major are empty, divider7 = null, otherwise divider7 = ", "
+  if (degree === "" || major === "") {
+    divider7 = null;
+  } else {
+    divider7 = ", ";
+  }
 
-// If schoolStartMonth & schoolStartYear are empty, or schoolEndMonth and schoolEndYear are empty, then divider6 = null. Otherwise divider6 = " - "
-if ((schoolStartMonth === "" && schoolStartYear === "") || (schoolEndMonth === "" && schoolEndYear === "")) {
-  divider6 = null;
-} else {
-  divider6 = " - ";
-}
-
-// If degree or major are empty, divider7 = null, otherwise divider7 = ", "
-if (degree === "" || major === "") {
-  divider7 = null;
-} else {
-  divider7 = ", ";
-}
-
-// A function that determines when to display the professionalExperienceHeader
-function showProfessionalExperienceHeader() {
-  const professionalExperienceHeader = document.querySelector('#professionalExperienceHeader');
-  professionalExperienceHeader.classList.remove("hide");
-}
+  // A function that determines when to display the professionalExperienceHeader
+  function showProfessionalExperienceHeader() {
+    const professionalExperienceHeader = document.querySelector(
+      "#professionalExperienceHeader"
+    );
+    professionalExperienceHeader.classList.remove("hide");
+  }
 
   // A variable to hold all of the professional experience
   const newProfSaved = (
@@ -353,69 +366,63 @@ function showProfessionalExperienceHeader() {
     </div>
   );
 
-    function collapseEducation() {
-      const educationCollapsible = document.querySelector("#edu");
-      const educationIcon = document.querySelector("#educationIcon");
-      if (educationCollapsible) {
-        educationCollapsible.classList.toggle("collapsed");
-        educationIcon.classList.toggle("open");
-      }
-      // Here's what this may look like soon
-      // function collapseEducation() {
-      //   const educationCollapsible = document.querySelector("#edu");
-      //   const educationIcon = document.querySelector("#educationIcon");
-      //   const eduSectionInputs = document.querySelector('.eduInputs'); // Assuming there's a class for education inputs
-      //   if (educationCollapsible) {
-      //     educationCollapsible.classList.toggle("collapsed");
-      //     educationIcon.classList.toggle("open");
-      
-      //     if (eduExpEntries && eduExpEntries.length > 0) { // Assuming eduExpEntries is a list like profExpEntries
-      //       const allEdu = document.querySelector("#edu");
-      //       if (allEdu) {
-      //         allEdu.style.paddingBottom = "8px";
-      //       }
-      
-      //       // Set top for #addEduButton, assuming there's a button to add education entries
-      //       const addEduButton = document.querySelector("#addEdu");
-      //       if (addEduButton) {
-      //         addEduButton.style.top = "60px";
-      //       }
-      //     }
-      //   }
-      // }
-    }
+  // Collapses the Education section
+  function collapseEducation() {
+    const educationCollapsible = document.querySelector("#edu");
+    const educationIcon = document.querySelector("#educationIcon");
+    const eduSectionInputs = document.querySelector(".eduInputs"); // Assuming there's a class for education inputs
+    if (educationCollapsible) {
+      educationCollapsible.classList.toggle("collapsed");
+      educationIcon.classList.toggle("open");
 
-    function collapseProfessional() {
-      const profCollapsible = document.querySelector("#allProf");
-      const professionalIcon = document.querySelector("#professionalIcon");
-      const profSectionInputs = document.querySelector('.profInputs');
-      if (profCollapsible) {
-        profCollapsible.classList.toggle("collapsed");
-        professionalIcon.classList.toggle("open");
-      }
-      if (profExpEntries.length > 0) {
-        const allProf = document.querySelector("#allProf");
-        if (allProf) {
-          allProf.style.paddingBottom = "8px";
+      if (eduExpEntries && eduExpEntries.length > 0) {
+        console.log("Education section collapsed");
+        // Assuming eduExpEntries is a list like profExpEntries
+        const allEdu = document.querySelector("#edu");
+        if (allEdu) {
+          allEdu.style.paddingBottom = "8px";
         }
 
-        // Set top for #addProfButton
-        const addProfButton = document.querySelector("#addProf");
-        if (addProfButton) {
-          addProfButton.style.top = "60px";
+        // Set top for #addEduButton, assuming there's a button to add education entries
+        const addEduButton = document.querySelector("#addEdu");
+        if (addEduButton) {
+          addEduButton.style.top = "60px";
         }
       }
     }
+  }
 
-    function collapsePersonal() {
-      const persCollapsible = document.querySelector("#pers");
-      if (persCollapsible) {
-        persCollapsible.classList.toggle("collapsed");
-        personalIcon.classList.toggle("open");
+  function collapseProfessional() {
+    const profCollapsible = document.querySelector("#allProf");
+    const professionalIcon = document.querySelector("#professionalIcon");
+    const profSectionInputs = document.querySelector(".profInputs");
+    if (profCollapsible) {
+      profCollapsible.classList.toggle("collapsed");
+      professionalIcon.classList.toggle("open");
+    }
+    if (profExpEntries.length > 0) {
+      const allProf = document.querySelector("#allProf");
+      if (allProf) {
+        allProf.style.paddingBottom = "8px";
+      }
+
+      // Set top for #addProfButton
+      const addProfButton = document.querySelector("#addProf");
+      if (addProfButton) {
+        addProfButton.style.top = "60px";
       }
     }
+  }
 
-  // Create empty arrays
+  function collapsePersonal() {
+    const persCollapsible = document.querySelector("#pers");
+    if (persCollapsible) {
+      persCollapsible.classList.toggle("collapsed");
+      personalIcon.classList.toggle("open");
+    }
+  }
+
+  // Create empty Professional section arrays
   const [positions, setPositions] = useState([]); // An array to store positions
   const [employers, setEmployers] = useState([]); // An array to store employers
   const [cities, setCities] = useState([]); // An array to store cities
@@ -424,31 +431,96 @@ function showProfessionalExperienceHeader() {
   const [startYears, setStartYears] = useState([]); // An array to store start years
   const [endMonths, setEndMonths] = useState([]); // An array to store start months
   const [endYears, setEndYears] = useState([]); // An array to store start years
-  const [presents, setPresents] = useState([]); // An array to store presents  
+  const [presents, setPresents] = useState([]); // An array to store presents
   const [employerDescriptions, setEmployerDescriptions] = useState([]); // An array to store employer descriptions
 
+  // Create empty Education section arrays
+  const [degrees, setDegrees] = useState([]); // An array to store degrees
+  const [majors, setMajors] = useState([]); // An array to store majors
+  const [schools, setSchools] = useState([]); // An array to store schools
+  const [schoolAddresses, setSchoolAddresses] = useState([]); // An array to store school addresses
+  const [schoolStartMonths, setSchoolStartMonths] = useState([]); // An array to store school start months
+  const [schoolStartYears, setSchoolStartYears] = useState([]); // An array to store school start years
+  const [schoolEndMonths, setSchoolEndMonths] = useState([]); // An array to store school end months
+  const [schoolEndYears, setSchoolEndYears] = useState([]); // An array to store school end years
+  
+
   function showProfInputs() {
-    const profSectionInputs = document.querySelector('.profInputs');
-    const addProfButton = document.querySelector('#addProf');
-    const profHistory = document.querySelector('#profHist');
+    const profSectionInputs = document.querySelector(".profInputs");
+    const addProfButton = document.querySelector("#addProf");
+    const profHistory = document.querySelector("#profHist");
     const addProfBottom = document.querySelector("#addButtonProf");
     const professionalSection = document.querySelector("#newProfExperience");
     professionalSection.style.display = "inline";
-    profSectionInputs.style.display = 'none';
+    profSectionInputs.style.display = "none";
     toggleHeight();
-    if (profSectionInputs.style.display === 'none') {
-      profSectionInputs.style.display = 'inline';
-      addProfButton.style.display = 'none';
-      profHistory.style.display = 'none';
-      allProf.style.paddingBottom = '8px';
+    if (profSectionInputs.style.display === "none") {
+      profSectionInputs.style.display = "inline";
+      addProfButton.style.display = "none";
+      profHistory.style.display = "none";
+      allProf.style.paddingBottom = "8px";
     }
-    if ((profSectionInputs.style.display === 'inline') && (addProfBottom.style.paddingBottom === '80px')) {
-      addProfBottom.style.paddingBottom = '8px';
+    if (
+      profSectionInputs.style.display === "inline" &&
+      addProfBottom.style.paddingBottom === "80px"
+    ) {
+      addProfBottom.style.paddingBottom = "8px";
     }
-
   }
 
+  function showEduInputs() {
+    const eduSectionInputs = document.querySelector(".eduInputs");
+    const addEduButton = document.querySelector("#addEdu");
+    const eduHistory = document.querySelector("#eduHist");
+    const addEduBottom = document.querySelector("#addButtonEdu");
+    const educationSection = document.querySelector("#newEduExperience");
+    const allEdu = document.querySelector("#edu");
+    educationSection.style.display = "inline";
+    eduSectionInputs.style.display = "none";
+    if (eduSectionInputs.style.display === "none") {
+      eduSectionInputs.style.display = "inline";
+      addEduButton.style.display = "none";
+      eduHistory.style.display = "none";
+      allEdu.style.paddingBottom = "8px";
+    }
+    if (
+      eduSectionInputs.style.display === "inline" &&
+      addEduBottom.style.paddingBottom === "80px"
+    ) {
+      addEduBottom.style.paddingBottom = "8px";
+    }
+  }
 
+  function hideEduInputs() {
+    const eduSectionInputs = document.querySelector(".eduInputs");
+    const addEduButton = document.querySelector("#addEdu");
+    const eduHistory = document.querySelector("#eduHist");
+    const addEduBottom = document.querySelector("#addButtonEdu");
+    const educationSection = document.querySelector("#newEduExperience");
+    const allEdu = document.querySelector("#edu");
+
+    // Hide the education input section
+    eduSectionInputs.style.display = "none";
+    
+    // Show the add education button and the education history
+    addEduButton.style.display = "inline";
+    eduHistory.style.display = "inline";
+
+    // Reset the padding of the all education section
+    // allEdu.style.paddingBottom = "12px"; // Assuming the default padding is 80px
+
+    // Adjust the bottom padding for the add education button, if needed
+        addEduBottom.style.paddingBottom = "12px";
+}
+
+  // Create a function to remove the excess height of addButtonEdu when the inputs are displayed and bring it back when not
+  function toggleHeightEdu() {
+    const eduBottom = document.querySelector("#addButtonEdu");
+    const education = document.querySelector(".education");
+    // add the class heightAdjust to the eduBottom element
+    eduBottom.classList.toggle("heightAdjust");
+    education.classList.toggle("heightAdjustEdu");
+  }
 
   // Helper function to adjust spacing in Professional section after saving a new position
   function toggleHeight() {
@@ -477,7 +549,7 @@ function showProfessionalExperienceHeader() {
       return updatedEmployers;
     });
     setEmployer(""); // Clear the input field if needed
-  };  
+  };
 
   const handleSaveCity = (newCity) => {
     setCities((prevCities) => {
@@ -489,15 +561,21 @@ function showProfessionalExperienceHeader() {
 
   const handleSaveStartMonth = (newStartMonth) => {
     setStartMonths((prevStartMonths) => {
-      const updatedStartMonths = [...prevStartMonths, { startMonth: newStartMonth }];
+      const updatedStartMonths = [
+        ...prevStartMonths,
+        { startMonth: newStartMonth },
+      ];
       return updatedStartMonths;
     });
     setStartMonth(""); // Clear the input field if needed
   };
-  
+
   const handleSaveStartYear = (newStartYear) => {
     setStartYears((prevStartYears) => {
-      const updatedStartYears = [...prevStartYears, { startYear: newStartYear }];
+      const updatedStartYears = [
+        ...prevStartYears,
+        { startYear: newStartYear },
+      ];
       return updatedStartYears;
     });
     setStartYear(""); // Clear the input field if needed
@@ -510,14 +588,14 @@ function showProfessionalExperienceHeader() {
     });
     setEndMonth(""); // Clear the input field if needed
   };
-  
+
   const handleSaveEndYear = (newEndYear) => {
     setEndYears((prevEndYears) => {
       const updatedEndYears = [...prevEndYears, { endYear: newEndYear }];
       return updatedEndYears;
     });
     setEndYear(""); // Clear the input field if needed
-  };  
+  };
 
   const handleSavePresent = (newPresent) => {
     setPresents((prevPresents) => {
@@ -529,11 +607,11 @@ function showProfessionalExperienceHeader() {
   // Clear the quill editor content
   function clearQuillHTML() {
     // Select the existing element with a specific class name
-    const qleditor = document.querySelector('#employerDescriptionQlEditor');
-  
+    const qleditor = document.querySelector("#employerDescriptionQlEditor");
+
     if (qleditor) {
       // Clear the innerHTML of the selected element
-      qleditor.innerHTML = '';
+      qleditor.innerHTML = "";
     }
   }
 
@@ -551,157 +629,173 @@ function showProfessionalExperienceHeader() {
     clearQuillHTML();
   };
 
-// Clear all the Professional section input fields AND hide the Professional section
-const clearInputFields2 = () => {
-  setPosition(""); // Clear position field
-  setEmployer(""); // Clear employer field
-  setCity(""); // Clear city field
-  setStartMonth(""); // Clear startMonth field
-  setStartYear(""); // Clear startYear field
-  setEndMonth(""); // Clear endMonth field
-  setEndYear(""); // Clear endYear field
-  setPresent(false); // Clear present checkbox
-  handleEmployerDescriptionChange(""); // Clear the Quill editor content
-  clearQuillHTML();
-  // If the present checkbox is checked, returns to unchecked
-  handleCheckboxChange(false);
-  collapseProfessional();
+  // Clear all the education section input fields
+  const clearInputFieldsEdu = () => {
+    // Resets fields
+    setDegree(""); // Clear degree field
+    setSchool(""); // Clear school field
+    setSchoolAddress(""); // Clear schoolAddress field
+    setSchoolStartMonth(""); // Clear schoolStartMonth field
+    setSchoolStartYear(""); // Clear schoolStartYear field
+    setSchoolEndMonth(""); // Clear schoolEndMonth field
+    setSchoolEndYear(""); // Clear schoolEndYear field
+    setMajor(""); // Clear major field
 
-  const profHistory = document.querySelector('#profHist');
-  profHistory.style.display = 'inline';
-  // This is a hacky way to get the dataAttribute from the previous edit function. I'm sure there's a better way to do this.
-  let profEdit = profHistory.getAttribute('data-attribute');
+    // Hides the input fields and returns to the add button screen
+    hideEduInputs();
+  };
 
-  // Get the div that will house the validation error messages
-  const profCollapsible = document.querySelector(".profInputs");
-  const addProfButton = document.querySelector("#addProf");
-  const addButtonProf = document.querySelector('#addButtonProf');
-  if (profExpEntries.length > 0) {
-    addButtonProf.style.paddingBottom = "80px";
-  }
-  profCollapsible.style.display = "none";
-  addProfButton.style.display = "inline";
-  addProfButton.style.top = "0px";
+  // Clear all the Professional section input fields AND hide the Professional section
+  const clearInputFields2 = () => {
+    setPosition(""); // Clear position field
+    setEmployer(""); // Clear employer field
+    setCity(""); // Clear city field
+    setStartMonth(""); // Clear startMonth field
+    setStartYear(""); // Clear startYear field
+    setEndMonth(""); // Clear endMonth field
+    setEndYear(""); // Clear endYear field
+    setPresent(false); // Clear present checkbox
+    handleEmployerDescriptionChange(""); // Clear the Quill editor content
+    clearQuillHTML();
+    // If the present checkbox is checked, returns to unchecked
+    handleCheckboxChange(false);
+    collapseProfessional();
 
-  // Get the div that will house the validation error messages
-  const jobRequired = document.querySelector("#jobReq");
-  const employerRequired = document.querySelector("#employerReq");
-  const positionBorder = document.querySelector("#position");
-  const employerBorder = document.querySelector("#employerInput");
+    const profHistory = document.querySelector("#profHist");
+    profHistory.style.display = "inline";
+    // This is a hacky way to get the dataAttribute from the previous edit function. I'm sure there's a better way to do this.
+    let profEdit = profHistory.getAttribute("data-attribute");
 
-  // Reset the height of the Professional history section
-  toggleHeight();
+    // Get the div that will house the validation error messages
+    const profCollapsible = document.querySelector(".profInputs");
+    const addProfButton = document.querySelector("#addProf");
+    const addButtonProf = document.querySelector("#addButtonProf");
+    if (profExpEntries.length > 0) {
+      addButtonProf.style.paddingBottom = "80px";
+    }
+    profCollapsible.style.display = "none";
+    addProfButton.style.display = "inline";
+    addProfButton.style.top = "0px";
 
-  // Reverse swapping newProxExp and editProfEntryRH
-  function reverseSwap() {
-    const newProfExp = document.querySelector("#newProfExperience");
-    const profHistory = document.querySelector('#profHist');
-    let profEdit = profHistory.getAttribute('data-attribute');
-    const editProfEntryRH = document.querySelector(
-      "#profKey" + profEdit
-    );
-    
-    if (newProfExp && editProfEntryRH) {
-      const parent1 = editProfEntryRH.parentNode;
-      const parent2 = newProfExp.parentNode;
-      const nextSibling1 = editProfEntryRH.nextSibling;
-      parent2.insertBefore(editProfEntryRH, newProfExp);
+    // Get the div that will house the validation error messages
+    const jobRequired = document.querySelector("#jobReq");
+    const employerRequired = document.querySelector("#employerReq");
+    const positionBorder = document.querySelector("#position");
+    const employerBorder = document.querySelector("#employerInput");
 
-      if (nextSibling1) {
-        parent1.insertBefore(newProfExp, nextSibling1);
-      } else {
-        parent1.appendChild(newProfExp);
+    // Reset the height of the Professional history section
+    toggleHeight();
+
+    // Reverse swapping newProxExp and editProfEntryRH
+    function reverseSwap() {
+      const newProfExp = document.querySelector("#newProfExperience");
+      const profHistory = document.querySelector("#profHist");
+      let profEdit = profHistory.getAttribute("data-attribute");
+      const editProfEntryRH = document.querySelector("#profKey" + profEdit);
+
+      if (newProfExp && editProfEntryRH) {
+        const parent1 = editProfEntryRH.parentNode;
+        const parent2 = newProfExp.parentNode;
+        const nextSibling1 = editProfEntryRH.nextSibling;
+        parent2.insertBefore(editProfEntryRH, newProfExp);
+
+        if (nextSibling1) {
+          parent1.insertBefore(newProfExp, nextSibling1);
+        } else {
+          parent1.appendChild(newProfExp);
+        }
       }
     }
-  }
-  // Reset the error messages
-  jobRequired.className = "subLabel";
-  employerRequired.className = "subLabel";
-  positionBorder.style.border = "1px solid rgb(61, 61, 64)";
-  employerBorder.style.border = "1px solid rgb(61, 61, 64)";
+    // Reset the error messages
+    jobRequired.className = "subLabel";
+    employerRequired.className = "subLabel";
+    positionBorder.style.border = "1px solid rgb(61, 61, 64)";
+    employerBorder.style.border = "1px solid rgb(61, 61, 64)";
 
-  // Hide the professional section on the right
-  const professionalSection = document.querySelector("#newProfExperience");
-  professionalSection.style.display = "none";
+    // Hide the professional section on the right
+    const professionalSection = document.querySelector("#newProfExperience");
+    professionalSection.style.display = "none";
 
-  // If profEdit variable exists, reverse swaps the live edited section on the right-half from the professional entry you were editing
-  if (profEdit !== null) {
-    console.log("This is where things get wonky");
-    let dataAttribute = profEdit;
-    console.log("dataAttribute =  " + dataAttribute);
-    console.log("ProfEdit =  " + profEdit);
-    // Gets the sections again
-    const newProfExp = document.querySelector("#newProfExperience");
-    const editProfEntryRH = document.querySelector(
-      "#profKey" + dataAttribute
-    );
-    const savedProfExperience = document.querySelector(
-      "#savedProfExperience"
-    );
+    // If profEdit variable exists, reverse swaps the live edited section on the right-half from the professional entry you were editing
+    if (profEdit !== null) {
+      console.log("This is where things get wonky");
+      let dataAttribute = profEdit;
+      console.log("dataAttribute =  " + dataAttribute);
+      console.log("ProfEdit =  " + profEdit);
+      // Gets the sections again
+      const newProfExp = document.querySelector("#newProfExperience");
+      const editProfEntryRH = document.querySelector(
+        "#profKey" + dataAttribute
+      );
+      const savedProfExperience = document.querySelector(
+        "#savedProfExperience"
+      );
 
-    // Returns newProfExp to the correct position, and returns the edited entry on right-half to the correct order. Only runs if newProfExp not already in the correct position
-    if (savedProfExperience.nextSibling !== newProfExp) {
-      if (newProfExp && editProfEntryRH && savedProfExperience) {
-        // Swaps newProfExp with editProfEntryRH
-        newProfExp.replaceWith(editProfEntryRH);
+      // Returns newProfExp to the correct position, and returns the edited entry on right-half to the correct order. Only runs if newProfExp not already in the correct position
+      if (savedProfExperience.nextSibling !== newProfExp) {
+        if (newProfExp && editProfEntryRH && savedProfExperience) {
+          // Swaps newProfExp with editProfEntryRH
+          newProfExp.replaceWith(editProfEntryRH);
 
-        // Get the parent of savedProfExperience
-        const parent = savedProfExperience.parentNode;
+          // Get the parent of savedProfExperience
+          const parent = savedProfExperience.parentNode;
 
-        // Move newProfExp to be the sibling immediately after savedProfExperience
-        parent.insertBefore(newProfExp, savedProfExperience.nextSibling);
+          // Move newProfExp to be the sibling immediately after savedProfExperience
+          parent.insertBefore(newProfExp, savedProfExperience.nextSibling);
+        }
       }
-    }
-   
-    editProfEntryRH.classList.remove("hide");
-    editProfEntryRH.style.display = "block";
 
+      editProfEntryRH.classList.remove("hide");
+      editProfEntryRH.style.display = "block";
     }
 
     // Reset the edit mode
     profEdit = null;
-    profHistory.removeAttribute('data-attribute');
+    profHistory.removeAttribute("data-attribute");
 
     // If profExpEntries is 0 (ie. cancelled on the first entry), hide the professional header
     if (profExpEntries.length < 1) {
-      const professionalExperienceHeader = document.querySelector('#professionalExperienceHeader');
+      const professionalExperienceHeader = document.querySelector(
+        "#professionalExperienceHeader"
+      );
       professionalExperienceHeader.classList.add("hide");
-    }
-};
-
-// Pass variables to actively see whether the checkbox is checked or not
-const [isProfessionalPresentChecked, setIsProfessionalPresentChecked] = useState(false);
-
-  // Function on checkbox change
-  const handleCheckboxChange = (isChecked) => {
-  const endSection = document.querySelector('#endMonthYear'); 
-  const endLabel = document.querySelector('#endLabelProfessional'); 
-  const presentSection = document.querySelector('.presentCheck'); 
-  const endOpt = document.querySelector('#endOpt'); 
-    // Update the state to reflect the checkbox status
-    setIsProfessionalPresentChecked(isChecked);
-    if (isChecked) {
-      setEndMonth('Present'); // Update state variable
-      setEndYear('');
-      endSection.classList.add('hide-section');
-      endLabel.classList.add('hide-section');
-      endOpt.classList.add('hide-section');
-      presentSection.classList.add('move-section');
-    } else {
-      setEndMonth(''); // Clear the value when the checkbox is not checked
-      setEndYear(''); // Clear the value for endYear as well if necessary
-      endSection.classList.remove('hide-section');
-      endLabel.classList.remove('hide-section');
-      endOpt.classList.remove('hide-section');
-      presentSection.classList.remove('move-section');
-      const endMonthField = document.querySelector('#endMonthField');
-      const endYearField = document.querySelector('#endYearField');
-      endMonthField.value = 'Month';
-      endYearField.value = '';
     }
   };
 
-// A function to save all the Professional section data
+  // Pass variables to actively see whether the checkbox is checked or not
+  const [isProfessionalPresentChecked, setIsProfessionalPresentChecked] =
+    useState(false);
+
+  // Function on checkbox change
+  const handleCheckboxChange = (isChecked) => {
+    const endSection = document.querySelector("#endMonthYear");
+    const endLabel = document.querySelector("#endLabelProfessional");
+    const presentSection = document.querySelector(".presentCheck");
+    const endOpt = document.querySelector("#endOpt");
+    // Update the state to reflect the checkbox status
+    setIsProfessionalPresentChecked(isChecked);
+    if (isChecked) {
+      setEndMonth("Present"); // Update state variable
+      setEndYear("");
+      endSection.classList.add("hide-section");
+      endLabel.classList.add("hide-section");
+      endOpt.classList.add("hide-section");
+      presentSection.classList.add("move-section");
+    } else {
+      setEndMonth(""); // Clear the value when the checkbox is not checked
+      setEndYear(""); // Clear the value for endYear as well if necessary
+      endSection.classList.remove("hide-section");
+      endLabel.classList.remove("hide-section");
+      endOpt.classList.remove("hide-section");
+      presentSection.classList.remove("move-section");
+      const endMonthField = document.querySelector("#endMonthField");
+      const endYearField = document.querySelector("#endYearField");
+      endMonthField.value = "Month";
+      endYearField.value = "";
+    }
+  };
+
+  // A function to save all the Professional section data
   const handleSaveAll = () => {
     // Hacky way of getting the data attribute of the field being edited from the profHist element. Since doing this, I've realized that I just need to initialize the variable dataAttribute outside of the App function. For now, this works.
     const profHistory = document.getElementById("profHist");
@@ -1111,10 +1205,18 @@ const [isProfessionalPresentChecked, setIsProfessionalPresentChecked] = useState
       }
 
       // --- Update the left-hand section based on the edits made ---
-      const jobTitleUpdate = document.querySelector(`#jobTitle${dataAttribute}`);
-      const employerUpdate = document.querySelector(`#employer${dataAttribute}`);
-      const professionalDatesUpdate = document.querySelector(`#professionalDates${dataAttribute}`);
-      const professionalAddressUpdate = document.querySelector(`#professionalAddress${dataAttribute}`);
+      const jobTitleUpdate = document.querySelector(
+        `#jobTitle${dataAttribute}`
+      );
+      const employerUpdate = document.querySelector(
+        `#employer${dataAttribute}`
+      );
+      const professionalDatesUpdate = document.querySelector(
+        `#professionalDates${dataAttribute}`
+      );
+      const professionalAddressUpdate = document.querySelector(
+        `#professionalAddress${dataAttribute}`
+      );
 
       // Update based on the current professional input field values
       jobTitleUpdate.innerHTML = position;
@@ -1149,10 +1251,201 @@ const [isProfessionalPresentChecked, setIsProfessionalPresentChecked] = useState
       // Replace the old profExp object with the new one
       profExpEntries[dataAttribute - 1] = profExpObject;
     }
+  };
+
+  // A function to save all the education section data
+  const handleSaveEdu = () => {
     
-  } 
+    // If dataAttributeEdu is null, then the user is adding a new entry
+    // if (dataAttributeEdu === null) {
+    // }
+    // Get and trim the value of the school fields
+    const schoolValue = school.trim();
 
+    // Get the div that will house the validation error message
+    const schoolRequired = document.querySelector("#schoolReq");
+    const schoolBorder = document.querySelector("#school");
 
+    // Controls the validation errors
+    if (!schoolValue) {
+      schoolRequired.className = "error";
+      schoolBorder.style.border = "1px solid red";
+      return;
+    }
+
+    // Reset the validation error message
+    schoolRequired.className = "subLabel";
+    schoolBorder.style.border = "1px solid rgb(61, 61, 64)";
+
+    // Helper function to toggle the height of the education section
+    toggleHeightEdu();
+
+    // Clears all the input fields
+    clearInputFieldsEdu();
+
+    // push education values to arrays
+    schools.push(school);
+    degrees.push(degree);
+    schoolAddresses.push(schoolAddress);
+    schoolStartMonths.push(schoolStartMonth);
+    schoolStartYears.push(schoolStartYear);
+    schoolEndMonths.push(schoolEndMonth);
+    schoolEndYears.push(schoolEndYear);
+    majors.push(major);
+
+    // Create the eduExp object
+    let eduExpObject = {
+      school: school,
+      degree: degree,
+      schoolAddress: schoolAddress,
+      schoolStartMonth: schoolStartMonth,
+      schoolStartYear: schoolStartYear,
+      schoolEndMonth: schoolEndMonth,
+      schoolEndYear: schoolEndYear,
+      major: major,
+    };
+
+    // Push the eduExpObject to the eduExpEntries array
+    eduExpEntries.push(eduExpObject);
+
+    // Create a new <div> element to hold the education section information in right-half
+    const educationSection = document.querySelector("#newEduExperience");
+    const showEducationExperience = `<div id="eduKey${eduExpEntries.length}">${educationSection.innerHTML}</div>`;
+    const saveEdu = document.querySelector("#savedEducationExperience");
+    saveEdu.innerHTML += showEducationExperience;
+
+    // Create a new <div> element to hold the education history information
+    const newEduHistoryEntry = document.createElement("div");
+    newEduHistoryEntry.className = "eduHistoryEntry";
+    newEduHistoryEntry.innerHTML =
+      "<hr id='topLine'>" +
+      '<span class="editSection" id="editEduEntry' +
+      eduExpEntries.length +
+      '" data-attribute=' +
+      eduExpEntries.length +
+      ">" +
+      '<div id="top-top">' +
+      '<div class="top-left" id="school' +
+      schools.length +
+      '">' +
+      school +
+      "</div>" +
+      '<div class="top-right" id="degree' +
+      degrees.length +
+      '">' +
+      ", " +
+      degree +
+      "</div>" +
+      "</div>" +
+      '<div id="bottom-bottom">' +
+      "</span>" +
+      '<div id="bottom-row">' +
+      '<div class="bottom-left" id="eduDates' +
+      schools.length +
+      '">' +
+      " " +
+      schoolStartMonth +
+      " " +
+      schoolStartYear +
+      " - " +
+      schoolEndMonth +
+      " " +
+      schoolEndYear +
+      "</div>" +
+      "|" +
+      '<div class="bottom-right" id="eduAddress' +
+      schools.length +
+      '">' +
+      schoolAddress +
+      "</div>" +
+      "</div>" +
+      "<div id=" +
+      '"eduSection' +
+      eduExpEntries.length +
+      '"' +
+      'class="toggle-button"' +
+      ">" +
+      '<img src="visibility_FILL.svg" alt="Visible" class="visible visiButton" id="visi' +
+      eduExpEntries.length +
+      '" data-attribute="' +
+      eduExpEntries.length +
+      '" style="display: inline;">' +
+      '<img src="visibility_off.svg" alt="Hidden" class="hidden hidButton" id="hid' +
+      eduExpEntries.length +
+      '" data-attribute="' +
+      eduExpEntries.length +
+      '" style="display: none;">' +
+      "</div>" +
+      "</div>" +
+      "<hr>";
+
+    // Create a variable that stores all the education history information
+    eduHistoryInfo = newEduHistoryEntry.innerHTML;
+    // Append the new <div> element to the education history section
+    let eduHistory = document.querySelector("#eduHist");
+    eduHistory.appendChild(newEduHistoryEntry);
+
+    // Attach click event handlers in a loop to the visibility buttons
+    for (let i = 1; i < eduExpEntries.length + 1; i++) {
+      let visibleIcon = document.querySelector(`#visi${i}`);
+      let hiddenIcon = document.querySelector(`#hid${i}`);
+
+      if (visibleIcon) {
+        visibleIcon.onclick = visiButtonClick;
+      }
+
+      if (hiddenIcon) {
+        hiddenIcon.onclick = visiButtonClick;
+      }
+    }
+
+    // Function to handle visibility button click
+    function visiButtonClick(event) {
+      const dataAttribute = event.currentTarget.dataset.attribute;
+      let visibleIcon = document.querySelector(`#visi${dataAttribute}`);
+      let hiddenIcon = document.querySelector(`#hid${dataAttribute}`);
+      let rightSection = document.querySelector(`#profKey${dataAttribute}`);
+
+      if (visibleIcon.style.display === "inline") {
+        visibleIcon.style.display = "none";
+        hiddenIcon.style.display = "inline";
+        rightSection.style.display = "none";
+      } else {
+        visibleIcon.style.display = "inline";
+        hiddenIcon.style.display = "none";
+        rightSection.style.display = "inline";
+      }
+    }
+
+    // Attach click event handlers in a loop to the editEduSection buttons
+    for (let i = 1; i < eduExpEntries.length + 1; i++) {
+      let editSection = document.querySelector(`#editEduEntry${i}`);
+
+      if (editSection) {
+        editSection.onclick = function (event) {
+          // Check if the clicked element or its parent has the classes 'visible' or 'hidden'
+          const clickedElement = event.target || event.currentTarget;
+          if (
+            !clickedElement.classList.contains("visible") &&
+            !clickedElement.classList.contains("hidden")
+          ) {
+            editEduSection(event);
+          }
+        };
+      }
+    }
+
+    // Adjust button spacing
+    const addEduExp = document.querySelector("#addEdu");
+    const addEduBottom = document.querySelector("#addButtonEdu");
+    addEduExp.style.top = "60px";
+    addEduBottom.style.paddingBottom = "80px";
+
+    // Hide the new education section on right-half until the education inputs are showing again
+    educationSection.style.display = "none";
+    
+
+  }
 
   return (
     <div className="App">
@@ -1365,7 +1658,7 @@ const [isProfessionalPresentChecked, setIsProfessionalPresentChecked] = useState
                     showProfessionalExperienceHeader();
                   }}
                 >
-                  Add Professional Experience
+                  + Professional Experience
                 </button>
               </div>
             </div>
@@ -1382,29 +1675,29 @@ const [isProfessionalPresentChecked, setIsProfessionalPresentChecked] = useState
               />
             </div>
             <div className="education collapsed" id="edu">
-              <div className="topSubtitle">
-                <label className="input-text">School</label>
-                <div className="subLabel">Required</div>
-              </div>
-              <SchoolInput
-                school={school}
-                onSchoolChange={handleSchoolChange}
-              />
-              <div className="topSubtitle">
-                <label className="input-text">Degree</label>
-                <div className="subLabel">Recommended</div>
-              </div>
-              <DegreeInput
-                degree={degree}
-                onDegreeChange={handleDegreeChange}
-              />
-              <div className="topSubtitle">
-                <label className="input-text">Field of Study</label>
-                <div className="subLabel">Recommended</div>
-              </div>
-              <MajorInput major={major} onMajorChange={handleMajorChange} />
-              <div id="educationBottom">
-                <div className="emailNumber">
+              <div className="eduInputs">
+                <div className="topSubtitle">
+                  <label className="input-text">School</label>
+                  <div className="subLabel" id="schoolReq">Required</div>
+                </div>
+                <SchoolInput
+                  school={school}
+                  onSchoolChange={handleSchoolChange}
+                />
+                <div className="topSubtitle">
+                  <label className="input-text">Degree</label>
+                  <div className="subLabel">Recommended</div>
+                </div>
+                <DegreeInput
+                  degree={degree}
+                  onDegreeChange={handleDegreeChange}
+                />
+                <div className="topSubtitle">
+                  <label className="input-text">Field of Study</label>
+                  <div className="subLabel">Recommended</div>
+                </div>
+                <MajorInput major={major} onMajorChange={handleMajorChange} />
+                <div id="educationBottom">
                   <div id="city">
                     <div className="topSubtitle">
                       <label className="input-text">Address</label>
@@ -1415,41 +1708,93 @@ const [isProfessionalPresentChecked, setIsProfessionalPresentChecked] = useState
                       onSchoolAddressChange={handleSchoolAddressChange}
                     />
                   </div>
-                </div>
-                <div className="emailNumber">
-                  <div id="startDate">
-                    <div className="topSubtitle">
-                      <label className="input-text">Start Date</label>
-                      <div className="subLabel">Optional</div>
+                  <div className="emailNumber datePickers">
+                    <div>
+                      <div id="startDate">
+                        <div className="topSubtitle">
+                          <label className="input-text">Start Date</label>
+                          <div className="subLabel">Optional</div>
+                        </div>
+                        <div className="selectInputs2">
+                          <SchoolStartMonthInput
+                            schoolStartMonth={schoolStartMonth}
+                            onSchoolStartMonthChange={
+                              handleSchoolStartMonthChange
+                            }
+                          />
+                          <SchoolStartYearInput
+                            schoolStartYear={schoolStartYear}
+                            onSchoolStartYearChange={
+                              handleSchoolStartYearChange
+                            }
+                          />
+                        </div>
+                      </div>
                     </div>
-                    <div className="selectInputs2">
-                      <SchoolStartMonthInput
-                        schoolStartMonth={schoolStartMonth}
-                        onSchoolStartMonthChange={handleSchoolStartMonthChange}
-                      />
-                      <SchoolStartYearInput
-                        schoolStartYear={schoolStartYear}
-                        onSchoolStartYearChange={handleSchoolStartYearChange}
-                      />
+                    <div>
+                      <div id="endDate">
+                        <div className="topSubtitle">
+                          <label className="input-text">End Date</label>
+                          <div className="subLabel">Optional</div>
+                        </div>
+                        <div className="selectInputs2">
+                          <SchoolEndMonthInput
+                            schoolEndMonth={schoolEndMonth}
+                            onSchoolEndMonthChange={handleSchoolEndMonthChange}
+                          />
+                          <SchoolEndYearInput
+                            schoolEndYear={schoolEndYear}
+                            onSchoolEndYearChange={handleSchoolEndYearChange}
+                          />
+                        </div>
+                        <button
+                          className="cancelButton2"
+                          onClick={() => {
+                            clearInputFieldsEdu();
+                            toggleHeightEdu();
+                          }}
+                        >
+                          Cancel
+                        </button>
+                        <button
+                          className="saveButton2"
+                          onClick={() =>
+                            handleSaveEdu()
+                          //   // handleSaveAll(
+                          //   //   positions,
+                          //   //   employers,
+                          //   //   cities,
+                          //   //   countries,
+                          //   //   startMonths,
+                          //   //   startYears,
+                          //   //   endMonths,
+                          //   //   endYears,
+                          //   //   presents
+                          //   // )
+                          }
+                        >
+                          Save
+                        </button>
+                      </div>
                     </div>
                   </div>
-                  <div id="endDate">
-                    <div className="topSubtitle">
-                      <label className="input-text">End Date</label>
-                      <div className="subLabel">Optional</div>
-                    </div>
-                    <div className="selectInputs2">
-                      <SchoolEndMonthInput
-                        schoolEndMonth={schoolEndMonth}
-                        onSchoolEndMonthChange={handleSchoolEndMonthChange}
-                      />
-                      <SchoolEndYearInput
-                        schoolEndYear={schoolEndYear}
-                        onSchoolEndYearChange={handleSchoolEndYearChange}
-                      />
-                    </div>
-                  </div>
                 </div>
+              </div>
+              <div>
+                <div id="eduHist"></div>
+              </div>
+              <div id="addButtonEdu">
+                <button
+                  className="addButton"
+                  id="addEdu"
+                  onClick={() => {
+                    showEduInputs();
+                    toggleHeightEdu();
+                    // showProfessionalExperienceHeader();
+                  }}
+                >
+                  + Education
+                </button>
               </div>
             </div>
           </div>
@@ -1529,7 +1874,7 @@ const [isProfessionalPresentChecked, setIsProfessionalPresentChecked] = useState
               <span className="c2 c7" />
             </p>
             <div id="savedEducationExperience">{showEducationExperience}</div>
-            <div id="newEducationExperience">{newEducationSaved}</div>
+            <div id="newEduExperience">{newEducationSaved}</div>
             <p className="c8">
               <span className="c2 c11">SKILLS</span>
             </p>
