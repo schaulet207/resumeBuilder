@@ -642,6 +642,90 @@ function App() {
 
     // Hides the input fields and returns to the add button screen
     hideEduInputs();
+
+    // Hacky way to get the dataAttribute from the previous edit function
+    const eduHistory = document.querySelector("#eduHist");
+    let dataAttributeEdu = eduHistory.getAttribute("data-attribute");
+
+    // Get the divs that will house the validation error messages
+    const eduCollapsible = document.querySelector(".eduInputs");
+    const addEduButton = document.querySelector("#addEdu");
+    const addButtonEdu = document.querySelector("#addButtonEdu");
+    if (eduExpEntries.length > 0) {
+      addButtonEdu.style.paddingBottom = "80px";
+    }
+
+    // Basically what hideEduInputs does. I think this can stay commented out
+    // eduCollapsible.style.display = "none";
+    // addEduButton.style.display = "inline";
+    // addEduButton.style.top = "0px";
+
+    // Get the div that will house the validation error message
+    const schoolRequired = document.querySelector("#schoolReq");
+    const schoolBorder = document.querySelector("#school");
+
+    // Reset the validation error message
+    schoolRequired.className = "subLabel";
+    schoolBorder.style.border = "1px solid rgb(61, 61, 64)";
+
+    // Create a reverseSwap function to reverse the swap of the newEduExp and editEduEntryRH if dataAttributeEdu is not null
+    function reverseSwap() {
+      const newEduExp = document.querySelector("#newEduExperience");
+      const eduHistory = document.querySelector("#eduHist");
+      let dataAttributeEdu = eduHistory.getAttribute("data-attribute");
+      const editEduEntryRH = document.querySelector("#eduKey" + dataAttributeEdu);
+
+      if (newEduExp && editEduEntryRH) {
+        const parent1 = editEduEntryRH.parentNode;
+        const parent2 = newEduExp.parentNode;
+        const nextSibling1 = editEduEntryRH.nextSibling;
+        parent2.insertBefore(editEduEntryRH, newEduExp);
+
+        if (nextSibling1) {
+          parent1.insertBefore(newEduExp, nextSibling1);
+        } else {
+          parent1.appendChild(newEduExp);
+        }
+      }
+    }
+
+    // Hide the education section on the right
+    const educationSection = document.querySelector("#newEduExperience");
+    educationSection.style.display = "none";
+
+    // If dataAttributeEdu exists, reverse swaps the live edited section on the right-half from the education entry you were editing
+    if (dataAttributeEdu !== null) {
+      let dataAttribute = dataAttributeEdu;
+      // Gets the sections again
+      const newEduExp = document.querySelector("#newEduExperience");
+      const editEduEntryRH = document.querySelector("#eduKey" + dataAttribute);
+      editEduEntryRH.style.display = "inline";
+      const savedEduExperience = document.querySelector(
+        "#savedEducationExperience"
+      );
+      // Returns newEduExp to the correct position, and returns the edited entry on right-half to the correct order. Only runs if newEduExp not already in the correct position
+      if (savedEduExperience.nextSibling !== newEduExp) {
+        if (newEduExp && editEduEntryRH && savedEduExperience) {
+          // Swaps newEduExp with editEduEntryRH
+          newEduExp.replaceWith(editEduEntryRH);
+
+          // Get the parent of savedEduExperience
+          const parent = savedEduExperience.parentNode;
+
+          // Move newEduExp to be the sibling immediately after savedEduExperience
+          parent.insertBefore(newEduExp, savedEduExperience.nextSibling);
+        }
+      }
+    // If eduExpEntries is 0 (ie. cancelled on the first entry), hide the education header
+    if (eduExpEntries.length < 1) {
+      const educationHeader = document.querySelector("#educationHeader");
+      educationHeader.classList.add("hide");
+    }
+  };
+
+   // Reset the edit mode
+   dataAttributeEdu = null;
+   eduHistory.removeAttribute("data-attribute");
   };
 
   // Clear all the Professional section input fields AND hide the Professional section
@@ -726,7 +810,6 @@ function App() {
       const savedProfExperience = document.querySelector(
         "#savedProfExperience"
       );
-
       // Returns newProfExp to the correct position, and returns the edited entry on right-half to the correct order. Only runs if newProfExp not already in the correct position
       if (savedProfExperience.nextSibling !== newProfExp) {
         if (newProfExp && editProfEntryRH && savedProfExperience) {
