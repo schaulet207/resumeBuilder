@@ -310,6 +310,12 @@ function App() {
     professionalExperienceHeader.classList.remove("hide");
   }
 
+  // A function that determines when to display the educationHeader
+  function showEducationHeader() {
+    const educationHeader = document.querySelector("#educationHeader");
+    educationHeader.classList.remove("hide");
+  }
+
   // A variable to hold all of the professional experience
   const newProfSaved = (
     <div>
@@ -726,6 +732,13 @@ function App() {
    // Reset the edit mode
    dataAttributeEdu = null;
    eduHistory.removeAttribute("data-attribute");
+
+// If eduExpEntries is 0 (ie. cancelled on the first entry), hide the education header
+if (eduExpEntries.length < 1) {
+  const educationHeader = document.querySelector("#educationHeader");
+  educationHeader.classList.add("hide");
+}
+
   };
 
   // Clear all the Professional section input fields AND hide the Professional section
@@ -886,6 +899,12 @@ function App() {
       let visibleIcon = document.querySelector(`#visi${dataAttribute}`);
       let hiddenIcon = document.querySelector(`#hid${dataAttribute}`);
       let rightSection = document.querySelector(`#profKey${dataAttribute}`);
+
+      // Togle visibility true/false for the profExpEntries object at the index of dataAttribute - 1
+      profExpEntries[dataAttribute - 1].visibility = !profExpEntries[
+        dataAttribute - 1
+      ].visibility;
+      console.log(profExpEntries[dataAttribute - 1])
 
       if (visibleIcon.style.display === "inline") {
         visibleIcon.style.display = "none";
@@ -1052,6 +1071,7 @@ function App() {
         endYear: endYear,
         present: isProfessionalPresentChecked,
         employerDescription: employerDescription,
+        visibility: true,
       };
 
       // Push the profExpObject to the profExpEntries array
@@ -1349,6 +1369,12 @@ function App() {
       let hiddenIcon = document.querySelector(`#hidEdu${dataAttributeEdu}`);
       let rightSection = document.querySelector(`#eduKey${dataAttributeEdu}`);
 
+      // Togle visibility true/false for the eduExpEntries object at the index of dataAttributeEdu - 1
+      eduExpEntries[dataAttributeEdu - 1].visibility = !eduExpEntries[
+        dataAttributeEdu - 1
+      ].visibility;
+      console.log(eduExpEntries[dataAttributeEdu - 1])
+
       if (visibleIcon.style.display === "inline") {
         visibleIcon.style.display = "none";
         hiddenIcon.style.display = "inline";
@@ -1437,9 +1463,6 @@ function App() {
     // Helper function to toggle the height of the education section
     toggleHeightEdu();
 
-    // Clears all the input fields
-    clearInputFieldsEdu();
-
     // Push education values to arrays
     schools.push(school);
     degrees.push(degree);
@@ -1460,10 +1483,14 @@ function App() {
       schoolEndMonth: schoolEndMonth,
       schoolEndYear: schoolEndYear,
       major: major,
+      visibility: true,
     };
 
     // Push the eduExpObject to the eduExpEntries array
     eduExpEntries.push(eduExpObject);
+
+    // Clears all the input fields
+    clearInputFieldsEdu();
 
     // Create a new <div> element to hold the education section information in right-half
     const educationSection = document.querySelector("#newEduExperience");
@@ -2042,7 +2069,7 @@ function App() {
                   onClick={() => {
                     showEduInputs();
                     toggleHeightEdu();
-                    // showProfessionalExperienceHeader();
+                    showEducationHeader();
                   }}
                 >
                   + Education
@@ -2117,11 +2144,13 @@ function App() {
             </p>
             <div id="savedProfExperience">{showProfessionalExperience}</div>
             <div id="newProfExperience">{newProfSaved}</div>
+            <div className="hide" id="educationHeader">
             <p className="c8">
               <span className="c2 c11">EDUCATION </span>
             </p>
             <hr />
             <p />
+            </div>
             <p className="c6">
               <span className="c2 c7" />
             </p>
