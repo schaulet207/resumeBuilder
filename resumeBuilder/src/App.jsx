@@ -1648,15 +1648,17 @@ function App() {
     );
 
     // Returns newEduExp to the correct position, and returns the edited entry on right-half to the correct order
-    if (newEduExp && editEduEntryRH && savedEducationExperience) {
-      // Swaps newEduExp with editEduEntryRH
-      newEduExp.replaceWith(editEduEntryRH);
+    if (savedEducationExperience.nextSibling !== newEduExp) {
+      if (newEduExp && editEduEntryRH && savedEducationExperience) {
+        // Swaps newEduExp with editEduEntryRH
+        newEduExp.replaceWith(editEduEntryRH);
 
-      // Get the parent of savedEducationExperience
-      const parent = savedEducationExperience.parentNode;
+        // Get the parent of savedEduExperience
+        const parent = savedEducationExperience.parentNode;
 
-      // Move newEduExp to be the sibling immediately after savedEducationExperience
-      parent.insertBefore(newEduExp, savedEducationExperience.nextSibling);
+        // Move newEduExp to be the sibling immediately after savedEduExperience
+        parent.insertBefore(newEduExp, savedEducationExperience.nextSibling);
+      }
     }
 
     // Displays inline the correct eduKey section based on data attribute
