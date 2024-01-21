@@ -640,6 +640,10 @@ padding-inline-start: 40px;
   font-weight: normal;
 }
 
+.top-left {
+  max-width: 275px;
+}
+
 #bottom-bottom {
   display: flex;
   flex-direction: row;
@@ -670,6 +674,10 @@ padding-inline-start: 40px;
 }
 
 #profHist {
+  color: white;
+}
+
+#eduHist {
   color: white;
 }
 

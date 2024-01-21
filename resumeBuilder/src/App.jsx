@@ -891,10 +891,12 @@ function App() {
         visibleIcon.style.display = "none";
         hiddenIcon.style.display = "inline";
         rightSection.style.display = "none";
+        console.log("Prof Visibility Button Clicked")
       } else {
         visibleIcon.style.display = "inline";
         hiddenIcon.style.display = "none";
         rightSection.style.display = "inline";
+        console.log("Prof Visibility Button Clicked 2")
       }
     }
 
@@ -1343,8 +1345,8 @@ function App() {
     // Function to handle visibility button click
     function visiButtonClick(event) {
       const dataAttributeEdu = event.currentTarget.dataset.attribute;
-      let visibleIcon = document.querySelector(`#visi${dataAttributeEdu}`);
-      let hiddenIcon = document.querySelector(`#hid${dataAttributeEdu}`);
+      let visibleIcon = document.querySelector(`#visiEdu${dataAttributeEdu}`);
+      let hiddenIcon = document.querySelector(`#hidEdu${dataAttributeEdu}`);
       let rightSection = document.querySelector(`#eduKey${dataAttributeEdu}`);
 
       if (visibleIcon.style.display === "inline") {
@@ -1366,8 +1368,8 @@ function App() {
       const eduHistory = document.getElementById("eduHist");
 
       // Reset the visibility icon to visible when saving, in case the user had previously hidden it. Only do this when editing
-      let visibleIcon = document.querySelector(`#visi${dataAttributeEdu}`);
-      let hiddenIcon = document.querySelector(`#hid${dataAttributeEdu}`);
+      let visibleIcon = document.querySelector(`#visiEdu${dataAttributeEdu}`);
+      let hiddenIcon = document.querySelector(`#hidEdu${dataAttributeEdu}`);
       visibleIcon.style.display = "inline";
       hiddenIcon.style.display = "none";
 
@@ -1488,7 +1490,6 @@ function App() {
       '<div class="top-right" id="degree' +
       degrees.length +
       '">' +
-      ", " +
       degree +
       "</div>" +
       "</div>" +
@@ -1520,12 +1521,12 @@ function App() {
       '"' +
       'class="toggle-button"' +
       ">" +
-      '<img src="visibility_FILL.svg" alt="Visible" class="visible visiButton" id="visi' +
+      '<img src="visibility_FILL.svg" alt="Visible" class="visible visiButton" id="visiEdu' +
       eduExpEntries.length +
       '" data-attribute="' +
       eduExpEntries.length +
       '" style="display: inline;">' +
-      '<img src="visibility_off.svg" alt="Hidden" class="hidden hidButton" id="hid' +
+      '<img src="visibility_off.svg" alt="Hidden" class="hidden hidButton" id="hidEdu' +
       eduExpEntries.length +
       '" data-attribute="' +
       eduExpEntries.length +
@@ -1542,8 +1543,8 @@ function App() {
 
     // Attach click event handlers in a loop to the visibility buttons
     for (let i = 1; i < eduExpEntries.length + 1; i++) {
-      let visibleIcon = document.querySelector(`#visi${i}`);
-      let hiddenIcon = document.querySelector(`#hid${i}`);
+      let visibleIcon = document.querySelector(`#visiEdu${i}`);
+      let hiddenIcon = document.querySelector(`#hidEdu${i}`);
 
       if (visibleIcon) {
         visibleIcon.onclick = visiButtonClick;
@@ -1705,6 +1706,7 @@ function App() {
     eduExpEntries[dataAttributeEdu - 1] = eduExpObject;
     eduHistory.removeAttribute("data-attribute");
   }
+  console.log(eduExpEntries)
   }
 
   return (
