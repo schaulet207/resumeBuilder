@@ -906,16 +906,31 @@ if (eduExpEntries.length < 1) {
       ].visibility;
       console.log(profExpEntries[dataAttribute - 1])
 
+      // A function to check if all the entries are hidden, and if so, hide the professional experience header
+      function checkVisibility() {
+        if (profExpEntries.every(entry => entry.visibility === false)) {
+          const professionalExperienceHeader = document.querySelector(
+            "#professionalExperienceHeader"
+          );
+          professionalExperienceHeader.classList.add("hide");
+        } else {
+          const professionalExperienceHeader = document.querySelector(
+            "#professionalExperienceHeader"
+          );
+          professionalExperienceHeader.classList.remove("hide");
+        }
+    }
+    
+    checkVisibility();
+
       if (visibleIcon.style.display === "inline") {
         visibleIcon.style.display = "none";
         hiddenIcon.style.display = "inline";
         rightSection.style.display = "none";
-        console.log("Prof Visibility Button Clicked")
       } else {
         visibleIcon.style.display = "inline";
         hiddenIcon.style.display = "none";
         rightSection.style.display = "inline";
-        console.log("Prof Visibility Button Clicked 2")
       }
     }
 
@@ -1374,6 +1389,23 @@ if (eduExpEntries.length < 1) {
         dataAttributeEdu - 1
       ].visibility;
       console.log(eduExpEntries[dataAttributeEdu - 1])
+
+      // A function to check if all the entries are hidden, and if so, hide the education header
+      function checkVisibility() {
+        if (eduExpEntries.every(entry => entry.visibility === false)) {
+          const educationHeader = document.querySelector(
+            "#educationHeader"
+          );
+          educationHeader.classList.add("hide");
+        } else {
+          const educationHeader = document.querySelector(
+            "#educationHeader"
+          );
+          educationHeader.classList.remove("hide");
+        }
+    }
+
+    checkVisibility();
 
       if (visibleIcon.style.display === "inline") {
         visibleIcon.style.display = "none";
