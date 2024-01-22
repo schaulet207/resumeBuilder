@@ -946,6 +946,10 @@ if (eduExpEntries.length < 1) {
       visibleIcon.style.display = "inline";
       hiddenIcon.style.display = "none";
 
+      // Toggle visibility true/false for the profExpEntries object at the index of dataAttribute - 1
+      profExpEntries[dataAttribute - 1].visibility = true;
+
+
       if (profHistory) {
         profHistory.setAttribute("data-attribute", dataAttribute);
       }
@@ -1211,17 +1215,6 @@ if (eduExpEntries.length < 1) {
     } else {
       // Data attribute is NOT null here
 
-      // Instead of pushing values to the state arrays, use data-attribute - 1 to update the values in the state arrays
-      positions[dataAttribute - 1] = position;
-      employers[dataAttribute - 1] = employer;
-      cities[dataAttribute - 1] = city;
-      startMonths[dataAttribute - 1] = startMonth;
-      startYears[dataAttribute - 1] = startYear;
-      endMonths[dataAttribute - 1] = endMonth;
-      endYears[dataAttribute - 1] = endYear;
-      presents[dataAttribute - 1] = isProfessionalPresentChecked;
-      employerDescriptions[dataAttribute - 1] = employerDescription;
-
       // Reset the visibility icon to visible when saving, in case the user had previously hidden it. Only do this when editing
       let visibleIcon = document.querySelector(`#visi${dataAttribute}`);
       let hiddenIcon = document.querySelector(`#hid${dataAttribute}`);
@@ -1250,16 +1243,30 @@ if (eduExpEntries.length < 1) {
         employerRequired.className = "error";
         positionBorder.style.border = "1px solid red";
         employerBorder.style.border = "1px solid red";
+        profHistory.style.display = "none";
         return;
       } else if (!jobTitleValue) {
         jobRequired.className = "error";
         positionBorder.style.border = "1px solid red";
+        profHistory.style.display = "none";
         return;
       } else if (!employerValue) {
         employerRequired.className = "error";
         employerBorder.style.border = "1px solid red";
+        profHistory.style.display = "none";
         return;
       }
+
+      // Instead of pushing values to the state arrays, use data-attribute - 1 to update the values in the state arrays
+      positions[dataAttribute - 1] = position;
+      employers[dataAttribute - 1] = employer;
+      cities[dataAttribute - 1] = city;
+      startMonths[dataAttribute - 1] = startMonth;
+      startYears[dataAttribute - 1] = startYear;
+      endMonths[dataAttribute - 1] = endMonth;
+      endYears[dataAttribute - 1] = endYear;
+      presents[dataAttribute - 1] = isProfessionalPresentChecked;
+      employerDescriptions[dataAttribute - 1] = employerDescription;
 
       // Reset the error messages
       jobRequired.className = "subLabel";
@@ -1384,7 +1391,7 @@ if (eduExpEntries.length < 1) {
       let hiddenIcon = document.querySelector(`#hidEdu${dataAttributeEdu}`);
       let rightSection = document.querySelector(`#eduKey${dataAttributeEdu}`);
 
-      // Togle visibility true/false for the eduExpEntries object at the index of dataAttributeEdu - 1
+      // Toggles the visibility variable true/false for the eduExpEntries object at the index of dataAttributeEdu - 1
       eduExpEntries[dataAttributeEdu - 1].visibility = !eduExpEntries[
         dataAttributeEdu - 1
       ].visibility;
@@ -1430,6 +1437,9 @@ if (eduExpEntries.length < 1) {
       let hiddenIcon = document.querySelector(`#hidEdu${dataAttributeEdu}`);
       visibleIcon.style.display = "inline";
       hiddenIcon.style.display = "none";
+
+      // Toggle visibility true/false for the eduExpEntries object at the index of dataAttributeEdu - 1
+      eduExpEntries[dataAttributeEdu - 1].visibility = true;
 
       if (eduHistory) {
         eduHistory.setAttribute("data-attribute", dataAttributeEdu);
@@ -1644,6 +1654,34 @@ if (eduExpEntries.length < 1) {
   } else {
     // Data attribute is NOT null here
     console.log("Data attribute is NOT null")
+
+    // Reset the visibility icon to visible when saving, in case the user had previously hidden it. Only do this when editing
+    let visibleIcon = document.querySelector(`#visiEdu${dataAttributeEdu}`);
+    let hiddenIcon = document.querySelector(`#hidEdu${dataAttributeEdu}`);
+    visibleIcon.style.display = "inline";
+    hiddenIcon.style.display = "none";
+
+    // Displays the education history section
+    eduHistory.style.display = "inline";
+  
+    // This is a hacky way to get the dataAttribute from the previous edit function. I'm sure there's a better way to do this.
+    let eduEdit = eduHistory.getAttribute("data-attribute");
+
+    // Get the div that will house the validation error message
+    const schoolRequired = document.querySelector("#schoolReq");
+    const schoolBorder = document.querySelector("#school");
+
+    // Get and trim the value of the school field
+    const schoolValue = school.trim();
+
+    // Check if the school field is not empty
+    if (!schoolValue) {
+      schoolRequired.className = "error";
+      schoolBorder.style.border = "1px solid red";
+      eduHistory.style.display = "none";
+      return
+    }
+
     // Instead of pushing values to the state arrays, use data-attribute - 1 to update the values in the state arrays
     schools[dataAttributeEdu - 1] = school;
     degrees[dataAttributeEdu - 1] = degree;
@@ -1654,31 +1692,9 @@ if (eduExpEntries.length < 1) {
     schoolEndYears[dataAttributeEdu - 1] = schoolEndYear;
     majors[dataAttributeEdu - 1] = major;
 
-    // Reset the visibility icon to visible when saving, in case the user had previously hidden it. Only do this when editing
-    let visibleIcon = document.querySelector(`#visi${dataAttributeEdu}`);
-    let hiddenIcon = document.querySelector(`#hid${dataAttributeEdu}`);
-    visibleIcon.style.display = "inline";
-    hiddenIcon.style.display = "none";
-
-    // Displays the education history section
-    eduHistory.style.display = "inline";
-    // This is a hacky way to get the dataAttribute from the previous edit function. I'm sure there's a better way to do this.
-    let eduEdit = eduHistory.getAttribute("data-attribute");
-
-    // Get the div that will house the validation error message
-    const schoolRequired = document.querySelector("#schoolReq");
-
-    // Get and trim the value of the school field
-    const schoolValue = school.trim();
-
-    // Check if the school field is not empty
-    if (!schoolValue) {
-      schoolRequired.className = "error";
-      return;
-    }
-
     // Reset the error message
     schoolRequired.className = "subLabel";
+    schoolBorder.style.border = "1px solid rgb(61, 61, 64)";
 
     // Helper function to toggle the height of the education section
     toggleHeightEdu();

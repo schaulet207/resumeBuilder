@@ -698,7 +698,9 @@ padding-inline-start: 40px;
   top: 24px;
 }
 
-
+#newEduExperience {
+  display: none;
+}
 
 .toggle-button {
   display: flex;
