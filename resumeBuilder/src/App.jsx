@@ -513,9 +513,6 @@ function App() {
 
     // Reset the padding of the all education section
     // allEdu.style.paddingBottom = "12px"; // Assuming the default padding is 80px
-
-    // Adjust the bottom padding for the add education button, if needed
-        addEduBottom.style.paddingBottom = "12px";
 }
 
   // Create a function to remove the excess height of addButtonEdu when the inputs are displayed and bring it back when not
@@ -1480,6 +1477,8 @@ if (eduExpEntries.length < 1) {
       setSchoolEndMonth(schoolEndMonths[dataAttributeEdu - 1]);
       setSchoolEndYear(schoolEndYears[dataAttributeEdu - 1]);
       setMajor(majors[dataAttributeEdu - 1]);
+
+      toggleHeightEdu();
     }
     
     // If dataAttributeEdu is null, then the user is adding a new entry
@@ -2168,7 +2167,7 @@ if (eduExpEntries.length < 1) {
                 </span>
               </p>
               <hr className="careerSummarySpacing hide" />
-              <p className="c9 careerSummarySpacing hide">
+              <p className="c9 hide">
                 <span className="c7 c2 careerSummarySpacing hide" />
               </p>
               <p className="c8">
@@ -2184,10 +2183,10 @@ if (eduExpEntries.length < 1) {
               </p>
               <hr />
             </div>
-            <p className="c9">
+            <p className="c9 hide">
               <span className="c1 c2" />
             </p>
-            <p className="c6">
+            <p className="c6 hide">
               <span className="c1 c2" />
             </p>
             <div id="savedProfExperience">{showProfessionalExperience}</div>
@@ -2199,7 +2198,7 @@ if (eduExpEntries.length < 1) {
             <hr />
             <p />
             </div>
-            <p className="c6">
+            <p className="c6 hide">
               <span className="c2 c7" />
             </p>
             <div id="savedEducationExperience">{showEducationExperience}</div>

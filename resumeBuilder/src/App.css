@@ -766,8 +766,9 @@ padding-inline-start: 40px;
 
 #addEdu {
   position: relative;
+  bottom: 10px;
   width: 160px;
-  height: 56px;
+  height: 56px !important;
   font-size: 20px;
   margin-top: 8px;
 }
@@ -788,8 +789,6 @@ padding-inline-start: 40px;
   justify-content: center;
   align-items: center;
   height: 80px;
-  margin-top: 8px;
-  padding-bottom: 12px;
 }
 
 .heightAdjust {
