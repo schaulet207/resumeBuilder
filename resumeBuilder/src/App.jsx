@@ -416,6 +416,11 @@ function App() {
       if (addProfButton) {
         addProfButton.style.top = "60px";
       }
+    } else {
+      const allProf = document.querySelector("#allProf");
+      if (allProf) {
+        allProf.style.paddingBottom = "0px";
+      }
     }
   }
 
@@ -753,6 +758,8 @@ if (eduExpEntries.length < 1) {
     // If the present checkbox is checked, returns to unchecked
     handleCheckboxChange(false);
     collapseProfessional();
+    // This is a hacky way of making sure the professional section is not collapsed upon cancelling
+    collapseProfessional();
 
     const profHistory = document.querySelector("#profHist");
     profHistory.style.display = "inline";
@@ -765,10 +772,13 @@ if (eduExpEntries.length < 1) {
     const addButtonProf = document.querySelector("#addButtonProf");
     if (profExpEntries.length > 0) {
       addButtonProf.style.paddingBottom = "80px";
+      addProfButton.style.top = "60px";
+    } else {
+      addProfButton.style.top = "0px";
     }
     profCollapsible.style.display = "none";
     addProfButton.style.display = "inline";
-    addProfButton.style.top = "0px";
+    
 
     // Get the div that will house the validation error messages
     const jobRequired = document.querySelector("#jobReq");
