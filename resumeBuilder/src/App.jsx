@@ -741,6 +741,13 @@ if (eduExpEntries.length < 1) {
   educationHeader.classList.add("hide");
 }
 
+// If visibility is false for all eduExpEntries, then hide the education header
+ const allInvisible = eduExpEntries.every(entry => entry.visibility === false);
+ const educationHeader = document.querySelector("#educationHeader");
+
+ if (allInvisible) {
+  educationHeader.classList.add("hide");
+ } 
   };
 
   // Clear all the Professional section input fields AND hide the Professional section
@@ -943,6 +950,10 @@ if (eduExpEntries.length < 1) {
 
     // A function to edit the professional sections onclick
     function editProfSection(event) {
+      
+      // Displays the professional section header
+      showProfessionalExperienceHeader();
+
       const dataAttribute = event.currentTarget.dataset.attribute;
       // This is a hacky way of passing the data-attribute to clearinputfields2. Since doing this, I've realized that I just need to initialize the variable dataAttribute outside of the App function. For now, this works.
       const profHistory = document.getElementById("profHist");
@@ -1377,6 +1388,7 @@ if (eduExpEntries.length < 1) {
         endYear: endYear,
         present: isProfessionalPresentChecked,
         employerDescription: employerDescription,
+        visibility: true,
       };
       // Replace the old profExp object with the new one
       profExpEntries[dataAttribute - 1] = profExpObject;
@@ -1434,6 +1446,9 @@ if (eduExpEntries.length < 1) {
 
     // A function to edit the education sections onclick
     function editEduSection(event) {
+
+      // Displays the education section header
+      showEducationHeader();
 
       // Hacky way of getting the data attribute of the field being edited from the profHist element. Since doing this, I've realized that I just need to initialize the variable dataAttribute outside of the App function. For now, this works.
       const dataAttributeEdu = event.currentTarget.dataset.attribute;
@@ -1785,6 +1800,7 @@ if (eduExpEntries.length < 1) {
       schoolEndMonth: schoolEndMonth,
       schoolEndYear: schoolEndYear,
       major: major,
+      visibility: true,
     };
     // Replace the old eduExp object with the new one
     eduExpEntries[dataAttributeEdu - 1] = eduExpObject;
