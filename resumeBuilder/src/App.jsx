@@ -37,7 +37,8 @@ import {
   certificateEntries
 } from "./Certifications";
 import {
-  SkillNameInput
+  SkillNameInput,
+  skillEntries
 } from "./Skills";
 
 // import { QuillEditor } from './QuillEditor';
@@ -191,9 +192,12 @@ function App() {
   let profKey = 0; // Key for professional experience
   let profHistoryInfo;
   let eduHistoryInfo;
+  let certHistoryInfo;
   let saveProfessionalExperience = [];
   let showProfessionalExperience = null;
   let showEducationExperience = null;
+  let showCertificationExperience = null;
+
 
   function ProfessionalExperienceInput({
     professionalExperience,
@@ -223,6 +227,8 @@ function App() {
   let divider8 = " ";
   // Space between schoolEndMonth and schoolEndYear
   let divider9 = " ";
+  // Space between certificationYear and certificateInstitute
+  let divider10 = " ";
 
   // Check and update divider1
   if (address === "" || (phoneNumber === "" && email === "")) {
@@ -351,6 +357,12 @@ function App() {
     educationHeader.classList.remove("hide");
   }
 
+  // A function that determines when to display the certificationHeader
+  function showCertificationHeader() {
+    const certificationHeader = document.querySelector("#certificationHeader");
+    certificationHeader.classList.remove("hide");
+  }
+
   // A variable to hold all of the professional experience
   const newProfSaved = (
     <div>
@@ -407,6 +419,18 @@ function App() {
     </div>
   );
 
+  const newCertHistoryEntry = (
+    <div>
+      <li className="c4 li-bullet-0">
+                <span className="c2">{certificateName}</span>
+                <span className="c1 c0">
+                  : {certificationYear} {divider10} {certificateInstitute}
+                </span>
+                </li>
+                </div>
+  );
+                
+
   // Collapses the Education section
   function collapseEducation() {
     const educationCollapsible = document.querySelector("#edu");
@@ -443,7 +467,7 @@ function App() {
       if (certificateEntries && certificateEntries.length > 0) {
         const allCerts = document.querySelector("#certificates");
         if (allCerts) {
-          allCerts.style.paddingBottom = "8px";
+          allCerts.style.paddingBottom = "0px";
         }
 
         // Set top for #addEduButton, assuming there's a button to add education entries
@@ -463,19 +487,21 @@ function App() {
     if (skillsCollapsible) {
       skillsCollapsible.classList.toggle("collapsed");
       skillsIcon.classList.toggle("open");
-  
-      const skillsEntries = document.querySelector("#skillsHist").children;
-      if (skillsEntries && skillsEntries.length > 0) {
+
+      if (skillEntries && skillEntries.length > 0) {
         // Adjust padding if there are entries in the skills history
         skillsCollapsible.style.paddingBottom = "8px";
-      }
-  
-      const addSkillButton = document.querySelector("#addSkill");
-      if (addSkillButton) {
-        addSkillButton.style.top = "60px"; // Adjust as per your layout requirements
+
+        // Set top for #addSkillButton, assuming there's a button to add skill entries
+        const addSkillButton = document.querySelector("#addSkill");
+        if (addSkillButton) {
+          addSkillButton.style.top = "60px"; // Adjust as per your layout requirements
+        }
       }
     }
-  }
+}
+
+
   
   
 
@@ -535,6 +561,12 @@ function App() {
   const [schoolStartYears, setSchoolStartYears] = useState([]); // An array to store school start years
   const [schoolEndMonths, setSchoolEndMonths] = useState([]); // An array to store school end months
   const [schoolEndYears, setSchoolEndYears] = useState([]); // An array to store school end years
+
+  // Create empty Certifications section arrays
+  const [certificateNames, setCertificateNames] = useState([]); // An array to store certificate names
+  const [certificateYears, setCertificateYears] = useState([]); // An array to store certificate years
+  const [certificateInstitutes, setCertificateInstitutes] = useState([]); // An array to store certificate institutes
+
   
 
   function showProfInputs() {
@@ -637,6 +669,26 @@ function App() {
     // Reset the padding of the all education section
     // allEdu.style.paddingBottom = "12px"; // Assuming the default padding is 80px
 }
+
+function hideCertInputs() {
+  const certSectionInputs = document.querySelector(".certInputs");
+  const addCertButton = document.querySelector("#addCert");
+  const certHistory = document.querySelector("#certHist");
+  const addCertBottom = document.querySelector("#addButtonCert");
+  const certificatesSection = document.querySelector("#newCertExperience");
+  const allCerts = document.querySelector("#certificates");
+
+  // Hide the certificate input section
+  certSectionInputs.style.display = "none";
+  
+  // Show the add certificate button and the certificate history
+  addCertButton.style.display = "inline";
+  certHistory.style.display = "inline";
+
+  // Reset the padding of the all certificates section
+  // allCerts.style.paddingBottom = "12px"; // Adjust this as per your default padding
+}
+
 
   // Create a function to remove the excess height of addButtonEdu when the inputs are displayed and bring it back when not
   function toggleHeightEdu() {
@@ -878,6 +930,42 @@ if (eduExpEntries.length < 1) {
   educationHeader.classList.add("hide");
  } 
   };
+
+  // Clear all the certification section input fields
+  const clearInputFieldsCertification = () => {
+    // Resets fields for certificates
+    setCertificateName(""); // Clear certificate name field
+    setCertificateInstitute(""); // Clear institute field
+    setCertificationYear(""); // Clear certification year field
+
+    // Hides the input fields and returns to the add button screen
+    hideCertInputs(); // Assuming there's a function similar to hideEduInputs for certificates
+
+    // Get the divs that will house the validation error messages
+    const certCollapsible = document.querySelector(".certInputs");
+    const addCertButton = document.querySelector("#addCert");
+    const addButtonCert = document.querySelector("#addButtonCert");
+    if (certificateEntries.length > 0) {
+      addButtonCert.style.paddingBottom = "80px";
+    }
+
+    // Reset the validation error messages if any
+    // Example: Resetting for certificate name
+    const certNameRequired = document.querySelector("#certReq");
+    const certNameBorder = document.querySelector("#certificationName");
+    certNameRequired.className = "subLabel";
+    certNameBorder.style.border = "1px solid rgb(61, 61, 64)";
+
+    // Additional logic for handling UI changes or specific states
+    // ...
+
+    // If certEntries is 0 (i.e., cancelled on the first entry), additional UI handling
+    // if (certificateEntries.length < 1) {
+    //   const certificatesHeader = document.querySelector("#certificatesHeader");
+    //   certificatesHeader.classList.add("hide");
+    // }
+};
+
 
   // Clear all the Professional section input fields AND hide the Professional section
   const clearInputFields2 = () => {
@@ -1773,7 +1861,7 @@ if (eduExpEntries.length < 1) {
       }
 
       if (hiddenIcon) {
-        hiddenIcon.onclick = visiButtonClick;
+        hiddenIcon.onclick = visiButtonClifck;
       }
     }
 
@@ -1937,6 +2025,378 @@ if (eduExpEntries.length < 1) {
   }
   console.log(eduExpEntries)
   }
+
+  // A function to save all the certifcation section data
+  const handleSaveCerts = () => {
+
+    // Hacky way of getting the data attribute of the field being edited from the certHist element.
+    const certHistory = document.getElementById("certHist");
+    let dataAttributeCert = certHistory.getAttribute("data-attribute");
+
+    // Function to handle visibility button click
+    function visiButtonClick(event) {
+      const dataAttributeCert = event.currentTarget.dataset.attribute;
+      let visibleIcon = document.querySelector(`#visiCert${dataAttributeCert}`);
+      let hiddenIcon = document.querySelector(`#hidCert${dataAttributeCert}`);
+      let rightSection = document.querySelector(`#certKey${dataAttributeCert}`);
+
+      // Toggles the visibility variable true/false for the certificateEntries object at the index of dataAttributeCert - 1
+      certificateEntries[dataAttributeCert - 1].visibility = !certificateEntries[
+        dataAttributeCert - 1
+      ].visibility;
+
+      // A function to check if all the entries are hidden, and if so, hide the certification header
+      function checkVisibility() {
+        if (certificateEntries.every(entry => entry.visibility === false)) {
+          const certificationHeader = document.querySelector(
+            "#certificationHeader"
+          );
+          certificationHeader.classList.add("hide");
+        } else {
+          const certificationHeader = document.querySelector(
+            "#certificationHeader"
+          );
+          certificationHeader.classList.remove("hide");
+        }
+    }
+
+    checkVisibility();
+
+      if (visibleIcon.style.display === "inline") {
+        visibleIcon.style.display = "none";
+        hiddenIcon.style.display = "inline";
+        rightSection.style.display = "none";
+      } else {
+        visibleIcon.style.display = "inline";
+        hiddenIcon.style.display = "none";
+        rightSection.style.display = "inline";
+      }
+    }
+
+    // A function to edit the certification sections onclick
+    function editCertSection(event) {
+
+      // Displays the certification section header
+      showCertificationHeader();
+
+      // Hacky way of getting the data attribute of the field being edited from the certHist element. Since doing this, I've realized that I just need to initialize the variable dataAttribute outside of the App function. For now, this works.
+      const dataAttributeCert = event.currentTarget.dataset.attribute;
+      const certHistory = document.getElementById("certHist");
+
+      // Reset the visibility icon to visible when saving, in case the user had previously hidden it. Only do this when editing
+      let visibleIcon = document.querySelector(`#visiCert${dataAttributeCert}`);
+      let hiddenIcon = document.querySelector(`#hidCert${dataAttributeCert}`);
+      visibleIcon.style.display = "inline";
+      hiddenIcon.style.display = "none";
+
+      // Toggle visibility true/false for the certExpEntries object at the index of dataAttributeCert - 1
+      certificateEntries[dataAttributeCert - 1].visibility = true;
+
+      if (certHistory) {
+        certHistory.setAttribute("data-attribute", dataAttributeCert);
+      }
+
+      // Get the newCertExperience and the editCertEntry sections to swap their positions
+      const newCertExp = document.querySelector("#newCertExperience");
+      const editCertEntryRH = document.querySelector(
+        "#certKey" + dataAttributeCert
+      );
+
+      // Swap the newCertExperience and the editCertEntry sections so you can see your changes in realtime on the right side
+      if (newCertExp && editCertEntryRH) {
+        const parent1 = editCertEntryRH.parentNode;
+        const parent2 = newCertExp.parentNode;
+        const nextSibling2 = newCertExp.nextSibling;
+
+        parent1.insertBefore(newCertExp, editCertEntryRH);
+
+        if (nextSibling2) {
+          parent2.insertBefore(editCertEntryRH, nextSibling2);
+        } else {
+          parent2.appendChild(editCertEntryRH);
+        }
+      }
+
+      // Shows all the certification section input fields on the left
+      showCertInputs();
+      // Hides the original field on the right being edited, so that real-time edits are shown in the correct placement of the element being edited
+      editCertEntryRH.style.display = "none";
+
+      // Fills all the certification input fields on the left side with the correct data being edited
+      setCertificateName(certificateNames[dataAttributeCert - 1]);
+      setCertificationYear(certificateYears[dataAttributeCert - 1]);
+      setCertificateInstitute(certificateInstitutes[dataAttributeCert - 1]);
+
+      toggleHeightCert();
+    }
+
+    // If dataAttributeCert is null, then the user is adding a new entry
+    if (dataAttributeCert === null) {
+    // Get and trim the value of the certificate name field
+    const certificateNameValue = certificateName.trim();
+
+    // Get the div that will house the validation error message
+    const certificateNameRequired = document.querySelector("#certReq");
+    const certificateNameBorder = document.querySelector("#certificationName");
+
+    // Controls the validation errors
+    if (!certificateNameValue) {
+      certificateNameRequired.className = "error";
+      certificateNameBorder.style.border = "1px solid red";
+      return;
+    }
+
+    // Reset the validation error message
+    certificateNameRequired.className = "subLabel";
+    certificateNameBorder.style.border = "1px solid rgb(61, 61, 64)";
+
+    // Helper function to toggle the height of the certification section
+    toggleHeightCert();
+
+    // Push certification values to arrays
+    certificateNames.push(certificateName);
+    certificateYears.push(certificationYear);
+    certificateInstitutes.push(certificateInstitute);
+
+    // Create the certExp object
+    let certExpObject = {
+      certificateName: certificateName,
+      certificationYear: certificationYear,
+      certificateInstitute: certificateInstitute,
+      visibility: true,
+    };
+
+    // Push the certExpObject to the certExpEntries array
+    certificateEntries.push(certExpObject);
+
+    // Clears all the input fields
+    clearInputFieldsCertification();
+
+    // Create a new <div> element to hold the certification section information in right-half
+    const certificationSection = document.querySelector("#newCertExperience");
+    const showCertificationExperience = `<div id="certKey${certificateEntries.length}">${certificationSection.innerHTML}</div>`;
+    const saveCert = document.querySelector("#savedCertificationExperience");
+    saveCert.innerHTML += showCertificationExperience;
+
+    // Create a new <div> element to hold the certification history information
+    const newCertHistoryEntry = document.createElement("div");
+    newCertHistoryEntry.className = "certHistoryEntry";
+    newCertHistoryEntry.innerHTML =
+      "<hr id='topLine'>" +
+      '<span class="editSection" id="editCertEntry' +
+      certificateEntries.length +
+      '" data-attribute=' +
+      certificateEntries.length +
+      ">" +
+      '<div id="top-top">' +
+      '<div class="top-left" id="certificateName' +
+      certificateNames.length +
+      '">' +
+      certificateName +
+      "</div>" +
+      '<div class="top-right" id="certificationYear' +
+      certificateYears.length +
+      '">' +
+      certificationYear +
+      "</div>" +
+      "</div>" +
+      '<div id="bottom-bottom">' +
+      "</span>" +
+      '<div id="bottom-row">' +
+      '<div class="bottom-left" id="certInstitute' +
+      certificateInstitutes.length +
+      '">' +
+      certificateInstitute +
+      "</div>" +
+      "</div>" +
+      "<div id=" +
+      '"certSection' +
+      certificateEntries.length +
+      '"' +
+      'class="toggle-button"' +
+      ">" +
+      '<img src="visibility_FILL.svg" alt="Visible" class="visible visiButton" id="visiCert' +
+      certificateEntries.length +
+      '" data-attribute="' +
+      certificateEntries.length +
+      '" style="display: inline;">' +
+      '<img src="visibility_off.svg" alt="Hidden" class="hidden hidButton" id="hidCert' +
+      certificateEntries.length +
+      '" data-attribute="' +
+      certificateEntries.length +
+      '" style="display: none;">' +
+      "</div>" +
+      "</div>" +
+      "<hr>";
+
+    // Create a variable that stores all the certification history information
+    certHistoryInfo = newCertHistoryEntry.innerHTML;
+    // Append the new <div> element to the certification history section
+    let certHistory = document.querySelector("#certHist");
+    certHistory.appendChild(newCertHistoryEntry);
+
+    // Attach click event handlers in a loop to the visibility buttons
+    for (let i = 1; i < certificateEntries.length + 1; i++) {
+      let visibleIcon = document.querySelector(`#visiCert${i}`);
+      let hiddenIcon = document.querySelector(`#hidCert${i}`);
+
+      if (visibleIcon) {
+        visibleIcon.onclick = visiButtonClick;
+      }
+
+      if (hiddenIcon) {
+        hiddenIcon.onclick = visiButtonClick;
+      }
+    }
+
+    // Attach click event handlers in a loop to the editCertSection buttons
+    for (let i = 1; i < certificateEntries.length + 1; i++) {
+      let editSection = document.querySelector(`#editCertEntry${i}`);
+
+      if (editSection) {
+        editSection.onclick = function (event) {
+          // Check if the clicked element or its parent has the classes 'visible' or 'hidden'
+          const clickedElement = event.target || event.currentTarget;
+          if (
+            !clickedElement.classList.contains("visible") &&
+            !clickedElement.classList.contains("hidden")
+          ) {
+            editCertSection(event);
+          }
+        };
+      }
+    }
+
+    // Adjust button spacing
+    const addCertExp = document.querySelector("#addCert");
+    const addCertBottom = document.querySelector("#addButtonCert");
+    addCertExp.style.top = "60px";
+    addCertBottom.style.paddingBottom = "80px";
+
+    // Hide the new certification section on right-half until the certification inputs are showing again
+    certificationSection.style.display = "none";
+    console.log("Data Attribute is null")
+  } else {
+    // Data attribute is NOT null here
+    console.log("Data attribute is NOT null")
+
+    // Reset the visibility icon to visible when saving, in case the user had previously hidden it. Only do this when editing
+    let visibleIcon = document.querySelector(`#visiCert${dataAttributeCert}`);
+    let hiddenIcon = document.querySelector(`#hidCert${dataAttributeCert}`);
+    visibleIcon.style.display = "inline";
+    hiddenIcon.style.display = "none";
+
+    // Displays the certification history section
+    certHistory.style.display = "inline";
+
+    // This is a hacky way to get the dataAttribute from the previous edit function. I'm sure there's a better way to do this.
+    let certEdit = certHistory.getAttribute("data-attribute");
+
+    // Get the div that will house the validation error message
+    const certificateNameRequired = document.querySelector("#certReq");
+    const certificateNameBorder = document.querySelector("#certificationName");
+
+    // Get and trim the value of the certificate name field
+    const certificateNameValue = certificateName.trim();
+
+    // Check if the certificate name field is not empty
+    if (!certificateNameValue) {
+      certificateNameRequired.className = "error";
+      certificateNameBorder.style.border = "1px solid red";
+      certHistory.style.display = "none";
+      return
+    }
+
+    // Instead of pushing values to the state arrays, use data-attribute - 1 to update the values in the state arrays
+    certificateNames[dataAttributeCert - 1] = certificateName;
+    certificateYears[dataAttributeCert - 1] = certificationYear;
+    certificateInstitutes[dataAttributeCert - 1] = certificateInstitute;
+
+    // Reset the error message
+    certificateNameRequired.className = "subLabel";
+    certificateNameBorder.style.border = "1px solid rgb(61, 61, 64)";
+
+    // Helper function to toggle the height of the certification section
+    toggleHeightCert();
+
+    // Adjust button spacing
+    const addCertExp = document.querySelector("#addCert");
+    const addCertBottom = document.querySelector("#addButtonCert");
+    addCertExp.style.top = "60px";
+    addCertBottom.style.paddingBottom = "80px";
+
+    // Clears all the input fields
+    clearInputFieldsCertification();
+
+    // Hides the input field and displays the "Add Certification" button
+    const certSectionInputs = document.querySelector(".certInputs");
+    const addCertButton = document.querySelector("#addCert");
+    certSectionInputs.style.display = "none";
+    addCertButton.style.display = "inline";
+
+    // Gets the sections again
+    const newCertExp = document.querySelector("#newCertExperience");
+    const editCertEntryRH = document.querySelector(
+      "#certKey" + dataAttributeCert
+    );
+    const savedCertificationExperience = document.querySelector(
+      "#savedCertificationExperience"
+    );
+
+    // Returns newCertExp to the correct position, and returns the edited entry on right-half to the correct order
+    if (savedCertificationExperience.nextSibling !== newCertExp) {
+      if (newCertExp && editCertEntryRH && savedCertificationExperience) {
+        // Swaps newCertExp with editCertEntryRH
+        newCertExp.replaceWith(editCertEntryRH);
+
+        // Get the parent of savedCertificationExperience
+        const parent = savedCertificationExperience.parentNode;
+
+        // Move newCertExp to be the sibling immediately after savedCertificationExperience
+        parent.insertBefore(newCertExp, savedCertificationExperience.nextSibling);
+      }
+    }
+
+    // Displays inline the correct certKey section based on data attribute
+    editCertEntryRH.style.display = "inline";
+
+    // Hides the newCertExp section in the RH
+    newCertExp.style.display = "none";
+
+    // Sets the innerHTML of editCertEntryRH to be equal to that of newCertExp
+    if (newCertExp && editCertEntryRH) {
+      editCertEntryRH.innerHTML = newCertExp.innerHTML;
+    }
+
+    // --- Update the left-hand section based on the edits made ---
+    const certificateNameUpdate = document.querySelector(`#certificateName${dataAttributeCert}`);
+    const certificationYearUpdate = document.querySelector(`#certificationYear${dataAttributeCert}`);
+    const certInstituteUpdate = document.querySelector(`#certInstitute${dataAttributeCert}`);
+
+    // Update based on the current certification input field values
+    certificateNameUpdate.innerHTML = certificateName;
+    certificationYearUpdate.innerHTML = certificationYear;
+    certInstituteUpdate.innerHTML = certificateInstitute;
+
+    // Update the certification arrays based on these changes
+    certificateNames[dataAttributeCert - 1] = certificateName;
+    certificateYears[dataAttributeCert - 1] = certificationYear;
+    certificateInstitutes[dataAttributeCert - 1] = certificateInstitute;
+
+    // Create the new certExp object
+    let certExpObject = {
+      certificateName: certificateName,
+      certificationYear: certificationYear,
+      certificateInstitute: certificateInstitute,
+      visibility: true,
+    };
+    // Replace the old certExp object with the new one
+    certificateEntries[dataAttributeCert - 1] = certExpObject;
+    certHistory.removeAttribute("data-attribute");
+  }
+  console.log(certificateEntries)
+  }
+      
 
   return (
     <div className="App">
@@ -2318,7 +2778,7 @@ if (eduExpEntries.length < 1) {
                   }
                 />
 
-                <div className="topSubtitle">
+                <div className="topSubtitle" id="issueDateSubtitle">
                   <label className="input-text">Issue Date</label>
                   <div className="subLabel" id="certReq">
                     Required
@@ -2332,13 +2792,13 @@ if (eduExpEntries.length < 1) {
                 <button
                   className="cancelButton3"
                   onClick={() => {
-                    clearInputFieldsEdu();
-                    toggleHeightEdu();
+                    clearInputFieldsCertification();
+                    toggleHeightCert();
                   }}
                 >
                   Cancel
                 </button>
-                <button className="saveButton3" onClick={() => handleSaveEdu()}>
+                <button className="saveButton3" onClick={() => handleSaveCerts()}>
                   Save
                 </button>
               </div>
@@ -2352,7 +2812,7 @@ if (eduExpEntries.length < 1) {
                   onClick={() => {
                     showCertInputs();
                     toggleHeightCert();
-                    // showEducationHeader();
+                    showCertificationHeader();
                   }}
                 >
                   + Certificate
@@ -2362,11 +2822,8 @@ if (eduExpEntries.length < 1) {
           </div>
 
           <div className="collapsible">
-            <div
-              className="titleSection skillsTitle"
-              onClick={collapseSkills}
-            >
-              <div className="titleWhite">Skills </div>
+            <div className="titleSection skillTitle" onClick={collapseSkills}>
+              <div className="titleWhite">Skills</div>
               <img
                 src="./expand.svg"
                 alt="Expand"
@@ -2375,10 +2832,10 @@ if (eduExpEntries.length < 1) {
               />
             </div>
             <div className="skills collapsed" id="skills">
-              <div className="skillsInputs">
+              <div className="skillInputs">
                 <div className="topSubtitle">
                   <label className="input-text">Skill Name</label>
-                  <div className="subLabel" id="skillsReq">
+                  <div className="subLabel" id="skillReq">
                     Required
                   </div>
                 </div>
@@ -2389,39 +2846,39 @@ if (eduExpEntries.length < 1) {
 
                 <button
                   className="cancelButton4"
-                  // onClick={() => {
-                  //   clearInputFieldsEdu();
-                  //   toggleHeightEdu();
-                  // }}
+                  onClick={() => {
+                    // Similar functionality as in certificates section
+                  }}
                 >
                   Cancel
                 </button>
-                <button className="saveButton4">
+                <button
+                  className="saveButton4"
+                  onClick={() => {
+                    // Save functionality for skills
+                  }}
+                >
                   Save
                 </button>
               </div>
               <div>
-                <div id="skillsHist"></div>
+                <div id="skillHist"></div>
               </div>
-              <div id="addButtonSkills">
+              <div id="addButtonSkill">
                 <button
                   className="addButton"
                   id="addSkill"
-                  // onClick={() => {
-                  //   showCertInputs();
-                  //   toggleHeightCert();
-                  //   // showEducationHeader();
-                  // }}
+                  onClick={() => {
+                    // Functionality to show skill inputs and adjust height
+                  }}
                 >
                   + Skill
                 </button>
               </div>
             </div>
           </div>
-          
         </div>
       </div>
-
 
       <div className="right-half">
         <figure>
@@ -2500,6 +2957,7 @@ if (eduExpEntries.length < 1) {
             </p>
             <div id="savedEducationExperience">{showEducationExperience}</div>
             <div id="newEduExperience">{newEducationSaved}</div>
+            <div className="hide" id="certificationHeader">
             <p className="c8">
               <span className="c2 c11">SKILLS</span>
             </p>
@@ -2508,7 +2966,10 @@ if (eduExpEntries.length < 1) {
             <p className="c6">
               <span className="c7 c2" />
             </p>
+            </div>
             <ul className="c12 lst-kix_oz2sfjwt9xlu-0 start">
+            <div id="savedCertificationExperience">{showCertificationExperience}</div>
+            <div id="newCertExperience">{newCertHistoryEntry}</div>
               <li className="c4 li-bullet-0">
                 <span className="c2">Design</span>
                 <span className="c1 c0">

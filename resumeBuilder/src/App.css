@@ -155,6 +155,19 @@
   padding-right: 0px;
 }
 
+#issueDateSubtitle {
+  position: relative;
+  top: 12px;
+}
+
+.skills {
+  display: grid;
+  gap: 12px;
+  background-color: rgb(32, 34, 34);
+  border-radius: 10px;
+  padding-right: 0px;
+}
+
 #profTitle {
   margin-top: 0;
   margin-bottom: 0;
@@ -172,6 +185,17 @@
 }
 
 #certificatesBottom {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  width: 100%;
+}
+
+#certificates {
+  margin-bottom: 8px;
+}
+
+#skillsBottom {
   display: flex;
   flex-direction: column;
   gap: 18px;
@@ -207,6 +231,11 @@
 }
 
 .certTitle {
+  padding: 20px;
+  margin-top: 0px;
+}
+
+.skillTitle {
   padding: 20px;
   margin-top: 0px;
 }
@@ -731,11 +760,13 @@ padding-inline-start: 40px;
   color: white;
 }
 
-#certhist {
+#certHist {
   color: white;
 }
 
-
+#skillHist {
+  color: white;
+}
 
 .profHistoryEntry {
   padding: 18px;
@@ -744,6 +775,12 @@ padding-inline-start: 40px;
 }
 
 .eduHistoryEntry {
+  padding: 18px;
+  margin-top: 10px;
+  max-height: 80px;
+}
+
+.certHistoryEntry {
   padding: 18px;
   margin-top: 10px;
   max-height: 80px;
@@ -808,10 +845,10 @@ padding-inline-start: 40px;
   display: none;
   padding: 12px;
   padding-right: 0px;
+  height: 270px;
 }
 
-
-.certInputs {
+.skillInputs {
   display: none;
   padding: 12px;
   padding-right: 0px;
@@ -851,6 +888,15 @@ padding-inline-start: 40px;
   margin-top: 8px;
 }
 
+#addSkill {
+  position: relative;
+  bottom: 10px;
+  width: 160px;
+  height: 56px !important;
+  font-size: 20px;
+  margin-top: 8px;
+}
+
 #addButtonProf {
   display: flex;
   flex-direction: column;
@@ -877,8 +923,20 @@ padding-inline-start: 40px;
   height: 80px;
 }
 
+#addButtonSkill {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 80px;
+}
+
 .heightAdjust {
   height: 0px  !important;
+}
+
+.heightAdjustCert {
+  padding-bottom: 0px;
 }
 
 .error {
