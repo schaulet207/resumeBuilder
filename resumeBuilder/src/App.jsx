@@ -30,6 +30,16 @@ import {
   MajorInput,
   eduExpEntries
 } from "./Education";
+import {
+  CertificateNameInput,
+  CertificateDateInput,
+  CertificateInstituteInput,
+  certificateEntries
+} from "./Certifications";
+import {
+  SkillNameInput
+} from "./Skills";
+
 // import { QuillEditor } from './QuillEditor';
 
 function App() {
@@ -150,6 +160,31 @@ function App() {
   const [major, setMajor] = useState("");
   const handleMajorChange = (newMajor) => {
     setMajor(newMajor);
+  };
+
+  const [certificateName, setCertificateName] = useState("");
+  const handleCertificateNameChange = (newCertificateName) => {
+    setCertificateName(newCertificateName);
+  };
+
+  const [certificationYear, setCertificationYear] = useState("");
+  const handleCertificationYearChange = (newCertificationYear) => {
+    setCertificationYear(newCertificationYear);
+  };
+
+  const [certificateDescription, setCertificateDescription] = useState("");
+  const handleCertificateDescriptionChange = (newCertificateDescription) => {
+    setCertificateDescription(newCertificateDescription);
+  };
+
+  const [certificateInstitute, setCertificateInstitute] = useState("");
+  const handleCertificateInstituteChange = (newCertificateInstitute) => {
+    setCertificateInstitute(newCertificateInstitute);
+  };
+
+  const [skillName, setSkillName] = useState("");
+  const handleSkillNameChange = (newSkillName) => {
+    setSkillName(newSkillName);
   };
 
   // Set helper variables
@@ -382,7 +417,6 @@ function App() {
       educationIcon.classList.toggle("open");
 
       if (eduExpEntries && eduExpEntries.length > 0) {
-        // Assuming eduExpEntries is a list like profExpEntries
         const allEdu = document.querySelector("#edu");
         if (allEdu) {
           allEdu.style.paddingBottom = "8px";
@@ -396,6 +430,54 @@ function App() {
       }
     }
   }
+
+  // Collapses the Certificates section
+  function collapseCertificates() {
+    const certificatesCollapsible = document.querySelector("#certificates");
+    const certificatesIcon = document.querySelector("#certificatesIcon");
+  
+    if (certificatesCollapsible) {
+      certificatesCollapsible.classList.toggle("collapsed");
+      certificatesIcon.classList.toggle("open");
+  
+      if (certificateEntries && certificateEntries.length > 0) {
+        const allCerts = document.querySelector("#certificates");
+        if (allCerts) {
+          allCerts.style.paddingBottom = "8px";
+        }
+
+        // Set top for #addEduButton, assuming there's a button to add education entries
+        const addCertButton = document.querySelector("#addCert");
+        if (addCertButton) {
+          addCertButton.style.top = "60px";
+        }
+      }
+    }
+  }
+
+  // Collapses the Skills section
+  function collapseSkills() {
+    const skillsCollapsible = document.querySelector("#skills");
+    const skillsIcon = document.querySelector("#skillsIcon");
+
+    if (skillsCollapsible) {
+      skillsCollapsible.classList.toggle("collapsed");
+      skillsIcon.classList.toggle("open");
+  
+      const skillsEntries = document.querySelector("#skillsHist").children;
+      if (skillsEntries && skillsEntries.length > 0) {
+        // Adjust padding if there are entries in the skills history
+        skillsCollapsible.style.paddingBottom = "8px";
+      }
+  
+      const addSkillButton = document.querySelector("#addSkill");
+      if (addSkillButton) {
+        addSkillButton.style.top = "60px"; // Adjust as per your layout requirements
+      }
+    }
+  }
+  
+  
 
   function collapseProfessional() {
     const profCollapsible = document.querySelector("#allProf");
@@ -501,6 +583,42 @@ function App() {
     }
   }
 
+  function showCertInputs() {
+    const certSectionInputs = document.querySelector(".certInputs");
+    const addCertButton = document.querySelector("#addCert");
+    const certHistory = document.querySelector("#certHist");
+    const addCertBottom = document.querySelector("#addButtonCert");
+    const certificatesSection = document.querySelector("#newCertExperience");
+    const allCerts = document.querySelector("#certificates");
+
+    // Show the input fields for adding a new certificate
+    if (certSectionInputs) {
+        certSectionInputs.style.display = "inline";
+    }
+
+    // Hide the 'Add Certificate' button
+    if (addCertButton) {
+        addCertButton.style.display = "none";
+    }
+
+    // Hide the history of added certificates
+    if (certHistory) {
+        certHistory.style.display = "none";
+    }
+
+    // Adjust the bottom padding of the certificates section, if necessary
+    if (allCerts) {
+        allCerts.style.paddingBottom = "8px";
+    }
+
+    // Adjust the bottom padding of the 'Add Certificate' section, if necessary
+    if (addCertBottom && addCertBottom.style.paddingBottom === "80px") {
+        addCertBottom.style.paddingBottom = "8px";
+    }
+}
+
+
+
   function hideEduInputs() {
     const eduSectionInputs = document.querySelector(".eduInputs");
     const addEduButton = document.querySelector("#addEdu");
@@ -528,6 +646,17 @@ function App() {
     eduBottom.classList.toggle("heightAdjust");
     education.classList.toggle("heightAdjustEdu");
   }
+
+  // Create a function to remove the excess height of addButtonCert when the inputs are displayed and bring it back when not
+  function toggleHeightCert() {
+    const certBottom = document.querySelector("#addButtonCert");
+    const certificates = document.querySelector(".certificates");
+    // Add the class heightAdjust to the certBottom element
+    certBottom.classList.toggle("heightAdjust");
+    certificates.classList.toggle("heightAdjustCert");
+}
+
+// 
 
   // Helper function to adjust spacing in Professional section after saving a new position
   function toggleHeight() {
@@ -2040,7 +2169,9 @@ if (eduExpEntries.length < 1) {
               <div className="eduInputs">
                 <div className="topSubtitle">
                   <label className="input-text">School</label>
-                  <div className="subLabel" id="schoolReq">Required</div>
+                  <div className="subLabel" id="schoolReq">
+                    Required
+                  </div>
                 </div>
                 <SchoolInput
                   school={school}
@@ -2120,10 +2251,7 @@ if (eduExpEntries.length < 1) {
                         </button>
                         <button
                           className="saveButton2"
-                          onClick={() =>
-                            handleSaveEdu()
-
-                          }
+                          onClick={() => handleSaveEdu()}
                         >
                           Save
                         </button>
@@ -2150,8 +2278,151 @@ if (eduExpEntries.length < 1) {
               </div>
             </div>
           </div>
+
+          <div className="collapsible">
+            <div
+              className="titleSection certTitle"
+              onClick={collapseCertificates}
+            >
+              <div className="titleWhite">Certificates </div>
+              <img
+                src="./expand.svg"
+                alt="Expand"
+                className="expand-icon open"
+                id="certificatesIcon"
+              />
+            </div>
+            <div className="certificates collapsed" id="certificates">
+              <div className="certInputs">
+                <div className="topSubtitle">
+                  <label className="input-text">Certificate Name</label>
+                  <div className="subLabel" id="certReq">
+                    Required
+                  </div>
+                </div>
+                <CertificateNameInput
+                  certificateName={certificateName}
+                  onCertificateNameChange={handleCertificateNameChange}
+                />
+
+                <div className="topSubtitle">
+                  <label className="input-text">Institute</label>
+                  <div className="subLabel" id="certReq">
+                    Required
+                  </div>
+                </div>
+                <CertificateInstituteInput
+                  certificateInstitute={certificateInstitute}
+                  onCertificateInstituteChange={
+                    handleCertificateInstituteChange
+                  }
+                />
+
+                <div className="topSubtitle">
+                  <label className="input-text">Issue Date</label>
+                  <div className="subLabel" id="certReq">
+                    Required
+                  </div>
+                </div>
+                <CertificateDateInput
+                  certificationYear={certificationYear}
+                  onCertificateDateChange={handleCertificationYearChange}
+                />
+
+                <button
+                  className="cancelButton3"
+                  onClick={() => {
+                    clearInputFieldsEdu();
+                    toggleHeightEdu();
+                  }}
+                >
+                  Cancel
+                </button>
+                <button className="saveButton3" onClick={() => handleSaveEdu()}>
+                  Save
+                </button>
+              </div>
+              <div>
+                <div id="certHist"></div>
+              </div>
+              <div id="addButtonCert">
+                <button
+                  className="addButton"
+                  id="addCert"
+                  onClick={() => {
+                    showCertInputs();
+                    toggleHeightCert();
+                    // showEducationHeader();
+                  }}
+                >
+                  + Certificate
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <div className="collapsible">
+            <div
+              className="titleSection skillsTitle"
+              onClick={collapseSkills}
+            >
+              <div className="titleWhite">Skills </div>
+              <img
+                src="./expand.svg"
+                alt="Expand"
+                className="expand-icon open"
+                id="skillsIcon"
+              />
+            </div>
+            <div className="skills collapsed" id="skills">
+              <div className="skillsInputs">
+                <div className="topSubtitle">
+                  <label className="input-text">Skill Name</label>
+                  <div className="subLabel" id="skillsReq">
+                    Required
+                  </div>
+                </div>
+                <SkillNameInput
+                  skillName={skillName}
+                  onSkillNameChange={handleSkillNameChange}
+                />
+
+                <button
+                  className="cancelButton4"
+                  // onClick={() => {
+                  //   clearInputFieldsEdu();
+                  //   toggleHeightEdu();
+                  // }}
+                >
+                  Cancel
+                </button>
+                <button className="saveButton4">
+                  Save
+                </button>
+              </div>
+              <div>
+                <div id="skillsHist"></div>
+              </div>
+              <div id="addButtonSkills">
+                <button
+                  className="addButton"
+                  id="addSkill"
+                  // onClick={() => {
+                  //   showCertInputs();
+                  //   toggleHeightCert();
+                  //   // showEducationHeader();
+                  // }}
+                >
+                  + Skill
+                </button>
+              </div>
+            </div>
+          </div>
+          
         </div>
       </div>
+
+
       <div className="right-half">
         <figure>
           <div>
@@ -2218,11 +2489,11 @@ if (eduExpEntries.length < 1) {
             <div id="savedProfExperience">{showProfessionalExperience}</div>
             <div id="newProfExperience">{newProfSaved}</div>
             <div className="hide" id="educationHeader">
-            <p className="c8">
-              <span className="c2 c11">EDUCATION </span>
-            </p>
-            <hr />
-            <p />
+              <p className="c8">
+                <span className="c2 c11">EDUCATION </span>
+              </p>
+              <hr />
+              <p />
             </div>
             <p className="c6 hide">
               <span className="c2 c7" />

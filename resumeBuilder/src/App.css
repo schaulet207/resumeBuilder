@@ -127,6 +127,7 @@
 .personal, .professional, .education {
   display: grid;
   gap: 12px;
+  background-color: rgb(32, 34, 34);
 }
 
 #pers {
@@ -143,6 +144,15 @@
   padding-right: 0px;
   background-color: rgb(32, 34, 34);
   border-radius: 10px;
+  margin-bottom: 8px;
+}
+
+.certificates {
+  display: grid;
+  gap: 12px;
+  background-color: rgb(32, 34, 34);
+  border-radius: 10px;
+  padding-right: 0px;
 }
 
 #profTitle {
@@ -150,7 +160,18 @@
   margin-bottom: 0;
 }
 
+#certTitle {
+  margin-top: 10px;
+}
+
 #educationBottom {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  width: 100%;
+}
+
+#certificatesBottom {
   display: flex;
   flex-direction: column;
   gap: 18px;
@@ -183,6 +204,11 @@
   border-radius: 10px;
   margin-top: 8px;
   margin-bottom: 8px;
+}
+
+.certTitle {
+  padding: 20px;
+  margin-top: 0px;
 }
 
 #allProf {
@@ -413,6 +439,16 @@ button:hover {
   font-size: 24px;
 }
 
+.saveButton3 {
+  position: relative;
+  margin-top: 20px;
+  height: 60px;
+  width: 120px;
+  left: 37px;
+  border-radius: 20px;
+  font-size: 24px;
+}
+
 .cancelButton {
   position: relative;
   left: 280px;
@@ -432,6 +468,20 @@ button:hover {
   border-radius: 20px;
   font-size: 24px;
   background-color: transparent;
+}
+
+.cancelButton3 {
+  position: relative;
+  height: 60px;
+  width: 120px;
+  left: 20px;
+  border-radius: 20px;
+  font-size: 24px;
+  background-color: transparent;
+}
+
+.mediumWidth {
+  width: 265px;
 }
 
 /* QUILL EDITOR FORMATTING */
@@ -681,6 +731,12 @@ padding-inline-start: 40px;
   color: white;
 }
 
+#certhist {
+  color: white;
+}
+
+
+
 .profHistoryEntry {
   padding: 18px;
   margin-top: 10px;
@@ -748,6 +804,19 @@ padding-inline-start: 40px;
   padding-right: 0px;
 }
 
+.certInputs {
+  display: none;
+  padding: 12px;
+  padding-right: 0px;
+}
+
+
+.certInputs {
+  display: none;
+  padding: 12px;
+  padding-right: 0px;
+}
+
 #profHist {
   display: inline;
 }
@@ -773,6 +842,15 @@ padding-inline-start: 40px;
   margin-top: 8px;
 }
 
+#addCert {
+  position: relative;
+  bottom: 10px;
+  width: 160px;
+  height: 56px !important;
+  font-size: 20px;
+  margin-top: 8px;
+}
+
 #addButtonProf {
   display: flex;
   flex-direction: column;
@@ -784,6 +862,14 @@ padding-inline-start: 40px;
 }
 
 #addButtonEdu {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 80px;
+}
+
+#addButtonCert {
   display: flex;
   flex-direction: column;
   justify-content: center;
