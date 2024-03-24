@@ -195,6 +195,10 @@
   margin-bottom: 8px;
 }
 
+#skills {
+  margin-bottom: 8px;
+}
+
 #skillsBottom {
   display: flex;
   flex-direction: column;
@@ -386,6 +390,10 @@ button:hover {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
+}
+
+.editSection {
+  overflow: hidden;
 }
 
 .editSection:hover {
@@ -717,10 +725,18 @@ padding-inline-start: 40px;
 .top-right {
   font-style: italic;
   font-weight: normal;
+  max-width: 275px;
+  min-width: 60px;
+  height: 24px;
+  max-height: 24px;
 }
 
 .top-left {
   max-width: 275px;
+  resize: none; 
+  height: 24px;
+  max-height: 24px;
+  overflow: hidden;
 }
 
 #bottom-bottom {
@@ -750,6 +766,7 @@ padding-inline-start: 40px;
   flex-direction: row;
   align-items: flex-end;
   font-size: 18px;
+  overflow: hidden;
 }
 
 #profHist {
@@ -781,6 +798,12 @@ padding-inline-start: 40px;
 }
 
 .certHistoryEntry {
+  padding: 18px;
+  margin-top: 10px;
+  max-height: 80px;
+}
+
+.skillHistoryEntry {
   padding: 18px;
   margin-top: 10px;
   max-height: 80px;
@@ -937,6 +960,19 @@ padding-inline-start: 40px;
 
 .heightAdjustCert {
   padding-bottom: 0px;
+}
+
+.heightAdjustSkills {
+  padding-bottom: 0px;
+}
+
+.spaceAtBottom {
+  margin-bottom: 6px;
+}
+
+.space-left {
+  position: relative;
+  left: 12px;
 }
 
 .error {
