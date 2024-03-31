@@ -40,7 +40,6 @@ import {
   SkillNameInput,
   skillEntries
 } from "./Skills";
-
 // import { QuillEditor } from './QuillEditor';
 
 function App() {
@@ -569,6 +568,70 @@ if (
       }
     }
   }
+
+// Initialize a counter outside the addSkills function
+var itemCounter = 0;
+
+function addSkills() {
+  'use strict';
+  var inputAdd = document.querySelector('#input-add');
+  var itemsDiv = document.querySelector('.items');
+  var savedSkillsDiv = document.querySelector('#savedSkillsExperience');
+
+  // Check if the input field is empty (or just contains whitespace)
+  if (!inputAdd.value.trim()) {
+    return; // Exit the function early if input is empty
+  }
+
+  // Increment the counter as a new item is being added
+  itemCounter++;
+
+  var span = document.createElement("span"),
+      times = document.createElement("i");
+  times.setAttribute("class", "fas fa-times");
+  times.style.cursor = "pointer"; // Add cursor style for better UX
+  
+  span.textContent = inputAdd.value + " ";
+  span.appendChild(times);
+  span.setAttribute('skillKey', itemCounter);
+  itemsDiv.appendChild(span);
+
+  var skillListItem = document.createElement("li");
+  skillListItem.textContent = inputAdd.value;
+  skillListItem.setAttribute('skillKey', itemCounter);
+  savedSkillsDiv.appendChild(skillListItem);
+
+  // Add the skill to the skillEntries array
+  var skillValue = inputAdd.value.trim();
+  skillEntries.push(skillValue);
+
+  times.onclick = function () {
+    var key = this.parentElement.getAttribute('skillKey');
+    this.parentElement.remove(); // Remove from itemsDiv
+    removeSkillFromSavedSkills(key); // Remove from savedSkillsExperience
+    removeSkillFromEntries(skillValue); // Remove from skillEntries array
+  };
+
+  inputAdd.value = ""; // Clear input field after adding
+  console.log(skillEntries)
+}
+
+// Function to remove skill from savedSkillsExperience by skillKey
+function removeSkillFromSavedSkills(skillKey) {
+  var savedSkillsDiv = document.querySelector('#savedSkillsExperience');
+  var skillToBeRemoved = savedSkillsDiv.querySelector('[skillKey="' + skillKey + '"]');
+  if (skillToBeRemoved) {
+    savedSkillsDiv.removeChild(skillToBeRemoved);
+  }
+}
+
+// Function to remove skill from skillEntries array by skill value
+function removeSkillFromEntries(skillValue) {
+  var index = skillEntries.indexOf(skillValue);
+  if (index !== -1) {
+    skillEntries.splice(index, 1);
+  }
+}
 
   function collapseProfessional() {
     const profCollapsible = document.querySelector("#allProf");
@@ -3268,7 +3331,7 @@ if (
               <div>
                 <div id="skillHist"></div>
               </div>
-              <div id="addButtonSkill">
+              {/* <div id="addButtonSkill">
                 <button
                   className="addButton"
                   id="addSkill"
@@ -3280,7 +3343,16 @@ if (
                 >
                   + Skill
                 </button>
-              </div>
+              </div> */}
+              <div>
+      <div className="addSkills">
+        <input type="text" className="inputs" placeholder="add your skills" id="input-add" />
+        <button id="add" className="addButton" onClick={addSkills}>+ Add</button>
+      </div>
+      <div className="items" id="itemsContainer">
+        {/* Items (skills) added by the user will be displayed here */}
+      </div>
+    </div>
             </div>
           </div>
         </div>

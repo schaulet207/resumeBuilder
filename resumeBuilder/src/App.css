@@ -986,3 +986,45 @@ padding-inline-start: 40px;
   margin-left: 12px !important;
   margin-right: 12px !important;
 }
+
+/* Skills */
+
+.items span {
+  font-size: 16px;
+  background-color: var(--purple);
+  color: #fff;
+  padding: 5px 10px;
+  border-radius: 5px;
+  margin-left: 5px;
+  margin-bottom: 12px;
+  display: inline-block;
+}
+.items i{
+  margin-left: 5px;
+  cursor: pointer;
+}
+
+#itemsContainer {
+  padding-left: 20px;
+  padding-right: 12px;
+}
+
+.addSkills {
+  display: flex;
+  justify-content: center;
+  align-items: baseline;
+  gap: 12px;
+  padding-bottom: 12px;
+}
+
+#add {
+  bottom: 10px;
+  width: 100px;
+  height: 40px !important;
+  font-size: 20px;
+  margin-top: 8px;
+}
+
+#input-add {
+  width: 400px;
+}
