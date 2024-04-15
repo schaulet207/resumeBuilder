@@ -390,18 +390,18 @@ function App() {
   } else {
     divider13 = " - ";
   }
-  
+
   // If any of schoolStartMonth, schoolStartYear, schoolEndMonth, or schoolEndYear are not empty, set divider12 to " | ", otherwise set it to an empty string
-if (
-  schoolStartMonth !== "" ||
-  schoolStartYear !== "" ||
-  schoolEndMonth !== "" ||
-  schoolEndYear !== ""
-) {
-  divider14 = " | ";
-} else {
-  divider14 = "";
-}
+  if (
+    schoolStartMonth !== "" ||
+    schoolStartYear !== "" ||
+    schoolEndMonth !== "" ||
+    schoolEndYear !== ""
+  ) {
+    divider14 = " | ";
+  } else {
+    divider14 = "";
+  }
 
   // A function that determines when to display the professionalExperienceHeader
   function showProfessionalExperienceHeader() {
@@ -416,11 +416,68 @@ if (
     const educationHeader = document.querySelector("#educationHeader");
     educationHeader.classList.remove("hide");
   }
-
-  // A function that determines when to display the certificationHeader
+  
+  // A function that displays the certificationHeader
   function showCertificationHeader() {
+    const certificationsAndSkillsHeader = document.querySelector("#certificationsAndSkillsHeader");
     const certificationHeader = document.querySelector("#certificationHeader");
-    certificationHeader.classList.remove("hide");
+    const skillsHeader = document.querySelector("#skillsHeader");
+    const certSectionInputs = document.querySelector(".certInputs");
+
+    console.log("Running showCertificationHeader function");
+
+    // Reset all headers to hidden before applying specific logic
+    certificationsAndSkillsHeader.classList.add("hide");
+    certificationHeader.classList.add("hide");
+    skillsHeader.classList.add("hide");
+    console.log("All headers are initially hidden");
+
+    // Scenario 1: Both certificate and skill entries are present, at least one certificate entry is visible
+    if (certificateEntries.length > 0 && certificateEntries.some(entry => entry.visibility) &&
+        skillEntries.length > 0) {
+        console.log("22 - Both certificate and skill entries are present, at least one certificate is visible");
+        certificationsAndSkillsHeader.classList.remove("hide");
+    }
+    // Scenario 2: Certificate entries are present, at least one is visible, no skill entries
+    else if (certificateEntries.length > 0 && certificateEntries.some(entry => entry.visibility) &&
+             skillEntries.length < 1) {
+        console.log("33 - Certificate entries are present and at least one is visible, no skill entries");
+        certificationHeader.classList.remove("hide");
+    }
+    // Scenario 3: Skill entries are present, no certificate entries
+    else if (skillEntries.length > 0 && certificateEntries.length < 1) {
+        console.log("44 - Skill entries are present, no certificate entries");
+        skillsHeader.classList.remove("hide");
+      }
+      // New Scenario: All certificate entries are hidden, and skill entries are greater than 0
+      else if (skillEntries.length > 0 && certificateEntries.every(entry => !entry.visibility)) {
+          console.log("88 - All certificate entries are hidden, but skill entries are present");
+          skillsHeader.classList.remove("hide");
+      }
+      // Scenario 4: Default fallback if none of the above conditions are met
+      else {
+          console.log("55 - Checking if certificate section inputs are visible");
+          // Check if the certification section inputs are displayed
+          if (certSectionInputs.style.display === "inline") {
+              console.log("66 - Certification section inputs are visible; not hiding the header");
+              certificationHeader.classList.remove("hide");
+          } else {
+              console.log("77 - Certification section inputs are hidden; keeping all headers hidden");
+          }
+      }
+  }
+
+
+
+
+
+
+  // A function that displays the certificationsAndSkillsHeader
+  function showCertificationsAndSkillsHeader() {
+    const certificationsAndSkillsHeader = document.querySelector(
+      "#certificationsAndSkillsHeader"
+    );
+    certificationsAndSkillsHeader.classList.remove("hide");
   }
 
   // A variable to hold all of the professional experience
@@ -569,69 +626,111 @@ if (
     }
   }
 
-// Initialize a counter outside the addSkills function
-var itemCounter = 0;
+  // Initialize a counter outside the addSkills function
+  var itemCounter = 0;
 
-function addSkills() {
-  'use strict';
-  var inputAdd = document.querySelector('#input-add');
-  var itemsDiv = document.querySelector('.items');
-  var savedSkillsDiv = document.querySelector('#savedSkillsExperience');
-
-  // Check if the input field is empty (or just contains whitespace)
-  if (!inputAdd.value.trim()) {
-    return; // Exit the function early if input is empty
-  }
-
-  // Increment the counter as a new item is being added
-  itemCounter++;
-
-  var span = document.createElement("span"),
-      times = document.createElement("i");
-  times.setAttribute("class", "fas fa-times");
-  times.style.cursor = "pointer"; // Add cursor style for better UX
+  // A function to determine which header to display on right-half
+  function showSkillsExperienceHeader() {
+    const certificationsAndSkillsHeader = document.querySelector("#certificationsAndSkillsHeader");
+    const certificationHeader = document.querySelector("#certificationHeader");
+    const skillsHeader = document.querySelector("#skillsHeader");
   
-  span.textContent = inputAdd.value + " ";
-  span.appendChild(times);
-  span.setAttribute('skillKey', itemCounter);
-  itemsDiv.appendChild(span);
-
-  var skillListItem = document.createElement("li");
-  skillListItem.textContent = inputAdd.value;
-  skillListItem.setAttribute('skillKey', itemCounter);
-  savedSkillsDiv.appendChild(skillListItem);
-
-  // Add the skill to the skillEntries array
-  var skillValue = inputAdd.value.trim();
-  skillEntries.push(skillValue);
-
-  times.onclick = function () {
-    var key = this.parentElement.getAttribute('skillKey');
-    this.parentElement.remove(); // Remove from itemsDiv
-    removeSkillFromSavedSkills(key); // Remove from savedSkillsExperience
-    removeSkillFromEntries(skillValue); // Remove from skillEntries array
-  };
-
-  inputAdd.value = ""; // Clear input field after adding
-  console.log(skillEntries)
-}
-
-// Function to remove skill from savedSkillsExperience by skillKey
-function removeSkillFromSavedSkills(skillKey) {
-  var savedSkillsDiv = document.querySelector('#savedSkillsExperience');
-  var skillToBeRemoved = savedSkillsDiv.querySelector('[skillKey="' + skillKey + '"]');
-  if (skillToBeRemoved) {
-    savedSkillsDiv.removeChild(skillToBeRemoved);
+    // Reset all headers to hidden before applying specific logic
+    certificationsAndSkillsHeader.classList.add("hide");
+    certificationHeader.classList.add("hide");
+    skillsHeader.classList.add("hide");
+  
+    if (certificateEntries.length > 0 && skillEntries.length > 0) {
+      // If both certificate and skill entries are present
+      if (certificateEntries.every((entry) => entry.visibility)) {
+        // And all certificates are set to be visible
+        certificationsAndSkillsHeader.classList.remove("hide");
+      } else {
+        // If any certificates are not set to be visible
+        skillsHeader.classList.remove("hide");
+      }
+    } else if (certificateEntries.length < 1 && skillEntries.length > 0) {
+      // If there are only skill entries, show the skills header
+      skillsHeader.classList.remove("hide");
+    } else if (certificateEntries.length > 0 && skillEntries.length < 1) {
+      // If there are certificate entries but no skill entries
+      if (certificateEntries.every((entry) => entry.visibility)) {
+        // And all certificates are set to be visible
+        certificationHeader.classList.remove("hide");
+      }
+      // If all certificates are not set to be visible, all headers remain hidden
+    } else {
+      // If there are no entries in both certificates and skills
+      // You could show a default message or leave all headers hidden as needed
+    }
   }
-}
 
-// Function to remove skill from skillEntries array by skill value
-function removeSkillFromEntries(skillValue) {
-  var index = skillEntries.indexOf(skillValue);
-  if (index !== -1) {
-    skillEntries.splice(index, 1);
+  function addSkills() {
+    "use strict";
+    var inputAdd = document.querySelector("#input-add");
+    var itemsDiv = document.querySelector(".items");
+    var savedSkillsDiv = document.querySelector("#savedSkillsExperience");
+
+    // Check if the input field is empty (or just contains whitespace)
+    if (!inputAdd.value.trim()) {
+      return; // Exit the function early if input is empty
+    }
+
+    // Increment the counter as a new item is being added
+    itemCounter++;
+
+    var span = document.createElement("span"),
+      times = document.createElement("i");
+    times.setAttribute("class", "fas fa-times");
+    times.style.cursor = "pointer"; // Add cursor style for better UX
+
+    span.textContent = inputAdd.value + " ";
+    span.appendChild(times);
+    span.setAttribute("skillKey", itemCounter);
+    itemsDiv.appendChild(span);
+
+    var skillListItem = document.createElement("li");
+    skillListItem.textContent = inputAdd.value;
+    skillListItem.setAttribute("skillKey", itemCounter);
+    savedSkillsDiv.appendChild(skillListItem);
+
+    // Add the skill to the skillEntries array
+    var skillValue = inputAdd.value.trim();
+    skillEntries.push(skillValue);
+
+    times.onclick = function () {
+      var key = this.parentElement.getAttribute("skillKey");
+      this.parentElement.remove(); // Remove from itemsDiv
+      removeSkillFromSavedSkills(key); // Remove from savedSkillsExperience
+      removeSkillFromEntries(skillValue); // Remove from skillEntries array
+      // showSkillsExperienceHeader();
+      showCertificationHeader();
+    };
+
+    inputAdd.value = ""; // Clear input field after adding
+    console.log(skillEntries);
+    // showSkillsExperienceHeader();
+    showCertificationHeader();
   }
-}
+
+  // Function to remove skill from savedSkillsExperience by skillKey
+  function removeSkillFromSavedSkills(skillKey) {
+    var savedSkillsDiv = document.querySelector("#savedSkillsExperience");
+    var skillToBeRemoved = savedSkillsDiv.querySelector(
+      '[skillKey="' + skillKey + '"]'
+    );
+    if (skillToBeRemoved) {
+      savedSkillsDiv.removeChild(skillToBeRemoved);
+    }
+  }
+
+  // Function to remove skill from skillEntries array by skill value
+  function removeSkillFromEntries(skillValue) {
+    var index = skillEntries.indexOf(skillValue);
+    if (index !== -1) {
+      skillEntries.splice(index, 1);
+    }
+  }
 
   function collapseProfessional() {
     const profCollapsible = document.querySelector("#allProf");
@@ -1125,33 +1224,58 @@ function removeSkillFromEntries(skillValue) {
 
   // Clear all the certification section input fields
   const clearInputFieldsCertification = () => {
+    console.log("1 - Starting to reset certificate fields");
+    
     // Resets fields for certificates
     setCertificateName(""); // Clear certificate name field
+    console.log("2 - Certificate name field cleared");
     setCertificateInstitute(""); // Clear institute field
+    console.log("3 - Institute field cleared");
     setCertificationYear(""); // Clear certification year field
+    console.log("4 - Certification year field cleared");
 
     // Hides the input fields and returns to the add button screen
     hideCertInputs(); // Assuming there's a function similar to hideEduInputs for certificates
+    console.log("5 - Certificate input fields are hidden");
 
-    // Adjust the bottom of the certificates section
+    // Perform the reverse swap
+    const certHistory = document.getElementById("certHist");
+    const dataAttributeCert = certHistory.getAttribute("data-attribute");
+    const newCertExp = document.querySelector("#newCertExperience");
+    const editCertEntryRH = document.querySelector(`#certKey${dataAttributeCert}`);
+
+    if (newCertExp && editCertEntryRH) {
+        const originalParent = newCertExp.parentNode;
+        const swapParent = editCertEntryRH.parentNode;
+        const originalNextSibling = newCertExp.nextSibling;
+
+        // Perform the reverse swap
+        swapParent.insertBefore(newCertExp, editCertEntryRH.nextSibling);
+        originalParent.insertBefore(editCertEntryRH, originalNextSibling);
+
+        console.log("9 - Sections swapped back to their original positions");
+        editCertEntryRH.style.display = ""; // Restore the display property
+    }
+
+    // Other operations...
     const addButtonCert = document.querySelector("#addButtonCert");
-    if (certificateEntries.length > 0) {
-      addButtonCert.style.paddingBottom = "80px";
+    if (addButtonCert) {
+        if (certificateEntries.length > 0) {
+            addButtonCert.style.paddingBottom = "80px";
+            console.log("6 - Adjusted padding for the add button because certificate entries exist");
+        } else {
+            console.log("6 - No adjustment needed for add button padding, no certificate entries");
+        }
+    } else {
+        console.log("6 - Add button element not found in the DOM");
     }
 
-    // Reset the validation error messages if any
-    // Example: Resetting for certificate name
-    const certNameRequired = document.querySelector("#certReq");
-    const certNameBorder = document.querySelector("#certificationName");
-    certNameRequired.className = "subLabel";
-    certNameBorder.style.border = "1px solid rgb(61, 61, 64)";
+    showCertificationHeader();
+    console.log("8 - Certification header visibility updated based on current entries");
+    console.log("CertEntries.length = " + certificateEntries.length)
+    console.log("certificateEntries all visible? " + certificateEntries.every(entry => entry.visibility))
+};
 
-    // If certEntries is 0 (i.e., cancelled on the first entry), additional UI handling
-    if (certificateEntries.length < 1) {
-      const certificatesHeader = document.querySelector("#certificationHeader");
-      certificatesHeader.classList.add("hide");
-    }
-  };
 
   // Clear all the skills section input fields
   const clearInputFieldsSkills = () => {
@@ -2257,39 +2381,25 @@ function removeSkillFromEntries(skillValue) {
       // Toggles the visibility variable true/false for the certificateEntries object at the index of dataAttributeCert - 1
       certificateEntries[dataAttributeCert - 1].visibility =
         !certificateEntries[dataAttributeCert - 1].visibility;
+    
+      const iconDisplay =
+        visibleIcon.style.display === "inline" ? "none" : "inline";
+      visibleIcon.style.display = iconDisplay;
+      hiddenIcon.style.display = iconDisplay === "inline" ? "none" : "inline";
+      rightSection.style.display = iconDisplay;
 
-      // A function to check if all the entries are hidden, and if so, hide the certification header
-      function checkVisibility() {
-        if (certificateEntries.every((entry) => entry.visibility === false)) {
-          const certificationHeader = document.querySelector(
-            "#certificationHeader"
-          );
-          certificationHeader.classList.add("hide");
-        } else {
-          const certificationHeader = document.querySelector(
-            "#certificationHeader"
-          );
-          certificationHeader.classList.remove("hide");
-        }
-      }
+      console.log("check cert visibility")
 
-      checkVisibility();
-
-      if (visibleIcon.style.display === "inline") {
-        visibleIcon.style.display = "none";
-        hiddenIcon.style.display = "inline";
-        rightSection.style.display = "none";
-      } else {
-        visibleIcon.style.display = "inline";
-        hiddenIcon.style.display = "none";
-        rightSection.style.display = "inline";
-      }
+      showCertificationHeader()
+      // console.log(`${certificateEntries.every(entry => entry.visibility)} Visibility of all entries: ${certificateEntries.map(entry => entry.visibility)}`);
+      certificateEntries.forEach((entry, index) => {
+        console.log(`Entry ${index + 1}: ${JSON.stringify(entry)} - Visibility: ${entry.visibility}`);
+    });
+    
     }
 
     // A function to edit the certification sections onclick
     function editCertSection(event) {
-      // Displays the certification section header
-      showCertificationHeader();
 
       // Hacky way of getting the data attribute of the field being edited from the certHist element. Since doing this, I've realized that I just need to initialize the variable dataAttribute outside of the App function. For now, this works.
       const dataAttributeCert = event.currentTarget.dataset.attribute;
@@ -2303,6 +2413,9 @@ function removeSkillFromEntries(skillValue) {
 
       // Toggle visibility true/false for the certExpEntries object at the index of dataAttributeCert - 1
       certificateEntries[dataAttributeCert - 1].visibility = true;
+
+      // Displays the certification section header
+      showCertificationHeader();
 
       if (certHistory) {
         certHistory.setAttribute("data-attribute", dataAttributeCert);
@@ -2613,7 +2726,10 @@ function removeSkillFromEntries(skillValue) {
       certificateEntries[dataAttributeCert - 1] = certExpObject;
       certHistory.removeAttribute("data-attribute");
     }
-    console.log(certificateEntries);
+    console.log(certificateEntries + "Visibility 1");
+    showSkillsExperienceHeader();
+  
+    showCertificationHeader()
   };
 
   const handleSaveSkills = () => {
@@ -2656,6 +2772,7 @@ function removeSkillFromEntries(skillValue) {
         }
       }
       checkVisibility();
+      console.log(certificateEntries);
     }
 
     // Function to edit the skill sections onclick
@@ -2724,6 +2841,7 @@ function removeSkillFromEntries(skillValue) {
       };
 
       skillEntries.push(skillExpObject);
+      console.log(skillEntries);
       clearInputFieldsSkills();
 
       const skillSection = document.querySelector("#newSkillsExperience");
@@ -3345,14 +3463,21 @@ function removeSkillFromEntries(skillValue) {
                 </button>
               </div> */}
               <div>
-      <div className="addSkills">
-        <input type="text" className="inputs" placeholder="add your skills" id="input-add" />
-        <button id="add" className="addButton" onClick={addSkills}>+ Add</button>
-      </div>
-      <div className="items" id="itemsContainer">
-        {/* Items (skills) added by the user will be displayed here */}
-      </div>
-    </div>
+                <div className="addSkills">
+                  <input
+                    type="text"
+                    className="inputs"
+                    placeholder="add your skills"
+                    id="input-add"
+                  />
+                  <button id="add" className="addButton" onClick={addSkills}>
+                    + Add
+                  </button>
+                </div>
+                <div className="items" id="itemsContainer">
+                  {/* Items (skills) added by the user will be displayed here */}
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -3436,6 +3561,20 @@ function removeSkillFromEntries(skillValue) {
             <div id="savedEducationExperience">{showEducationExperience}</div>
             <div id="newEduExperience">{newEducationSaved}</div>
             <div className="hide" id="certificationHeader">
+              <p className="c8">
+                <span className="c2 c11">CERTIFICATIONS</span>
+              </p>
+              <hr />
+              <p />
+            </div>
+            <div className="hide" id="certificationsAndSkillsHeader">
+              <p className="c8">
+                <span className="c2 c11">CERTIFICATIONS & SKILLS</span>
+              </p>
+              <hr />
+              <p />
+            </div>
+            <div className="hide" id="skillsHeader">
               <p className="c8">
                 <span className="c2 c11">SKILLS</span>
               </p>
