@@ -1271,9 +1271,10 @@ function App() {
     }
 
     showCertificationHeader();
-    console.log("8 - Certification header visibility updated based on current entries");
-    console.log("CertEntries.length = " + certificateEntries.length)
-    console.log("certificateEntries all visible? " + certificateEntries.every(entry => entry.visibility))
+
+    // Hide the new certification section on right-half until the certification inputs are showing again
+    const certificationSection = document.querySelector("#newCertExperience");
+    certificationSection.style.display = "none";
 };
 
 
