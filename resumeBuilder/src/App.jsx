@@ -43,6 +43,8 @@ import {
 // import { QuillEditor } from './QuillEditor';
 
 function App() {
+  
+  // State and Handlers
   const [fullName, setFullName] = useState("");
   const handleFullNameChange = (newFullName) => {
     setFullName(newFullName);
@@ -83,23 +85,23 @@ function App() {
     setCity(newCity);
   };
 
-  let [startMonth, setStartMonth] = useState(""); // Updated from startDate
-  let handleStartMonthChange = (newStartMonth) => {
+  const [startMonth, setStartMonth] = useState(""); 
+  const handleStartMonthChange = (newStartMonth) => {
     setStartMonth(newStartMonth);
   };
 
-  let [startYear, setStartYear] = useState(""); // Updated from Start Year
-  let handleStartYearChange = (newStartYear) => {
+  const [startYear, setStartYear] = useState("");
+  const handleStartYearChange = (newStartYear) => {
     setStartYear(newStartYear);
   };
 
-  let [endMonth, setEndMonth] = useState(""); // New state for end month
-  let handleEndMonthChange = (newEndMonth) => {
+  const [endMonth, setEndMonth] = useState(""); 
+  const handleEndMonthChange = (newEndMonth) => {
     setEndMonth(newEndMonth);
   };
 
-  let [endYear, setEndYear] = useState(""); // New state for end year
-  let handleEndYearChange = (newEndYear) => {
+  const [endYear, setEndYear] = useState(""); 
+  const handleEndYearChange = (newEndYear) => {
     setEndYear(newEndYear);
   };
 
@@ -108,7 +110,7 @@ function App() {
     setPresent(newPresent);
   };
 
-  const [employerDescription, setEmployerDescription] = useState(""); // State for employerDescription
+  const [employerDescription, setEmployerDescription] = useState("");
   const handleEmployerDescriptionChange = (newDescription) => {
     setEmployerDescription(newDescription);
   };
@@ -128,27 +130,27 @@ function App() {
     setSchoolAddress(newSchoolAddress);
   };
 
-  let [schoolStartMonth, setSchoolStartMonth] = useState(""); // Initialized with empty string
+  const [schoolStartMonth, setSchoolStartMonth] = useState("");
 
-  let handleSchoolStartMonthChange = (newSchoolStartMonth) => {
+  const handleSchoolStartMonthChange = (newSchoolStartMonth) => {
     setSchoolStartMonth(newSchoolStartMonth);
   };
 
-  let [schoolStartYear, setSchoolStartYear] = useState(""); // Initialized with empty string
+  const [schoolStartYear, setSchoolStartYear] = useState("");
 
-  let handleSchoolStartYearChange = (newSchoolStartYear) => {
+  const handleSchoolStartYearChange = (newSchoolStartYear) => {
     setSchoolStartYear(newSchoolStartYear);
   };
 
-  let [schoolEndMonth, setSchoolEndMonth] = useState(""); // Initialized with empty string
+  const [schoolEndMonth, setSchoolEndMonth] = useState("");
 
-  let handleSchoolEndMonthChange = (newSchoolEndMonth) => {
+  const handleSchoolEndMonthChange = (newSchoolEndMonth) => {
     setSchoolEndMonth(newSchoolEndMonth);
   };
 
-  let [schoolEndYear, setSchoolEndYear] = useState(""); // Initialized with empty string
+  const [schoolEndYear, setSchoolEndYear] = useState("");
 
-  let handleSchoolEndYearChange = (newSchoolEndYear) => {
+  const handleSchoolEndYearChange = (newSchoolEndYear) => {
     setSchoolEndYear(newSchoolEndYear);
   };
 
