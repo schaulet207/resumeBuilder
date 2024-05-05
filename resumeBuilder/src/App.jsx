@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import "./App.css";
-import PersonalDetails from './Personal';
+import PersonalDetails from './components/personal/Personal';
 import {
   PositionInput,
   EmployerInput,
