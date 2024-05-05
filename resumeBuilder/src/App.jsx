@@ -1,12 +1,6 @@
 import React, { useState } from "react";
 import "./App.css";
-import {
-  FullNameInput,
-  CareerInput,
-  EmailInput,
-  PhoneInput,
-  AddressInput,
-} from "./Personal";
+import PersonalDetails from './Personal';
 import {
   PositionInput,
   EmployerInput,
@@ -40,7 +34,6 @@ import {
   SkillNameInput,
   skillEntries
 } from "./Skills";
-import PersonalDetails from './PersonalDetails';
 // import { QuillEditor } from './QuillEditor';
 
 function App() {
@@ -74,6 +67,7 @@ function App() {
   };
 
   // END PERSONAL
+  // START PROFESSIONAL
 
   const [position, setPosition] = useState("");
   const handlePositionChange = (newPosition) => {
@@ -119,6 +113,9 @@ function App() {
   const handleEmployerDescriptionChange = (newDescription) => {
     setEmployerDescription(newDescription);
   };
+
+  // END PROFESSIONAL
+  // START EDUCATION
 
   const [degree, setDegree] = useState("");
   const handleDegreeChange = (newDegree) => {
@@ -169,6 +166,9 @@ function App() {
     setMajor(newMajor);
   };
 
+  // END EDUCATION
+  // START CERTIFICATES
+
   const [certificateName, setCertificateName] = useState("");
   const handleCertificateNameChange = (newCertificateName) => {
     setCertificateName(newCertificateName);
@@ -188,6 +188,8 @@ function App() {
   const handleCertificateInstituteChange = (newCertificateInstitute) => {
     setCertificateInstitute(newCertificateInstitute);
   };
+
+  // END CERTIFICATES
 
   const [skillName, setSkillName] = useState("");
   const handleSkillNameChange = (newSkillName) => {
