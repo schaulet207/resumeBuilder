@@ -109,9 +109,10 @@ body {
   top: 0;
   left: 0;
   width: 250px;
-  height: 100vh;
+  height: 100%;
   background-color: rgb(29, 29, 32);
   transition: width 0.3s ease;
+  border-right: 2px solid var(--gray-bg);
 }
 
 .sidebar-content {
@@ -127,23 +128,40 @@ body {
   overflow: hidden; /* Hide content when sidebar is collapsed */
 }
 
-.toggle-icon {
-  position: absolute;
-  top: 100px;
-  width: 25px;
-  height: 25px;
-  left: 234px;
-  transition: left 0.3s ease;
-  cursor: pointer;
-  background-color: rgb(29, 29, 32); 
-  color: white;
-  text-align: center;
-  line-height: 25px; 
-  border-radius: 0 5px 5px 0; 
-  user-select: none; 
-  z-index: 2; 
+.sidebar:hover .toggle-icon {
+  opacity: 1; /* Fully visible */
+  visibility: visible; /* Make it visible immediately on hover */
 }
 
+.toggle-icon {
+  opacity: 0; /* Start fully transparent */
+  visibility: hidden; /* Not visible initially */
+  position: absolute;
+  top: 100px; /* Adjust as needed */
+  left: 232px; /* Initial left position */
+  width: 25px;
+  height: 25px;
+  cursor: pointer;
+  background-color: var(--gray-bg); /* Initial background color */
+  color: white;
+  text-align: center;
+  line-height: 25px;
+  border-radius: 24px;
+  padding: 5px;
+  user-select: none;
+  z-index: 2;
+  transition: opacity 0.3s ease, visibility 0.6s ease, background-color 0.3s ease, left 0.3s ease; /* Include left in the transitions */
+}
+
+/* Transition the toggle-icon background-color when the sidebar is hovered */
+.toggle-icon:hover {
+  background-color: var(--purple); /* Transition to purple on hover */
+}
+
+.collapsedIcon {
+  opacity: 1; /* Fully visible */
+  visibility: visible;
+}
 
 
 .row {
@@ -599,6 +617,20 @@ h4{
   width: calc(100vw - 240px); /* Calculate width based on viewport width minus 240px */
 }
 
+@media (max-width: 768px) { /* Common breakpoint for tablets and below */
+  .toggle-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    position: absolute; /* Keep absolute positioning */
+    top: 30px;
+    left: 422px; /* Align with the left edge of the viewport */
+    transition: left 0.3s ease; /* Animate only the left property */
+    width: 100vw; /* Full viewport width */
+  }
+}
+
 .toggle-switch {
   width: 200px;
   height: 40px;
@@ -606,7 +638,8 @@ h4{
   border-radius: 20px;
   display: flex;
   box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-  position: relative;
+  position: absolute;
+  top: 6px;
 }
 
 .toggle-tab {

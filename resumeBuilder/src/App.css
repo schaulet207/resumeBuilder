@@ -1,7 +1,7 @@
 #root {
   position: absolute; /* Updated from relative to absolute */
   top: 50px; /* Position from the top */
-  left: 300px; /* Initial left position */
+  left: 220px; /* Initial left position */
   margin: 0 auto; /* Centering horizontally if applicable, may need adjustment due to absolute positioning */
   padding: 2rem; /* Padding around the content */
   transition: left 0.3s ease; /* Smooth transition for the left property */
@@ -51,8 +51,9 @@
   display: flex;
   flex-direction: row; /* Default to row layout */
   justify-content: space-around;
-  gap: 7em;
+  gap: 4em;
   padding-top: 10px;
+  scale: 0.9;
 }
 
 /* Media Query for smaller screens */
@@ -67,8 +68,10 @@
 .left-half {
   border-radius: 12px;
   padding: 18px;
+  padding-top: 8px;
   box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.075);
   width: 36rem;
+  position: relative;
 }
 
 .right-half {
@@ -77,7 +80,7 @@
   width: 50rem;
   background-color: white;
   overflow: auto; /* Add scrollbars if content overflows */
-  border-radius: 6px;
+  border-radius: 3px;
   border: none;
 }
 

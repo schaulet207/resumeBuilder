@@ -50,23 +50,26 @@
     <div class="container">
       <div class="toggle-container">
         <div class="toggle-switch">
-          <div class="toggle-tab active" onclick="toggleTab('Write')">
-            Write
-          </div>
-          <div class="toggle-tab" onclick="toggleTab('Generate')">Generate</div>
+            <div class="toggle-tab active" onclick="toggleTab('Write')">
+                Write
+              </div>
+              <div class="toggle-tab" onclick="toggleTab('Generate')">
+                Generate
+              </div>
         </div>
       </div>
 
       <script>
         function toggleTab(tab) {
-          const tabs = document.querySelectorAll(".toggle-tab");
-          tabs.forEach((t) => {
-            t.classList.remove("active");
-            if (t.textContent === tab) {
-              t.classList.add("active");
-            }
-          });
-        }
+  const tabs = document.querySelectorAll(".toggle-tab");
+  tabs.forEach((t) => {
+    console.log(`Tab Text: '${t.textContent.trim()}'`); // Log textContent for debugging
+    t.classList.remove("active"); // Remove 'active' from all tabs
+    if (t.textContent.trim() === tab) { // Trim whitespace and compare
+      t.classList.add("active"); // Set 'active' on the matching tab
+    }
+  });
+}
       </script>
 
       <div class="sidebar" id="sidebar" style="width: 250px">
@@ -104,21 +107,24 @@
             // Expanding sidebar
             sidebar.style.width = '250px';
             sidebarContent.style.display = 'flex';
+            toggleIcon.classList.remove('collapsedIcon'); // Remove visibility class when expanded
             toggleIcon.innerHTML = '&#9664;'; // Change to left arrow
-            toggleIcon.style.left = '234px';
-            root.style.left = '300px';
+            toggleIcon.style.left = '232px';
+            root.style.left = '220px';
             container.style.left = '240px'; // Return to initial position
           } else {
             // Collapsing sidebar
             sidebar.style.width = '25px';
             sidebarContent.style.display = 'none';
+            toggleIcon.classList.add('collapsedIcon'); // Add visibility class when collapsed
             toggleIcon.innerHTML = '&#9654;'; // Change to right arrow
-            toggleIcon.style.left = '14px';
+            toggleIcon.style.left = '12px';
             root.style.left = '100px';
             container.style.left = '0px'; // Align container with the viewport edge
           }
         }
         </script>
+        
         
         
 
