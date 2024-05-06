@@ -48,9 +48,19 @@
 
 .App {
   display: flex;
-  flex-direction: row;
+  flex-direction: row; /* Default to row layout */
   justify-content: space-around;
   gap: 7em;
+  padding-top: 10px;
+}
+
+/* Media Query for smaller screens */
+@media (max-width: 1250px) { /* Adjust this breakpoint as needed */
+  .App {
+    flex-direction: column; /* Stack elements vertically on small screens */
+    align-items: center; /* Center align the items horizontally */
+    gap: 2em; /* Reduce gap for vertical stacking */
+  }
 }
 
 .left-half {

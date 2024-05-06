@@ -106,7 +106,7 @@ body {
 .sidebar {
   position: fixed;
   z-index: 2;
-  top: 88px;
+  padding-top: 88px;
   min-width: 240px;
   max-width: 250px;
   height: 100vh;
@@ -551,3 +551,55 @@ h4{
   display: flex;
   flex-direction: row;
 }
+
+#top-bar {
+  display: flex;
+  flex-direction: row;
+
+  justify-content: space-around;
+  align-items: center;
+  padding: 100px;
+  background-color: rgb(29, 29, 32);
+  border-radius: 8px;
+  box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.075);
+  color: var(--txt);
+  font-family: 'Quicksand', sans-serif;
+}
+
+.toggle-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  width: calc(100vw - 240px); /* Adjust the width to account for the 240px on the left */
+  margin-left: 240px; /* Push the container to start after 240px from the left */
+}
+
+.toggle-switch {
+  width: 200px;
+  height: 40px;
+  background-color: #333;
+  border-radius: 20px;
+  display: flex;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+  position: relative;
+}
+
+.toggle-tab {
+  width: 100px;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: white;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  z-index: 2;
+}
+
+.active {
+  background-color: var(--purple);
+  border-radius: 20px;
+}
+
