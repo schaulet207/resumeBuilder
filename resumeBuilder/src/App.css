@@ -1,9 +1,10 @@
 #root {
-  position: absolute;
-  top: 50px;
-  left: 300px;
-  margin: 0 auto;
-  padding: 2rem;
+  position: absolute; /* Updated from relative to absolute */
+  top: 50px; /* Position from the top */
+  left: 300px; /* Initial left position */
+  margin: 0 auto; /* Centering horizontally if applicable, may need adjustment due to absolute positioning */
+  padding: 2rem; /* Padding around the content */
+  transition: left 0.3s ease; /* Smooth transition for the left property */
 }
 
 .logo {
@@ -55,7 +56,7 @@
 }
 
 /* Media Query for smaller screens */
-@media (max-width: 1250px) { /* Adjust this breakpoint as needed */
+@media (max-width: 1500px) { /* Adjust this breakpoint as needed */
   .App {
     flex-direction: column; /* Stack elements vertically on small screens */
     align-items: center; /* Center align the items horizontally */

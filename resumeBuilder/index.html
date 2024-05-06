@@ -48,36 +48,32 @@
   </head>
   <body>
     <div class="container">
-
-
-
-
-        <div class="toggle-container">
-            <div class="toggle-switch">
-                <div class="toggle-tab active" onclick="toggleTab('Write')">Write</div>
-                <div class="toggle-tab" onclick="toggleTab('Generate')">Generate</div>
-            </div>
+      <div class="toggle-container">
+        <div class="toggle-switch">
+          <div class="toggle-tab active" onclick="toggleTab('Write')">
+            Write
+          </div>
+          <div class="toggle-tab" onclick="toggleTab('Generate')">Generate</div>
         </div>
-        
-        <script>
+      </div>
+
+      <script>
         function toggleTab(tab) {
-            const tabs = document.querySelectorAll('.toggle-tab');
-            tabs.forEach(t => {
-                t.classList.remove('active');
-                if (t.textContent === tab) {
-                    t.classList.add('active');
-                }
-            });
+          const tabs = document.querySelectorAll(".toggle-tab");
+          tabs.forEach((t) => {
+            t.classList.remove("active");
+            if (t.textContent === tab) {
+              t.classList.add("active");
+            }
+          });
         }
-        </script>
+      </script>
 
-
-
-
-
-
-      <div class="sidebar" id="sidebar">
-        <div class="sidebar-content">
+      <div class="sidebar" id="sidebar" style="width: 250px">
+        <div class="toggle-icon" onclick="toggleSidebar()">
+          &#9664;
+        </div>
+        <div class="sidebar-content" style="display: flex">
           <h2 id="administrator">Resume No. {number}</h2>
           <div class="row">
             <div class="s-divider"></div>
@@ -96,6 +92,35 @@
           <a href id="privacy">Privacy</a>
         </div>
       </div>
+      <script>
+        function toggleSidebar() {
+          var sidebar = document.getElementById('sidebar');
+          var sidebarContent = document.querySelector('.sidebar-content');
+          var toggleIcon = document.querySelector('.toggle-icon');
+          var root = document.getElementById('root');
+          var container = document.querySelector('.toggle-container');
+        
+          if (sidebar.style.width === '25px') {
+            // Expanding sidebar
+            sidebar.style.width = '250px';
+            sidebarContent.style.display = 'flex';
+            toggleIcon.innerHTML = '&#9664;'; // Change to left arrow
+            toggleIcon.style.left = '234px';
+            root.style.left = '300px';
+            container.style.left = '240px'; // Return to initial position
+          } else {
+            // Collapsing sidebar
+            sidebar.style.width = '25px';
+            sidebarContent.style.display = 'none';
+            toggleIcon.innerHTML = '&#9654;'; // Change to right arrow
+            toggleIcon.style.left = '14px';
+            root.style.left = '100px';
+            container.style.left = '0px'; // Align container with the viewport edge
+          }
+        }
+        </script>
+        
+        
 
       <div class="main">
         <div class="cards" id="mainlayout">
