@@ -72,7 +72,6 @@
   box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.075);
   width: 36rem;
   position: relative;
-  max-height: 80vh;
 }
 
 .right-half {
@@ -312,6 +311,13 @@ html {
   display: flex;
   flex-direction: column;
   gap: 2px;
+  max-height: 80vh;  /* Default max-height for wider screens */
+}
+
+@media (max-width: 1500px) {
+  .accordion {
+    max-height: none;  /* Remove max-height when the viewport width is 1500px or less */
+  }
 }
 
 .accordion-section {
