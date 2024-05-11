@@ -625,7 +625,6 @@ h4{
     align-items: center;
     position: absolute; /* Keep absolute positioning */
     top: 30px;
-    left: 422px; /* Align with the left edge of the viewport */
     transition: left 0.3s ease; /* Animate only the left property */
     width: 100vw; /* Full viewport width */
   }
@@ -639,13 +638,14 @@ h4{
   display: flex;
   box-shadow: 0 4px 6px rgba(0,0,0,0.1);
   position: absolute;
-  left: 580px;
+  left: 550px;
   top: 6px;
+  padding: 20px;
 }
 
 @media (max-width: 1500px) {
   .toggle-switch {
-    left: 320px; /* Set left to 260px when the viewport is 1500px or narrower */
+    left: 300px; /* Set left to 260px when the viewport is 1500px or narrower */
     transform: none; /* Remove the transform to prevent shifting */
   }
 }
@@ -661,10 +661,17 @@ h4{
   cursor: pointer;
   transition: all 0.3s ease;
   z-index: 2;
+  padding: 8px;
+  bottom: 10px;
+  position: relative;
+  border: 1px solid transparent;
+  color: gray;
 }
 
 .active {
   background-color: var(--purple);
   border-radius: 20px;
+  border: 1px solid rgb(199, 197, 197);
+  color: white;
 }
 

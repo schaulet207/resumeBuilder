@@ -50,32 +50,52 @@
     <div class="container">
       <div class="toggle-container">
         <div class="toggle-switch">
-            <div class="toggle-tab active" onclick="toggleTab('Write')">
-                Write
-              </div>
-              <div class="toggle-tab" onclick="toggleTab('Generate')">
-                Generate
-              </div>
+          <div class="toggle-tab active" onclick="toggleTab('Write')">
+            Write
+          </div>
+          <div class="toggle-tab" id="generate" onclick="toggleTab('Generate')">
+            <img
+              src="./Sparkles SVG.svg"
+              id="generateIcon"
+              alt="Sparkles Icon"
+              style="height: 20px; width: 20px; vertical-align: middle"
+            />Generate
+          </div>
         </div>
       </div>
 
       <script>
         function toggleTab(tab) {
-  const tabs = document.querySelectorAll(".toggle-tab");
-  tabs.forEach((t) => {
-    console.log(`Tab Text: '${t.textContent.trim()}'`); // Log textContent for debugging
-    t.classList.remove("active"); // Remove 'active' from all tabs
-    if (t.textContent.trim() === tab) { // Trim whitespace and compare
-      t.classList.add("active"); // Set 'active' on the matching tab
-    }
-  });
-}
+          const tabs = document.querySelectorAll(".toggle-tab");
+          const img = document.getElementById("generateIcon"); // Get the image element outside the loop
+          tabs.forEach((t) => {
+            console.log(`Tab Text: '${t.textContent.trim()}'`); // Log textContent for debugging
+            t.classList.remove("active"); // Remove 'active' from all tabs
+            if (t.textContent.trim() === tab) {
+              // Trim whitespace and compare
+              t.classList.add("active"); // Set 'active' on the matching tab
+              if (tab === "Generate" && t.id === "generate") {
+                // Fade out, change src to white version, then fade in
+                img.style.opacity = 0;
+                setTimeout(() => {
+                  img.src = "./Sparkles SVG White.svg"; // Change the image source to white version
+                  img.style.opacity = 1;
+                }, 150); // Matches the transition time
+              } else {
+                // Fade out, change src to original version, then fade in
+                img.style.opacity = 0;
+                setTimeout(() => {
+                  img.src = "./Sparkles SVG.svg"; // Change the image source back to the original
+                  img.style.opacity = 1;
+                }, 150); // Matches the transition time
+              }
+            }
+          });
+        }
       </script>
 
       <div class="sidebar" id="sidebar" style="width: 250px">
-        <div class="toggle-icon" onclick="toggleSidebar()">
-          &#9664;
-        </div>
+        <div class="toggle-icon" onclick="toggleSidebar()">&#9664;</div>
         <div class="sidebar-content" style="display: flex">
           <h2 id="administrator">Resume No. {number}</h2>
           <div class="row">
@@ -97,36 +117,33 @@
       </div>
       <script>
         function toggleSidebar() {
-          var sidebar = document.getElementById('sidebar');
-          var sidebarContent = document.querySelector('.sidebar-content');
-          var toggleIcon = document.querySelector('.toggle-icon');
-          var root = document.getElementById('root');
-          var container = document.querySelector('.toggle-container');
-        
-          if (sidebar.style.width === '25px') {
+          var sidebar = document.getElementById("sidebar");
+          var sidebarContent = document.querySelector(".sidebar-content");
+          var toggleIcon = document.querySelector(".toggle-icon");
+          var root = document.getElementById("root");
+          var container = document.querySelector(".toggle-container");
+
+          if (sidebar.style.width === "25px") {
             // Expanding sidebar
-            sidebar.style.width = '250px';
-            sidebarContent.style.display = 'flex';
-            toggleIcon.classList.remove('collapsedIcon'); // Remove visibility class when expanded
-            toggleIcon.innerHTML = '&#9664;'; // Change to left arrow
-            toggleIcon.style.left = '232px';
-            root.style.left = '220px';
-            container.style.left = '240px'; // Return to initial position
+            sidebar.style.width = "250px";
+            sidebarContent.style.display = "flex";
+            toggleIcon.classList.remove("collapsedIcon"); // Remove visibility class when expanded
+            toggleIcon.innerHTML = "&#9664;"; // Change to left arrow
+            toggleIcon.style.left = "232px";
+            root.style.left = "220px";
+            container.style.left = "240px"; // Return to initial position
           } else {
             // Collapsing sidebar
-            sidebar.style.width = '25px';
-            sidebarContent.style.display = 'none';
-            toggleIcon.classList.add('collapsedIcon'); // Add visibility class when collapsed
-            toggleIcon.innerHTML = '&#9654;'; // Change to right arrow
-            toggleIcon.style.left = '12px';
-            root.style.left = '100px';
-            container.style.left = '120px'; // Align container with the viewport edge
+            sidebar.style.width = "25px";
+            sidebarContent.style.display = "none";
+            toggleIcon.classList.add("collapsedIcon"); // Add visibility class when collapsed
+            toggleIcon.innerHTML = "&#9654;"; // Change to right arrow
+            toggleIcon.style.left = "12px";
+            root.style.left = "100px";
+            container.style.left = "120px"; // Align container with the viewport edge
           }
         }
-        </script>
-        
-        
-        
+      </script>
 
       <div class="main">
         <div class="cards" id="mainlayout">
