@@ -638,14 +638,16 @@ h4{
   display: flex;
   box-shadow: 0 4px 6px rgba(0,0,0,0.1);
   position: absolute;
-  left: 550px;
+  left: 570px;
   top: 6px;
-  padding: 20px;
+  padding: 16px;
+  padding-left: 8px;
+  padding-right: 8px;
 }
 
 @media (max-width: 1500px) {
   .toggle-switch {
-    left: 300px; /* Set left to 260px when the viewport is 1500px or narrower */
+    left: 320px; /* Set left to 260px when the viewport is 1500px or narrower */
     transform: none; /* Remove the transform to prevent shifting */
   }
 }
