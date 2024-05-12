@@ -634,15 +634,15 @@ h4{
   width: 200px;
   height: 40px;
   background-color: #333;
-  border-radius: 20px;
+  border-radius: 8px;
   display: flex;
   box-shadow: 0 4px 6px rgba(0,0,0,0.1);
   position: absolute;
   left: 570px;
   top: 6px;
-  padding: 16px;
-  padding-left: 8px;
-  padding-right: 8px;
+  padding: 14px;
+  padding-left: 6px;
+  padding-right: 6px;
 }
 
 @media (max-width: 1500px) {
@@ -672,7 +672,7 @@ h4{
 
 .active {
   background-color: var(--purple);
-  border-radius: 20px;
+  border-radius: 8px;
   border: 1px solid rgb(199, 197, 197);
   color: white;
 }

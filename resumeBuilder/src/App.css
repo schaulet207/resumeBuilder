@@ -1064,3 +1064,9 @@ padding-inline-start: 40px;
   position: relative;
   left: 4px;
 }
+
+/* Disables the collapsible section titles */
+.disabled {
+  pointer-events: none;
+  cursor: default;
+}

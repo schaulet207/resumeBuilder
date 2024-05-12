@@ -764,7 +764,21 @@ function App() {
       const allProf = document.querySelector("#allProf");
       if (allProf) {
         allProf.style.paddingBottom = "0px";
+        const professionalExperienceHeader = document.querySelector(
+          "#professionalExperienceHeader"
+        );
+        professionalExperienceHeader.classList.add("hide");
       }
+      // HERE IS WHERE YOU NEED TO ADD LOGIC TO HIDE PROFINPUTS AND SHOW + PROF EXP BUTTON
+      // Hides the professional section inputs and replaces it with the add button
+      // This messes up the heights though
+      // const addButtonProf = document.querySelector("#addButtonProf");
+      // const profSectionInputs = document.querySelector(".profInputs");
+      // const addProfButton = document.querySelector("#addProf");
+      // profSectionInputs.style.display = "none";
+      // addProfButton.style.display = "inline";
+      // addButtonProf.style.paddingBottom = "12px";
+      // addProfButton.style.top = "8px";
     }
   }
 
@@ -814,18 +828,31 @@ function App() {
     const professionalSection = document.querySelector("#newProfExperience");
     professionalSection.style.display = "inline";
     profSectionInputs.style.display = "none";
+    const sectionsToToggle = [
+      document.querySelector("#personalCollapsible"),
+      document.querySelector("#educationCollapsible"),
+      document.querySelector("#certificatesCollapsible"),
+      document.querySelector("#skillsCollapsible")
+    ];
     toggleHeight();
     if (profSectionInputs.style.display === "none") {
       profSectionInputs.style.display = "inline";
       addProfButton.style.display = "none";
       profHistory.style.display = "none";
       allProf.style.paddingBottom = "8px";
-    }
+      sectionsToToggle.forEach(section => section.style.display = "none");
+  
+      const professionalIcon = document.querySelector("#professionalIcon");
+      if (professionalIcon) professionalIcon.style.display = "none";
+      const profCollapse = document.querySelector("#profTitle");
+      if (profCollapse) profCollapse.classList.add("disabled");
+  }  
     if (
       profSectionInputs.style.display === "inline" &&
       addProfBottom.style.paddingBottom === "80px"
     ) {
       addProfBottom.style.paddingBottom = "8px";
+      console.log("scenario 2")
     }
   }
 
@@ -1357,6 +1384,28 @@ function App() {
     const employerRequired = document.querySelector("#employerReq");
     const positionBorder = document.querySelector("#position");
     const employerBorder = document.querySelector("#employerInput");
+
+    // Get the divs that were hidden in showProfInputs and displays them
+    const personalCollapsible = document.querySelector("#personalCollapsible");
+    const educationCollapsible = document.querySelector(
+      "#educationCollapsible"
+    );
+    const certificatesCollapsible = document.querySelector(
+      "#certificatesCollapsible"
+    );
+    const skillsCollapsible = document.querySelector("#skillsCollapsible");
+
+    if (personalCollapsible) personalCollapsible.style.display = "inline";
+    if (educationCollapsible) educationCollapsible.style.display = "inline";
+    if (certificatesCollapsible)
+      certificatesCollapsible.style.display = "inline";
+    if (skillsCollapsible) skillsCollapsible.style.display = "inline";
+
+    // Resets the professioanl collapse section's onClick function and shows the icon
+    const professionalIcon = document.querySelector("#professionalIcon");
+    if (professionalIcon) professionalIcon.style.display = ""; // Resets display property, typically makes it visible
+    const profCollapse = document.querySelector("#profTitle");
+    if (profCollapse) profCollapse.classList.remove("disabled"); // Removes the 'disabled' class, enabling the element
 
     // Reset the height of the Professional history section
     toggleHeight();
@@ -1955,6 +2004,27 @@ function App() {
       // Replace the old profExp object with the new one
       profExpEntries[dataAttribute - 1] = profExpObject;
     }
+    // Get the divs that were hidden in showProfInputs and displays them
+    const personalCollapsible = document.querySelector("#personalCollapsible");
+    const educationCollapsible = document.querySelector(
+      "#educationCollapsible"
+    );
+    const certificatesCollapsible = document.querySelector(
+      "#certificatesCollapsible"
+    );
+    const skillsCollapsible = document.querySelector("#skillsCollapsible");
+
+    if (personalCollapsible) personalCollapsible.style.display = "inline";
+    if (educationCollapsible) educationCollapsible.style.display = "inline";
+    if (certificatesCollapsible)
+      certificatesCollapsible.style.display = "inline";
+    if (skillsCollapsible) skillsCollapsible.style.display = "inline";
+
+    // Resets the professioanl collapse section's onClick function and shows the icon
+    const professionalIcon = document.querySelector("#professionalIcon");
+    if (professionalIcon) professionalIcon.style.display = ""; // Resets display property, typically makes it visible
+    const profCollapse = document.querySelector("#profTitle");
+    if (profCollapse) profCollapse.classList.remove("disabled"); // Removes the 'disabled' class, enabling the element
   };
 
   // A function to save all the education section data
@@ -2993,7 +3063,7 @@ function App() {
     <div className="App">
       <div className="left-half">
         <div className="accordion">
-          <div className="collapsible">
+          <div className="collapsible" id="personalCollapsible">
             <div className="titleSection" onClick={collapsePersonal}>
               <div className="titleWhite">Personal Details</div>
               <img
@@ -3017,7 +3087,7 @@ function App() {
             />
           </div>
 
-          <div className="collapsible">
+          <div className="collapsible" id="professionalCollapsible">
             <div
               className="titleSection"
               id="profTitle"
@@ -3173,7 +3243,7 @@ function App() {
             </div>
           </div>
 
-          <div className="collapsible">
+          <div className="collapsible" id="educationCollapsible">
             <div className="titleSection eduTitle" onClick={collapseEducation}>
               <div className="titleWhite">Education History </div>
               <img
@@ -3297,7 +3367,7 @@ function App() {
             </div>
           </div>
 
-          <div className="collapsible">
+          <div className="collapsible" id="certificatesCollapsible">
             <div
               className="titleSection certTitle"
               onClick={collapseCertificates}
@@ -3382,7 +3452,7 @@ function App() {
             </div>
           </div>
 
-          <div className="collapsible">
+          <div className="collapsible" id="skillsCollapsible">
             <div className="titleSection skillTitle" onClick={collapseSkills}>
               <div className="titleWhite">Skills</div>
               <img
