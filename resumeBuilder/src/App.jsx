@@ -1474,12 +1474,21 @@ function App() {
     profHistory.removeAttribute("data-attribute");
 
     // If profExpEntries is 0 (ie. cancelled on the first entry), hide the professional header
-    if (profExpEntries.length < 1) {
-      const professionalExperienceHeader = document.querySelector(
-        "#professionalExperienceHeader"
-      );
-      professionalExperienceHeader.classList.add("hide");
+    function checkVisibility() {
+      if (profExpEntries.every((entry) => entry.visibility === false)) {
+        const professionalExperienceHeader = document.querySelector(
+          "#professionalExperienceHeader"
+        );
+        professionalExperienceHeader.classList.add("hide");
+      } else {
+        const professionalExperienceHeader = document.querySelector(
+          "#professionalExperienceHeader"
+        );
+        professionalExperienceHeader.classList.remove("hide");
+      }
     }
+
+    checkVisibility();
   };
 
   // Pass variables to actively see whether the checkbox is checked or not
@@ -2024,7 +2033,7 @@ function App() {
     const professionalIcon = document.querySelector("#professionalIcon");
     if (professionalIcon) professionalIcon.style.display = ""; // Resets display property, typically makes it visible
     const profCollapse = document.querySelector("#profTitle");
-    if (profCollapse) profCollapse.classList.remove("disabled"); // Removes the 'disabled' class, enabling the element
+    if (profCollapse) profCollapse.classList.remove("disabled"); // Removes the 'disabled' class, enabling the elementg
   };
 
   // A function to save all the education section data
