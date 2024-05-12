@@ -828,6 +828,7 @@ function App() {
     const professionalSection = document.querySelector("#newProfExperience");
     professionalSection.style.display = "inline";
     profSectionInputs.style.display = "none";
+    // Gets the divs that need to be hidden in order to focus on Professional Experience
     const sectionsToToggle = [
       document.querySelector("#personalCollapsible"),
       document.querySelector("#educationCollapsible"),
@@ -842,6 +843,7 @@ function App() {
       allProf.style.paddingBottom = "8px";
       sectionsToToggle.forEach(section => section.style.display = "none");
   
+      // Hide the professional icon and disables the onclick event for the section title
       const professionalIcon = document.querySelector("#professionalIcon");
       if (professionalIcon) professionalIcon.style.display = "none";
       const profCollapse = document.querySelector("#profTitle");
@@ -852,7 +854,6 @@ function App() {
       addProfBottom.style.paddingBottom === "80px"
     ) {
       addProfBottom.style.paddingBottom = "8px";
-      console.log("scenario 2")
     }
   }
 
@@ -862,58 +863,76 @@ function App() {
     const eduHistory = document.querySelector("#eduHist");
     const addEduBottom = document.querySelector("#addButtonEdu");
     const educationSection = document.querySelector("#newEduExperience");
-    const allEdu = document.querySelector("#edu");
     educationSection.style.display = "inline";
     eduSectionInputs.style.display = "none";
+
+    // Gets the divs that need to be hidden in order to focus on Education Experience
+    const sectionsToToggle = [
+        document.querySelector("#personalCollapsible"),
+        document.querySelector("#professionalCollapsible"),
+        document.querySelector("#certificatesCollapsible"),
+        document.querySelector("#skillsCollapsible"),
+    ];
+
     if (eduSectionInputs.style.display === "none") {
-      eduSectionInputs.style.display = "inline";
-      addEduButton.style.display = "none";
-      eduHistory.style.display = "none";
-      allEdu.style.paddingBottom = "8px";
+        eduSectionInputs.style.display = "inline";
+        addEduButton.style.display = "none";
+        eduHistory.style.display = "none";
+        const allEdu = document.querySelector("#edu");
+        allEdu.style.paddingBottom = "8px";
+        sectionsToToggle.forEach(section => section.style.display = "none");
+
+        // Hide the education icon and disables the onclick event for the section title
+        const educationIcon = document.querySelector("#educationIcon");
+        if (educationIcon) educationIcon.style.display = "none";
+        const eduCollapse = document.querySelector(".eduTitle");
+        if (eduCollapse) eduCollapse.classList.add("disabled");
     }
     if (
-      eduSectionInputs.style.display === "inline" &&
-      addEduBottom.style.paddingBottom === "80px"
+        eduSectionInputs.style.display === "inline" &&
+        addEduBottom.style.paddingBottom === "80px"
     ) {
-      addEduBottom.style.paddingBottom = "8px";
+        addEduBottom.style.paddingBottom = "8px";
     }
-  }
+}
 
-  function showCertInputs() {
-    const certSectionInputs = document.querySelector(".certInputs");
-    const addCertButton = document.querySelector("#addCert");
-    const certHistory = document.querySelector("#certHist");
-    const addCertBottom = document.querySelector("#addButtonCert");
-    const certificatesSection = document.querySelector("#newCertExperience");
-    const allCerts = document.querySelector("#certificates");
-    certificatesSection.style.display = "inline";
-    certSectionInputs.style.display = "none";
 
-    // Show the input fields for adding a new certificate
-    if (certSectionInputs) {
+function showCertInputs() {
+  const certSectionInputs = document.querySelector(".certInputs");
+  const addCertButton = document.querySelector("#addCert");
+  const certHistory = document.querySelector("#certHist");
+  const addCertBottom = document.querySelector("#addButtonCert");
+  const certificatesSection = document.querySelector("#newCertExperience");
+  certificatesSection.style.display = "inline";
+  certSectionInputs.style.display = "none";
+
+  // Gets the divs that need to be hidden in order to focus on Certificate Experience
+  const sectionsToToggle = [
+      document.querySelector("#personalCollapsible"),
+      document.querySelector("#educationCollapsible"),
+      document.querySelector("#professionalCollapsible"),
+      document.querySelector("#skillsCollapsible"),
+  ];
+
+  if (certSectionInputs) {
       certSectionInputs.style.display = "inline";
-    }
-
-    // Hide the 'Add Certificate' button
-    if (addCertButton) {
       addCertButton.style.display = "none";
-    }
-
-    // Hide the history of added certificates
-    if (certHistory) {
       certHistory.style.display = "none";
-    }
-
-    // Adjust the bottom padding of the certificates section, if necessary
-    if (allCerts) {
+      const allCerts = document.querySelector("#certificates");
       allCerts.style.paddingBottom = "8px";
-    }
+      sectionsToToggle.forEach(section => section.style.display = "none");
 
-    // Adjust the bottom padding of the 'Add Certificate' section, if necessary
-    if (addCertBottom && addCertBottom.style.paddingBottom === "80px") {
-      addCertBottom.style.paddingBottom = "8px";
-    }
+      // Hide the certificate icon and disables the onclick event for the section title
+      const certificateIcon = document.querySelector("#certificatesIcon");
+      if (certificateIcon) certificateIcon.style.display = "none";
+      const certCollapse = document.querySelector(".certTitle");
+      if (certCollapse) certCollapse.classList.add("disabled");
   }
+
+  if (addCertBottom && addCertBottom.style.paddingBottom === "80px") {
+      addCertBottom.style.paddingBottom = "8px";
+  }
+}
 
   function showSkillsInputs() {
     const skillSectionInputs = document.querySelector(".skillInputs");
@@ -1180,6 +1199,39 @@ function App() {
     schoolRequired.className = "subLabel";
     schoolBorder.style.border = "1px solid rgb(61, 61, 64)";
 
+    // Get the divs that were hidden in showEduInputs and displays them
+    const personalCollapsible = document.querySelector("#personalCollapsible");
+    const professionalCollapsible = document.querySelector(
+      "#professionalCollapsible"
+    );
+    const certificatesCollapsible = document.querySelector(
+      "#certificatesCollapsible"
+    );
+    const skillsCollapsible = document.querySelector("#skillsCollapsible");
+    if (personalCollapsible) personalCollapsible.style.display = "inline";
+    if (professionalCollapsible) professionalCollapsible.style.display = "inline";
+    if (certificatesCollapsible)
+      certificatesCollapsible.style.display = "inline";
+    if (skillsCollapsible) skillsCollapsible.style.display = "inline";
+
+    // Resets the education collapse section's onClick function and shows the icon
+    const educationIcon = document.querySelector("#educationIcon");
+    if (educationIcon) educationIcon.style.display = ""; // Resets display property, typically makes it visible
+    const eduCollapse = document.querySelector(".eduTitle");
+    if (eduCollapse) eduCollapse.classList.remove("disabled"); // Removes the 'disabled' class, enabling the element
+
+    // A function that checks if all the entries are hidden, and if so, hide the professional experience header
+    if (eduExpEntries.every((entry) => entry.visibility === false)) {
+      const educationHeader = document.querySelector(
+        "#educationHeader"
+      );
+      educationHeader.classList.add("hide");
+    } else {
+      const educationHeader = document.querySelector(
+        "#educationHeader"
+      );
+      educationHeader.classList.remove("hide");
+    }
     // Create a reverseSwap function to reverse the swap of the newEduExp and editEduEntryRH if dataAttributeEdu is not null
     function reverseSwap() {
       const newEduExp = document.querySelector("#newEduExperience");
@@ -1260,19 +1312,14 @@ function App() {
 
   // Clear all the certification section input fields
   const clearInputFieldsCertification = () => {
-    console.log("1 - Starting to reset certificate fields");
     
     // Resets fields for certificates
     setCertificateName(""); // Clear certificate name field
-    console.log("2 - Certificate name field cleared");
     setCertificateInstitute(""); // Clear institute field
-    console.log("3 - Institute field cleared");
     setCertificationYear(""); // Clear certification year field
-    console.log("4 - Certification year field cleared");
 
     // Hides the input fields and returns to the add button screen
     hideCertInputs(); // Assuming there's a function similar to hideEduInputs for certificates
-    console.log("5 - Certificate input fields are hidden");
 
     // Perform the reverse swap
     const certHistory = document.getElementById("certHist");
@@ -1298,7 +1345,6 @@ function App() {
     if (addButtonCert) {
         if (certificateEntries.length > 0) {
             addButtonCert.style.paddingBottom = "80px";
-            console.log("6 - Adjusted padding for the add button because certificate entries exist");
         } else {
             console.log("6 - No adjustment needed for add button padding, no certificate entries");
         }
@@ -1306,11 +1352,35 @@ function App() {
         console.log("6 - Add button element not found in the DOM");
     }
 
+    // Resets all of the sections and elements that were hidden or disabled in showCertInputs
+    const sectionsToToggle = [
+      document.querySelector("#personalCollapsible"),
+      document.querySelector("#educationCollapsible"),
+      document.querySelector("#professionalCollapsible"),
+      document.querySelector("#skillsCollapsible"),
+  ];
+
+  // Show all the collapsible sections
+  sectionsToToggle.forEach(section => {
+      if (section) section.style.display = "";
+  });
+
+  // Restore the certificate icon and enable the onclick event for the section title
+  const certificateIcon = document.querySelector("#certificatesIcon");
+  if (certificateIcon) certificateIcon.style.display = ""; // Restore visibility
+
+  const certCollapse = document.querySelector(".certTitle");
+  if (certCollapse) {
+      certCollapse.classList.remove("disabled"); // Enable the section
+  }
+
     showCertificationHeader();
 
     // Hide the new certification section on right-half until the certification inputs are showing again
     const certificationSection = document.querySelector("#newCertExperience");
     certificationSection.style.display = "none";
+
+
 };
 
 
@@ -1473,8 +1543,7 @@ function App() {
     profEdit = null;
     profHistory.removeAttribute("data-attribute");
 
-    // If profExpEntries is 0 (ie. cancelled on the first entry), hide the professional header
-    function checkVisibility() {
+    // A function that checks if all the entries are hidden, and if so, hide the professional experience header
       if (profExpEntries.every((entry) => entry.visibility === false)) {
         const professionalExperienceHeader = document.querySelector(
           "#professionalExperienceHeader"
@@ -1486,9 +1555,6 @@ function App() {
         );
         professionalExperienceHeader.classList.remove("hide");
       }
-    }
-
-    checkVisibility();
   };
 
   // Pass variables to actively see whether the checkbox is checked or not
@@ -2452,6 +2518,40 @@ function App() {
       eduHistory.removeAttribute("data-attribute");
     }
     console.log(eduExpEntries);
+
+    // Get the divs that were hidden in showEduInputs and displays them
+    const personalCollapsible = document.querySelector("#personalCollapsible");
+    const professionalCollapsible = document.querySelector(
+      "#professionalCollapsible"
+    );
+    const certificatesCollapsible = document.querySelector(
+      "#certificatesCollapsible"
+    );
+    const skillsCollapsible = document.querySelector("#skillsCollapsible");
+    if (personalCollapsible) personalCollapsible.style.display = "inline";
+    if (professionalCollapsible) professionalCollapsible.style.display = "inline";
+    if (certificatesCollapsible)
+      certificatesCollapsible.style.display = "inline";
+    if (skillsCollapsible) skillsCollapsible.style.display = "inline";
+
+    // Resets the professioanl collapse section's onClick function and shows the icon
+    const educationIcon = document.querySelector("#educationIcon");
+    if (educationIcon) educationIcon.style.display = ""; // Resets display property, typically makes it visible
+    const eduCollapse = document.querySelector(".eduTitle");
+    if (eduCollapse) eduCollapse.classList.remove("disabled"); // Removes the 'disabled' class, enabling the element
+
+    // A function that checks if all the entries are hidden, and if so, hide the professional experience header
+    if (eduExpEntries.every((entry) => entry.visibility === false)) {
+      const educationHeader = document.querySelector(
+        "#educationHeader"
+      );
+      educationHeader.classList.add("hide");
+    } else {
+      const educationHeader = document.querySelector(
+        "#educationHeader"
+      );
+      educationHeader.classList.remove("hide");
+    }
   };
 
   // A function to save all the certifcation section data
@@ -2815,9 +2915,16 @@ function App() {
       certificateEntries[dataAttributeCert - 1] = certExpObject;
       certHistory.removeAttribute("data-attribute");
     }
-    console.log(certificateEntries + "Visibility 1");
+    // Restore the certificate icon and enable the onclick event for the section title
+  const certificateIcon = document.querySelector("#certificatesIcon");
+  if (certificateIcon) certificateIcon.style.display = ""; // Restore visibility
+
+  const certCollapse = document.querySelector(".certTitle");
+  if (certCollapse) {
+      certCollapse.classList.remove("disabled"); // Enable the section
+  }
+  // A function that conditionally shows the skills and certificates headers, respectively
     showSkillsExperienceHeader();
-  
     showCertificationHeader()
   };
 
