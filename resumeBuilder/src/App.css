@@ -1070,3 +1070,7 @@ padding-inline-start: 40px;
   pointer-events: none;
   cursor: default;
 }
+
+#savePersonal {
+  left: 420px;
+}

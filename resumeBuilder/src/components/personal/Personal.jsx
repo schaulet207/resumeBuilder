@@ -1,20 +1,50 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import FullNameInput from './inputs/FullNameInput';
 import EmailInput from './inputs/EmailInput';
 import PhoneInput from './inputs/PhoneInput';
 import AddressInput from './inputs/AddressInput';
 import CareerInput from './inputs/CareerInput';
 
-function PersonalDetails({ fullName, handleFullNameChange, email, handleEmailChange, phoneNumber, handlePhoneChange, address, handleAddressChange, careerSummary, handleCareerSummaryChange }) {
+function PersonalDetails({ 
+  fullName, handleFullNameChange, 
+  email, handleEmailChange, 
+  phoneNumber, handlePhoneChange, 
+  address, handleAddressChange, 
+  careerSummary, handleCareerSummaryChange 
+}) {
+  const fullNameInputRef = useRef(null);
+  const fullNameBorderRef = useRef(null);
+
+  const handleSavePersonal = () => {
+    // Trims the inputs
+    const fullNameValue = fullName.trim();
+    const emailValue = email.trim();
+    const phoneNumberValue = phoneNumber.trim();
+    const addressValue = address.trim();
+    const careerSummaryValue = careerSummary.trim();
+
+    // If fullNameValue is empty, displays an error
+    if (!fullNameValue) {
+      if (fullNameInputRef.current) {
+        fullNameInputRef.current.style.border = "1px solid red";
+      }
+      if (fullNameBorderRef.current) {
+        fullNameBorderRef.current.className = "error";
+      }
+      return;
+    }
+  };
+
   return (
     <div className="personal" id="pers">
       <div className="topSubtitle">
         <label className="input-text">Full Name</label>
-        <div className="subLabel">Required</div>
+        <div className="subLabel" id="fullNameReq" ref={fullNameBorderRef}>Required</div>
       </div>
       <FullNameInput
         fullName={fullName}
         onFullNameChange={handleFullNameChange}
+        ref={fullNameInputRef}
       />
       <div className="emailNumber">
         <div id="email">
@@ -51,6 +81,11 @@ function PersonalDetails({ fullName, handleFullNameChange, email, handleEmailCha
         careerSummary={careerSummary}
         onCareerSummaryChange={handleCareerSummaryChange}
       />
+      <div className="buttons">
+        <button className="saveButton" id="savePersonal" onClick={handleSavePersonal}>
+          Save          
+        </button>
+      </div>
     </div>
   );
 }

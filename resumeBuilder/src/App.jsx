@@ -3175,6 +3175,7 @@ function showCertInputs() {
     console.log(skillEntries);
   };
 
+
   return (
     <div className="App">
       <div className="left-half">
