@@ -517,6 +517,13 @@ h4{
 
 .ql-editor li {
   color: #f6fff8b7;
+  list-style: disc; 
+  list-style-position: inside;
+  font-weight: normal;
+}
+
+.ql-editor li::marker {
+  color: #f6fff8b7; /* Sets the bullet color */
 }
 
 .ql-editor h1 {
