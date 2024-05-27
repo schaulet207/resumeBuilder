@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import "./App.css";
-import PersonalDetails from './components/personal/Personal';
+import { PersonalDetails, personalInfo } from './components/personal/Personal';
 import {
   PositionInput,
   EmployerInput,
@@ -769,16 +769,6 @@ function App() {
         );
         professionalExperienceHeader.classList.add("hide");
       }
-      // HERE IS WHERE YOU NEED TO ADD LOGIC TO HIDE PROFINPUTS AND SHOW + PROF EXP BUTTON
-      // Hides the professional section inputs and replaces it with the add button
-      // This messes up the heights though
-      // const addButtonProf = document.querySelector("#addButtonProf");
-      // const profSectionInputs = document.querySelector(".profInputs");
-      // const addProfButton = document.querySelector("#addProf");
-      // profSectionInputs.style.display = "none";
-      // addProfButton.style.display = "inline";
-      // addButtonProf.style.paddingBottom = "12px";
-      // addProfButton.style.top = "8px";
     }
   }
 
@@ -786,14 +776,25 @@ function App() {
     const persCollapsible = document.querySelector("#pers");
     const personalContent = document.querySelector(".content-wrapper");
     const personalMargin = document.querySelector("#personalCollapsible");
-    const personalDetails = document.querySelector("personalDetailsSaved");
+    const personalDetails = document.querySelector("#personalDetailsSaved");
     if (persCollapsible) {
       persCollapsible.classList.toggle("collapsed");
       personalIcon.classList.toggle("open");
       personalContent.classList.toggle("hide");
       personalMargin.classList.toggle("marginBottom");
     }
+    if (!persCollapsible.classList.contains("hide")) {
+     persCollapsible.classList.toggle("hide");
+     personalDetails.classList.toggle("hide");
+     if (personalInfo.personalSaved !== "true") {
+       personalDetails.classList.toggle("hide");
+       persCollapsible.classList.toggle("hide");
+       console.log("running")
+     }
+     console.log(personalInfo.personalSaved);
+  }
     console.log("collapsePersonal");
+    console.log(personalInfo.personalSaved);
   }
   
   // Create empty Professional section arrays

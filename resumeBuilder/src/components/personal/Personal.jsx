@@ -5,14 +5,14 @@ import PhoneInput from './inputs/PhoneInput';
 import AddressInput from './inputs/AddressInput';
 import CareerInput from './inputs/CareerInput';
 
-let personalInfo = {}; // Initialize personalInfo object
+export var personalInfo = {}; // Initialize personalInfo object
 
-function PersonalDetails({ 
+export function PersonalDetails({ 
   fullName, handleFullNameChange, 
   email, handleEmailChange, 
   phoneNumber, handlePhoneChange, 
   address, handleAddressChange, 
-  careerSummary, handleCareerSummaryChange
+  careerSummary, handleCareerSummaryChange, personalSaved
 }) {
   const fullNameInputRef = useRef(null);
   const fullNameBorderRef = useRef(null);
@@ -33,6 +33,7 @@ function PersonalDetails({
   }
 
   const handleSavePersonal = () => {
+    personalSaved = true;
     // Trims the inputs
     const fullNameValue = fullName.trim();
     const emailValue = email.trim();
@@ -67,6 +68,7 @@ function PersonalDetails({
       phoneNumber: phoneNumberValue,
       address: addressValue,
       careerSummary: careerSummaryValue,
+      personalSaved: true
     };
   
     // Log the object to the console for testing
@@ -115,7 +117,7 @@ function PersonalDetails({
 
 function cancelPersonal() {
   const persElement = document.getElementById('pers');
-    const personalDetailsSavedElement = document.getElementById('personalDetailsSaved');
+  const personalDetailsSavedElement = document.getElementById('personalDetailsSaved');
   console.table(personalInfo);
   persElement.classList.toggle("hide");
   personalDetailsSavedElement.classList.toggle("hide");
