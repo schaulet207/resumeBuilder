@@ -237,7 +237,7 @@
 }
 
 .personal {
-  padding: 12px;
+  padding: 8px;
   background-color: rgb(32, 34, 34);
   border-radius: 10px;
 }
@@ -1073,4 +1073,13 @@ padding-inline-start: 40px;
 
 #savePersonal {
   left: 420px;
+}
+
+#personalCollapsible {
+  display: flex;
+  flex-direction: column;
+}
+
+.marginBottom {
+  margin-bottom: 6px;
 }

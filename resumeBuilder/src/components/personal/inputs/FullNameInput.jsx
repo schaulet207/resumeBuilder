@@ -12,4 +12,6 @@ const FullNameInput = forwardRef(({ fullName, onFullNameChange }, ref) => (
     />
 ));
 
+FullNameInput.displayName = 'FullNameInput';
+
 export default FullNameInput;

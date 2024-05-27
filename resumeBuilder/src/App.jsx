@@ -784,12 +784,18 @@ function App() {
 
   function collapsePersonal() {
     const persCollapsible = document.querySelector("#pers");
+    const personalContent = document.querySelector(".content-wrapper");
+    const personalMargin = document.querySelector("#personalCollapsible");
+    const personalDetails = document.querySelector("personalDetailsSaved");
     if (persCollapsible) {
       persCollapsible.classList.toggle("collapsed");
       personalIcon.classList.toggle("open");
+      personalContent.classList.toggle("hide");
+      personalMargin.classList.toggle("marginBottom");
     }
+    console.log("collapsePersonal");
   }
-
+  
   // Create empty Professional section arrays
   const [positions, setPositions] = useState([]); // An array to store positions
   const [employers, setEmployers] = useState([]); // An array to store employers
@@ -3180,7 +3186,7 @@ function showCertInputs() {
     <div className="App">
       <div className="left-half">
         <div className="accordion">
-          <div className="collapsible" id="personalCollapsible">
+          <div className="collapsible marginBottom" id="personalCollapsible">
             <div className="titleSection" onClick={collapsePersonal}>
               <div className="titleWhite">Personal Details</div>
               <img
