@@ -1872,6 +1872,14 @@ function showCertInputs() {
         '" data-attribute="' +
         profExpEntries.length +
         '" style="display: none;">' +
+        '<img src="visibility_off.svg" alt="Hidden" class="hidden hidButton" id="hid' +
+        profExpEntries.length +
+        '" data-attribute="' +
+        profExpEntries.length +
+        '" style="display: none;">' +
+        '<img src="public/dragReorder.svg" alt="Drag" class="dragIcon" id="drag' +
+        profExpEntries.length +
+        '">' +
         "</div>" +
         "</div>" +
         "<hr>";
@@ -1892,6 +1900,20 @@ function showCertInputs() {
 
         if (hiddenIcon) {
           hiddenIcon.onclick = visiButtonClick;
+        }
+      }
+
+      // Attach click event handlers in a loop to the dragIcon buttons
+      for (let i = 1; i <= profExpEntries.length; i++) {
+        let dragIcon = document.querySelector("#drag" + i);
+
+        if (dragIcon) {
+          dragIcon.onclick = function (event) {
+            // Stop the event from propagating to parent elements
+            event.stopPropagation();
+            // Your drag icon event handler logic here
+            console.log(`Drag icon ${i} clicked`);
+          };
         }
       }
 

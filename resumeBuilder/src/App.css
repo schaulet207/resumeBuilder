@@ -848,6 +848,7 @@ padding-inline-start: 40px;
   justify-content: flex-end;
   align-items: space-around;
   height: 40px;
+  gap: 24px;
 }
 
 .toggle-button:hover {
@@ -1107,4 +1108,14 @@ padding-inline-start: 40px;
   scale: .75;
   position: relative;
   right: 50px;
+}
+
+.dragIcon {
+  position: relative;
+  bottom: 21px;
+  z-index: 99;
+}
+
+.dragIcon:hover {
+  cursor: grab;
 }
