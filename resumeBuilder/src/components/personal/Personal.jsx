@@ -35,11 +35,11 @@ export function PersonalDetails({
   const handleSavePersonal = () => {
     personalSaved = true;
     // Trims the inputs
-    const fullNameValue = fullName.trim();
-    const emailValue = email.trim();
-    const phoneNumberValue = phoneNumber.trim();
-    const addressValue = address.trim();
-    const careerSummaryValue = careerSummary.trim();
+    const fullNameValue = fullName;
+    const emailValue = email;
+    const phoneNumberValue = phoneNumber;
+    const addressValue = address;
+    const careerSummaryValue = careerSummary;
   
     // If fullNameValue is empty, displays an error
     if (!fullNameValue) {
@@ -85,7 +85,7 @@ export function PersonalDetails({
       } else {
         console.error("Elements not found:", persElement, personalDetailsSavedElement);
       }
-    }, 0);
+    }, );
   };  
 
   function editPersonal() {
@@ -185,9 +185,20 @@ function cancelPersonal() {
       <div id="personalDetailsSaved"
         className="hoverName hide" onClick={editPersonal}
       >
-        {fullName}
+        {fullName}<br/>
+    <div id="personalDetailsInfoSection">
+        <div className="PersonalDetailsRows">
+            <img src="public/emailIcon.svg" alt="Email Icon" /> {email ? email : 'Email'}
+        </div>
+        <div className="PersonalDetailsRows">
+            <img src="public/phoneIcon.svg" alt="Phone Icon" /> {phoneNumber ? phoneNumber : 'Phone'}
+        </div>
+        <div className="PersonalDetailsRows">
+            <img src="public/addressIcon.svg" alt="Address Icon" /> {address ? address : 'Address'}
+        </div>
       </div>
     </div>
+  </div>
   );
 
 }

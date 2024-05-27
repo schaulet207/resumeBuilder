@@ -1093,3 +1093,18 @@ padding-inline-start: 40px;
 .hoverName:hover {
   cursor: pointer;
 }
+
+#personalDetailsInfoSection {
+  color: lightgray;
+  padding: 10px;
+}
+
+.PersonalDetailsRows {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 12px;
+  scale: .75;
+  position: relative;
+  right: 50px;
+}
