@@ -5,17 +5,17 @@ import PhoneInput from './inputs/PhoneInput';
 import AddressInput from './inputs/AddressInput';
 import CareerInput from './inputs/CareerInput';
 
+let personalInfo = {}; // Initialize personalInfo object
+
 function PersonalDetails({ 
   fullName, handleFullNameChange, 
   email, handleEmailChange, 
   phoneNumber, handlePhoneChange, 
   address, handleAddressChange, 
-  careerSummary, handleCareerSummaryChange 
+  careerSummary, handleCareerSummaryChange
 }) {
   const fullNameInputRef = useRef(null);
   const fullNameBorderRef = useRef(null);
-
-  let personalInfo = {}; // Initialize personalInfo
 
   function collapsePersonal() {
     const persCollapsible = document.querySelector("#pers");
@@ -70,7 +70,7 @@ function PersonalDetails({
     };
   
     // Log the object to the console for testing
-    console.log(personalInfo);
+    console.table(personalInfo);
   
     // Ensure elements exist in the DOM before attempting to access them
     setTimeout(() => {
@@ -84,9 +84,48 @@ function PersonalDetails({
         console.error("Elements not found:", persElement, personalDetailsSavedElement);
       }
     }, 0);
-  };
-  
-  
+  };  
+
+  function editPersonal() {
+    const persElement = document.getElementById('pers');
+    const personalDetailsSavedElement = document.getElementById('personalDetailsSaved');
+    const personalButtonsElement = document.getElementById('personalButtons');
+
+    if (persElement && personalDetailsSavedElement && personalButtonsElement) {
+        persElement.classList.toggle("hide");
+        personalDetailsSavedElement.classList.toggle("hide");
+
+        // Check if the Cancel button already exists to avoid duplicates
+        if (!document.getElementById('cancelPersonal')) {
+            const cancelButton = document.createElement('button');
+            cancelButton.className = "cancelButton";
+            cancelButton.id = "cancelPersonal";
+            cancelButton.textContent = "Cancel";
+            cancelButton.addEventListener('click', cancelPersonal);
+            // Insert the Cancel button before the Save button
+            const saveButton = document.getElementById('savePersonal');
+            personalButtonsElement.insertBefore(cancelButton, saveButton);
+            // Update the styling on the save button to adjust it's spacing
+            saveButton.style.left = "295px";
+        }
+    } else {
+        console.error("Elements not found:", persElement, personalDetailsSavedElement, personalButtonsElement);
+    }
+}
+
+function cancelPersonal() {
+  const persElement = document.getElementById('pers');
+    const personalDetailsSavedElement = document.getElementById('personalDetailsSaved');
+  console.table(personalInfo);
+  persElement.classList.toggle("hide");
+  personalDetailsSavedElement.classList.toggle("hide");
+  handleFullNameChange(personalInfo.fullName);
+  handleEmailChange(personalInfo.email);
+  handlePhoneChange(personalInfo.phoneNumber);
+  handleAddressChange(personalInfo.address);
+  handleCareerSummaryChange(personalInfo.careerSummary);
+}
+
   
   return (
     <div className="content-wrapper personal">
@@ -135,15 +174,14 @@ function PersonalDetails({
           careerSummary={careerSummary}
           onCareerSummaryChange={handleCareerSummaryChange}
         />
-        <div className="buttons">
+        <div className="buttons" id="personalButtons">
           <button className="saveButton" id="savePersonal" onClick={handleSavePersonal}>
             Save
           </button>
         </div>
       </div>
       <div id="personalDetailsSaved"
-        className="hoverName hide"
-        style={{ cursor: 'pointer' }}
+        className="hoverName hide" onClick={editPersonal}
       >
         {fullName}
       </div>

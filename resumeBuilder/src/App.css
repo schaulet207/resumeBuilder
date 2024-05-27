@@ -1083,3 +1083,13 @@ padding-inline-start: 40px;
 .marginBottom {
   margin-bottom: 6px;
 }
+
+.hoverName {
+  color: white;
+  font-weight: normal;
+  padding: 12px;
+}
+
+.hoverName:hover {
+  cursor: pointer;
+}
