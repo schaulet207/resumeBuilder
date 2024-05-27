@@ -789,12 +789,10 @@ function App() {
      if (personalInfo.personalSaved !== "true") {
        personalDetails.classList.toggle("hide");
        persCollapsible.classList.toggle("hide");
-       console.log("running")
      }
-     console.log(personalInfo.personalSaved);
+
   }
-    console.log("collapsePersonal");
-    console.log(personalInfo.personalSaved);
+
   }
   
   // Create empty Professional section arrays
@@ -3188,7 +3186,7 @@ function showCertInputs() {
       <div className="left-half">
         <div className="accordion">
           <div className="collapsible marginBottom" id="personalCollapsible">
-            <div className="titleSection" onClick={collapsePersonal}>
+            <div className="titleSection" id="personalTitleSection" onClick={collapsePersonal}>
               <div className="titleWhite">Personal Details</div>
               <img
                 src="./expand.svg"

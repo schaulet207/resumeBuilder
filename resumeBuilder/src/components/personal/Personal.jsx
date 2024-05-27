@@ -34,6 +34,19 @@ export function PersonalDetails({
 
   const handleSavePersonal = () => {
     personalSaved = true;
+
+    // Show the other sections when cancelling the edit
+  const sectionsToToggle = [
+    document.querySelector("#professionalCollapsible"),
+    document.querySelector("#educationCollapsible"),
+    document.querySelector("#certificatesCollapsible"),
+    document.querySelector("#skillsCollapsible"),
+];
+// Bring back the functionality of the collapsible section for personal details
+sectionsToToggle.forEach(section => section.style.display = "block");
+document.querySelector("#personalIcon").style.display = "block";
+document.querySelector("#personalTitleSection").classList.remove("disabled");
+
     // Trims the inputs
     const fullNameValue = fullName;
     const emailValue = email;
@@ -92,6 +105,18 @@ export function PersonalDetails({
     const persElement = document.getElementById('pers');
     const personalDetailsSavedElement = document.getElementById('personalDetailsSaved');
     const personalButtonsElement = document.getElementById('personalButtons');
+    const sectionsToToggle = [
+      document.querySelector("#professionalCollapsible"),
+      document.querySelector("#educationCollapsible"),
+      document.querySelector("#certificatesCollapsible"),
+      document.querySelector("#skillsCollapsible"),
+  ];
+
+  // Hide the other sections when editing personal details
+  sectionsToToggle.forEach(section => section.style.display = "none");
+  // Hide the personal icon and disables the onclick event for the section title
+  document.querySelector("#personalIcon").style.display = "none";
+  document.querySelector("#personalTitleSection").classList.add("disabled");
 
     if (persElement && personalDetailsSavedElement && personalButtonsElement) {
         persElement.classList.toggle("hide");
@@ -118,6 +143,19 @@ export function PersonalDetails({
 function cancelPersonal() {
   const persElement = document.getElementById('pers');
   const personalDetailsSavedElement = document.getElementById('personalDetailsSaved');
+
+  // Show the other sections when cancelling the edit
+  const sectionsToToggle = [
+    document.querySelector("#professionalCollapsible"),
+    document.querySelector("#educationCollapsible"),
+    document.querySelector("#certificatesCollapsible"),
+    document.querySelector("#skillsCollapsible"),
+];
+// Bring back the functionality of the collapsible section for personal details
+sectionsToToggle.forEach(section => section.style.display = "block");
+document.querySelector("#personalIcon").style.display = "block";
+document.querySelector("#personalTitleSection").classList.remove("disabled");
+
   console.table(personalInfo);
   persElement.classList.toggle("hide");
   personalDetailsSavedElement.classList.toggle("hide");
@@ -126,6 +164,14 @@ function cancelPersonal() {
   handlePhoneChange(personalInfo.phoneNumber);
   handleAddressChange(personalInfo.address);
   handleCareerSummaryChange(personalInfo.careerSummary);
+
+  // Resets the error messages and border if present
+  if (fullNameInputRef.current) {
+    fullNameInputRef.current.style.border = "";
+  }
+  if (fullNameBorderRef.current) {
+    fullNameBorderRef.current.className = "subLabel";
+  }
 }
 
   
