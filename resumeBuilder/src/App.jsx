@@ -1886,33 +1886,67 @@ function showCertInputs() {
     "<hr>";
 
   // Append the new <div> element to the professional history section
-  profHistory.appendChild(newProfHistoryEntry);
+profHistory.appendChild(newProfHistoryEntry);
 
-  // Attach Dragula to the new containers and draggables
-  const containers = document.querySelectorAll(".profHistoryEntry");
-  const drake = dragula(Array.from(containers), {
-    accepts: function (el, target) {
-      return true; // Allow drop in any container
+// Attach Dragula to the new containers and draggables
+const containers = document.querySelectorAll(".profHistoryEntry");
+const drake = dragula(Array.from(containers), {
+  accepts: function (el, target) {
+    return true; // Allow drop in any container
+  }
+});
+
+drake.on("drop", function (el, target, source) {
+  console.log('Dropped element:', el);
+  console.log('Target container before drop:', target);
+  console.log('Source container before drop:', source);
+
+  if (target && source && target !== source) {
+    const targetChild = target.firstElementChild;
+
+    // If the target container has a child and it's not the dragged element, swap them
+    if (targetChild && targetChild !== el) {
+      console.log('Swapping target child with dragged element');
+      source.appendChild(targetChild);
     }
-  });
 
-  drake.on("drop", function (el, target, source) {
-    // Swap the dragged item with the item in the target container
-    if (target && source && target !== source) {
-      const targetChild = target.firstElementChild;
-      const sourceChild = source.firstElementChild;
-
-      if (targetChild) {
-        target.removeChild(targetChild);
-        source.appendChild(targetChild);
+    // Move the dragged element to the target container
+    target.appendChild(el);
+    console.log('Moved dragged element to target:', el);
+  } else if (target === source) {
+    // If dropped back into the original container, ensure only one child remains
+    console.log('Dropped back into original container:', target);
+    const children = Array.from(target.children);
+    children.forEach((child, index) => {
+      if (child !== el && index > 0) {
+        target.removeChild(child);
+        console.log('Removed excess child from original container:', child);
       }
+    });
+  }
 
-      if (sourceChild) {
-        source.removeChild(sourceChild);
-        target.appendChild(sourceChild);
-      }
+  // Ensure exactly one child in the target and source containers
+  const ensureSingleChild = (container) => {
+    const children = Array.from(container.children);
+    if (children.length > 1) {
+      children.forEach((child, index) => {
+        if (child !== el && index > 0) {
+          container.removeChild(child);
+          console.log('Removed excess child from container:', child);
+        }
+      });
+    } else if (children.length === 0) {
+      console.log('No children found in container. Adding back the dragged element.');
+      container.appendChild(el);
     }
-  });
+  };
+
+  ensureSingleChild(target);
+  ensureSingleChild(source);
+
+  console.log('Target container after drop:', target);
+  console.log('Source container after drop:', source);
+});
 
       // Attach click event handlers in a loop to the visibility buttons
       for (let i = 1; i < profExpEntries.length + 1; i++) {
