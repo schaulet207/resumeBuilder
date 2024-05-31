@@ -11,9 +11,11 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "dragula": "^3.7.3",
     "quill": "^1.3.7",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
+    "react-dragula": "^1.1.17",
     "styled-components": "^6.0.8"
   },
   "devDependencies": {

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import "./App.css";
 import { PersonalDetails, personalInfo } from './components/personal/Personal';
 import {
@@ -34,6 +34,8 @@ import {
   SkillNameInput,
   skillEntries
 } from "./Skills";
+import dragula from "dragula";
+import "dragula/dist/dragula.css";
 // import { QuillEditor } from './QuillEditor';
 
 function App() {
@@ -1884,10 +1886,20 @@ function showCertInputs() {
         "</div>" +
         "<hr>";
 
-      // Create a variable that stores all the professional history information
-      profHistoryInfo = newProfHistoryEntry.innerHTML;
       // Append the new <div> element to the professional history section
-      profHistory.appendChild(newProfHistoryEntry);
+  profHistory.appendChild(newProfHistoryEntry);
+
+  // Attach Dragula to the new containers and draggables
+  const containers = document.querySelectorAll(".profHistoryEntry");
+  const drake = dragula(Array.from(containers));
+
+  drake.on("drag", function (el) {
+    console.log("drag started");
+  });
+
+  drake.on("drop", function (el, target) {
+    console.log("dropped");
+  });
 
       // Attach click event handlers in a loop to the visibility buttons
       for (let i = 1; i < profExpEntries.length + 1; i++) {

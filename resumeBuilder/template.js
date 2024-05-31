@@ -1,3 +1,4 @@
+window.global = window;
 // Fix issue with notification bell on hover
 function toggleImage() {
   var button = document.getElementById("notification");
