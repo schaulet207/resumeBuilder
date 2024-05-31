@@ -813,6 +813,14 @@ padding-inline-start: 40px;
   padding: 18px;
   margin-top: 10px;
   max-height: 80px;
+  transition: all 0.3s ease;
+}
+
+.placeholder {
+  height: 50px; /* Adjust height as needed */
+  background-color: rgba(0, 0, 0, 0.1);
+  border: 2px dashed #ccc;
+  transition: all 0.3s ease;
 }
 
 .eduHistoryEntry {
@@ -1119,3 +1127,4 @@ padding-inline-start: 40px;
 .dragIcon:hover {
   cursor: grab;
 }
+
