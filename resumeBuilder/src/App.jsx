@@ -1815,112 +1815,126 @@ function showCertInputs() {
 
       // Create a new <div> element to hold the professional history information
       const newProfHistoryEntry = document.createElement("div");
-  newProfHistoryEntry.className = "profHistoryEntry";
-  newProfHistoryEntry.innerHTML =
-    '<span class="editSection" id="editProfEntry' +
-    profExpEntries.length +
-    '" data-attribute=' +
-    profExpEntries.length +
-    ">" + "<hr id='topLine'>" +
-    '<div id="top-top">' +
-    '<div class="top-left" id="jobTitle' +
-    positions.length +
-    '">' +
-    position +
-    "</div>" +
-    '<div class="top-right" id="employer' +
-    positions.length +
-    '">' +
-    ", " +
-    employer +
-    "</div>" +
-    "</div>" +
-    '<div id="bottom-bottom">' +
-    "</span>" +
-    '<div id="bottom-row">' +
-    '<div class="bottom-left" id="professionalDates' +
-    positions.length +
-    '">' +
-    " " +
-    startMonth +
-    " " +
-    startYear +
-    divider11 +
-    endMonth +
-    " " +
-    endYear +
-    "</div>" +
-    divider12 +
-    '<div class="bottom-right" id="professionalAddress' +
-    positions.length +
-    '">' +
-    city +
-    "</div>" +
-    "</div>" +
-    "<div id=" +
-    '"profSection' +
-    profExpEntries.length +
-    '"' +
-    'class="toggle-button"' +
-    ">" +
-    '<img src="visibility_FILL.svg" alt="Visible" class="visible visiButton" id="visi' +
-    profExpEntries.length +
-    '" data-attribute="' +
-    profExpEntries.length +
-    '" style="display: inline;">' +
-    '<img src="visibility_off.svg" alt="Hidden" class="hidden hidButton" id="hid' +
-    profExpEntries.length +
-    '" data-attribute="' +
-    profExpEntries.length +
-    '" style="display: none;">' +
-    '<img src="visibility_off.svg" alt="Hidden" class="hidden hidButton" id="hid' +
-    profExpEntries.length +
-    '" data-attribute="' +
-    profExpEntries.length +
-    '" style="display: none;">' +
-    '<img src="public/dragReorder.svg" alt="Drag" class="dragIcon" id="drag' +
-    profExpEntries.length +
-    '">' +
-    "</div>" +
-    "</div>" +
-    "<hr>";
+      newProfHistoryEntry.className = "profHistoryEntry";
+      newProfHistoryEntry.innerHTML =
+        '<span class = "profContainer">' +
+        '<span class="editSection" id="editProfEntry' +
+        profExpEntries.length +
+        '" data-attribute=' +
+        profExpEntries.length +
+        ">" +
+        "<hr id='topLine'>" +
+        '<div id="top-top">' +
+        '<div class="top-left" id="jobTitle' +
+        positions.length +
+        '">' +
+        position +
+        "</div>" +
+        '<div class="top-right" id="employer' +
+        positions.length +
+        '">' +
+        ", " +
+        employer +
+        "</div>" +
+        "</div>" +
+        '<div id="bottom-bottom">' +
+        "</span>" +
+        '<div id="bottom-row">' +
+        '<div class="bottom-left" id="professionalDates' +
+        positions.length +
+        '">' +
+        " " +
+        startMonth +
+        " " +
+        startYear +
+        divider11 +
+        endMonth +
+        " " +
+        endYear +
+        "</div>" +
+        divider12 +
+        '<div class="bottom-right" id="professionalAddress' +
+        positions.length +
+        '">' +
+        city +
+        "</div>" +
+        "</div>" +
+        "<div id=" +
+        '"profSection' +
+        profExpEntries.length +
+        '"' +
+        'class="toggle-button"' +
+        ">" +
+        '<img src="visibility_FILL.svg" alt="Visible" class="visible visiButton" id="visi' +
+        profExpEntries.length +
+        '" data-attribute="' +
+        profExpEntries.length +
+        '" style="display: inline;">' +
+        '<img src="visibility_off.svg" alt="Hidden" class="hidden hidButton" id="hid' +
+        profExpEntries.length +
+        '" data-attribute="' +
+        profExpEntries.length +
+        '" style="display: none;">' +
+        '<img src="visibility_off.svg" alt="Hidden" class="hidden hidButton" id="hid' +
+        profExpEntries.length +
+        '" data-attribute="' +
+        profExpEntries.length +
+        '" style="display: none;">' +
+        '<img src="public/dragReorder.svg" alt="Drag" class="dragIcon" id="drag' +
+        profExpEntries.length +
+        '">' +
+        "</div>" +
+        "</div>" +
+        "<hr>" +
+        "</span>";
 
-  // Append the new <div> element to the professional history section
+     // CSS to prevent text selection and ensure .editSection covers the entire area
+const style = document.createElement('style');
+style.innerHTML = `
+  .editSection {
+    user-select: none; /* Disable text selection */
+    -webkit-user-select: none; /* For Safari */
+    -moz-user-select: none; /* For Firefox */
+    -ms-user-select: none; /* For IE/Edge */
+    width: 100%; /* Ensure it covers the whole area */
+    height: 100%; /* Ensure it covers the whole area */
+    cursor: move; /* Change cursor to indicate draggable */
+  }
+`;
+document.head.appendChild(style);
+
+// Append the new <div> element to the professional history section
 profHistory.appendChild(newProfHistoryEntry);
 
 // Attach Dragula to the new containers and draggables
-const containers = document.querySelectorAll(".profHistoryEntry");
+const containers = document.querySelectorAll(".profContainer");
 const drake = dragula(Array.from(containers), {
   accepts: function (el, target) {
     return true; // Allow drop in any container
+  },
+  moves: function (el, source, handle, sibling) {
+    return handle.closest('.editSection'); // Allow drag by any part of editSection
   }
 });
 
 drake.on("drop", function (el, target, source) {
-  console.log('Dropped element:', el);
-  console.log('Target container before drop:', target);
-  console.log('Source container before drop:', source);
 
   if (target && source && target !== source) {
     const targetChild = target.firstElementChild;
 
     // If the target container has a child and it's not the dragged element, swap them
     if (targetChild && targetChild !== el) {
-      console.log('Swapping target child with dragged element');
       source.appendChild(targetChild);
     }
 
     // Move the dragged element to the target container
     target.appendChild(el);
-    console.log('Moved dragged element to target:', el);
   } else if (target === source) {
     // If dropped back into the original container, ensure only one child remains
-    console.log('Dropped back into original container:', target);
     const children = Array.from(target.children);
     children.forEach((child, index) => {
       if (child !== el && index > 0) {
         target.removeChild(child);
-        console.log('Removed excess child from original container:', child);
       }
     });
   }
@@ -1932,20 +1946,15 @@ drake.on("drop", function (el, target, source) {
       children.forEach((child, index) => {
         if (child !== el && index > 0) {
           container.removeChild(child);
-          console.log('Removed excess child from container:', child);
         }
       });
     } else if (children.length === 0) {
-      console.log('No children found in container. Adding back the dragged element.');
       container.appendChild(el);
     }
   };
 
   ensureSingleChild(target);
   ensureSingleChild(source);
-
-  console.log('Target container after drop:', target);
-  console.log('Source container after drop:', source);
 });
 
       // Attach click event handlers in a loop to the visibility buttons

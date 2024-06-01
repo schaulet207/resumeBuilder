@@ -420,6 +420,10 @@ button:hover {
   overflow: hidden;
 }
 
+.profContainer {
+  
+}
+
 .editSection:hover {
   cursor: pointer;
 }
@@ -739,6 +743,7 @@ padding-inline-start: 40px;
   margin-top: 48px;
   font-size: 20px;
   max-width: 500px;
+  z-index: 99;
 }
 
 .topSubtitle {
@@ -814,7 +819,9 @@ padding-inline-start: 40px;
   margin-top: 10px;
   max-height: 80px;
   transition: all 0.3s ease;
-  z-index: 1;
+  z-index: 0;
+  position: relative;
+  bottom: 30px;
 }
 
 .placeholder {
@@ -1126,6 +1133,6 @@ padding-inline-start: 40px;
 }
 
 .dragIcon:hover {
-  cursor: grab;
+  cursor: all-scroll;
 }
 
