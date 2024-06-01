@@ -1817,7 +1817,6 @@ function showCertInputs() {
       const newProfHistoryEntry = document.createElement("div");
       newProfHistoryEntry.className = "profHistoryEntry";
       newProfHistoryEntry.innerHTML =
-        '<span class = "profContainer">' +
         '<span class="editSection" id="editProfEntry' +
         profExpEntries.length +
         '" data-attribute=' +
@@ -1885,29 +1884,13 @@ function showCertInputs() {
         '">' +
         "</div>" +
         "</div>" +
-        "<hr>" +
-        "</span>";
-
-     // CSS to prevent text selection and ensure .editSection covers the entire area
-const style = document.createElement('style');
-style.innerHTML = `
-  .editSection {
-    user-select: none; /* Disable text selection */
-    -webkit-user-select: none; /* For Safari */
-    -moz-user-select: none; /* For Firefox */
-    -ms-user-select: none; /* For IE/Edge */
-    width: 100%; /* Ensure it covers the whole area */
-    height: 100%; /* Ensure it covers the whole area */
-    cursor: move; /* Change cursor to indicate draggable */
-  }
-`;
-document.head.appendChild(style);
+        "<hr>";
 
 // Append the new <div> element to the professional history section
 profHistory.appendChild(newProfHistoryEntry);
 
 // Attach Dragula to the new containers and draggables
-const containers = document.querySelectorAll(".profContainer");
+const containers = document.querySelectorAll(".profHistoryEntry");
 const drake = dragula(Array.from(containers), {
   accepts: function (el, target) {
     return true; // Allow drop in any container

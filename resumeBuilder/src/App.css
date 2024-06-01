@@ -420,10 +420,6 @@ button:hover {
   overflow: hidden;
 }
 
-.profContainer {
-  
-}
-
 .editSection:hover {
   cursor: pointer;
 }
@@ -816,12 +812,12 @@ padding-inline-start: 40px;
 
 .profHistoryEntry {
   padding: 18px;
-  margin-top: 10px;
-  max-height: 80px;
+  padding-top: 0px;
+  padding-bottom: 0px;
+  max-height: 110px;
   transition: all 0.3s ease;
   z-index: 0;
   position: relative;
-  bottom: 30px;
 }
 
 .placeholder {
