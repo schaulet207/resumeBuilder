@@ -1915,55 +1915,27 @@ document.head.appendChild(style);
 // Append the new <div> element to the professional history section
 profHistory.appendChild(newProfHistoryEntry);
 
-// Attach Dragula to the new containers and draggables
-const containers = document.querySelectorAll(".profHistoryEntry");
-const drake = dragula(Array.from(containers), {
+// Attach Dragula to the new container and draggables
+const container = document.querySelector("#profHist");
+const drake = dragula([container], {
   accepts: function (el, target) {
-    return true; // Allow drop in any container
+    return true; // Allow drop in the container
   },
   moves: function (el, source, handle, sibling) {
-    return handle.closest('.editSection'); // Allow drag by any part of editSection
+    return true; // Allow drag by any part of the element
+  },
+  mirrorContainer: container, // Ensure the mirror element is within the container
+  invalid: function (el, handle) {
+    // Use this function to specify invalid drag handles if needed
+    return false;
   }
 });
 
 drake.on("drop", function (el, target, source) {
-
-  if (target && source && target !== source) {
-    const targetChild = target.firstElementChild;
-
-    // If the target container has a child and it's not the dragged element, swap them
-    if (targetChild && targetChild !== el) {
-      source.appendChild(targetChild);
-    }
-
-    // Move the dragged element to the target container
+  // Ensure the dragged element is in the target container
+  if (target && !target.contains(el)) {
     target.appendChild(el);
-  } else if (target === source) {
-    // If dropped back into the original container, ensure only one child remains
-    const children = Array.from(target.children);
-    children.forEach((child, index) => {
-      if (child !== el && index > 0) {
-        target.removeChild(child);
-      }
-    });
   }
-
-  // Ensure exactly one child in the target and source containers
-  const ensureSingleChild = (container) => {
-    const children = Array.from(container.children);
-    if (children.length > 1) {
-      children.forEach((child, index) => {
-        if (child !== el && index > 0) {
-          container.removeChild(child);
-        }
-      });
-    } else if (children.length === 0) {
-      container.appendChild(el);
-    }
-  };
-
-  ensureSingleChild(target);
-  ensureSingleChild(source);
 });
 
       // Attach click event handlers in a loop to the visibility buttons

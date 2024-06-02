@@ -823,8 +823,8 @@ padding-inline-start: 40px;
   margin-top: 10px;
   height: 135px;
   transition: all 0.5s ease;
-  z-index: 0;
   position: relative;
+  z-index: 99;
 }
 
 .placeholder {
@@ -1138,4 +1138,17 @@ padding-inline-start: 40px;
 
 .dragIcon:hover {
   cursor: all-scroll;
+}
+
+/* Optional: Add some CSS to improve the drag experience */
+.profHistoryEntry {
+  cursor: move; /* Change cursor to indicate draggable items */
+}
+
+.gu-mirror {
+  opacity: 0.5; /* Make the mirror element semi-transparent */
+}
+
+.gu-transit {
+  opacity: 0.3; /* Make the placeholder element semi-transparent */
 }
