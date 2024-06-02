@@ -833,6 +833,7 @@ function App() {
     const profHistory = document.querySelector("#profHist");
     const addProfBottom = document.querySelector("#addButtonProf");
     const professionalSection = document.querySelector("#newProfExperience");
+    const allProf = document.querySelector("#allProf");
     professionalSection.style.display = "inline";
     profSectionInputs.style.display = "none";
     // Gets the divs that need to be hidden in order to focus on Professional Experience
@@ -843,6 +844,10 @@ function App() {
       document.querySelector("#skillsCollapsible")
     ];
     toggleHeight();
+
+    // Adjusts the padding of the Professional Experience section to make the styling consistent
+    allProf.style.paddingTop = "0px";
+
     if (profSectionInputs.style.display === "none") {
       profSectionInputs.style.display = "inline";
       addProfButton.style.display = "none";
@@ -1487,6 +1492,12 @@ function showCertInputs() {
     // Reset the height of the Professional history section
     toggleHeight();
 
+    // Resets the professional section styling
+    if (profExpEntries.length > 0) { 
+    const allProf = document.querySelector("#allProf");
+    allProf.style.paddingTop = "20px";
+    }
+
     // Reverse swapping newProxExp and editProfEntryRH
     function reverseSwap() {
       const newProfExp = document.querySelector("#newProfExperience");
@@ -1648,6 +1659,8 @@ function showCertInputs() {
       // Displays the professional section header
       showProfessionalExperienceHeader();
 
+      showProfInputs();
+
       const dataAttribute = event.currentTarget.dataset.attribute;
       // This is a hacky way of passing the data-attribute to clearinputfields2. Since doing this, I've realized that I just need to initialize the variable dataAttribute outside of the App function. For now, this works.
       const profHistory = document.getElementById("profHist");
@@ -1686,8 +1699,6 @@ function showCertInputs() {
         }
       }
 
-      // Shows all the professional section input fields on the left
-      showProfInputs();
       // Hides the original field on the right being edited, so that real-time edits are shown in the correct placement of the element being edited
       editProfEntryRH.style.display = "none";
 
@@ -1816,13 +1827,12 @@ function showCertInputs() {
       // Create a new <div> element to hold the professional history information
       const newProfHistoryEntry = document.createElement("div");
       newProfHistoryEntry.className = "profHistoryEntry";
-      newProfHistoryEntry.innerHTML =
+      newProfHistoryEntry.innerHTML =  
         '<span class="editSection" id="editProfEntry' +
         profExpEntries.length +
         '" data-attribute=' +
         profExpEntries.length +
-        ">" +
-        "<hr id='topLine'>" +
+        ">" + "<hr id='topLine'>" +
         '<div id="top-top">' +
         '<div class="top-left" id="jobTitle' +
         positions.length +
@@ -1884,7 +1894,23 @@ function showCertInputs() {
         '">' +
         "</div>" +
         "</div>" +
-        "<hr>";
+        "<hr>" +
+        "</span>";
+
+     // CSS to prevent text selection and ensure .editSection covers the entire area
+const style = document.createElement('style');
+style.innerHTML = `
+  .editSection {
+    user-select: none; /* Disable text selection */
+    -webkit-user-select: none; /* For Safari */
+    -moz-user-select: none; /* For Firefox */
+    -ms-user-select: none; /* For IE/Edge */
+    width: 100%; /* Ensure it covers the whole area */
+    height: 100%; /* Ensure it covers the whole area */
+    cursor: move; /* Change cursor to indicate draggable */
+  }
+`;
+document.head.appendChild(style);
 
 // Append the new <div> element to the professional history section
 profHistory.appendChild(newProfHistoryEntry);
@@ -1989,7 +2015,7 @@ drake.on("drop", function (el, target, source) {
       // Adjust button spacing
       const addProfExp = document.querySelector("#addProf");
       const addProfBottom = document.querySelector("#addButtonProf");
-      addProfExp.style.top = "60px";
+      addProfExp.style.top = "30px";
       addProfBottom.style.paddingBottom = "80px";
 
       // Hide the new professional section on right-half until the professional inputs are showing again
@@ -2123,6 +2149,9 @@ drake.on("drop", function (el, target, source) {
         `#professionalAddress${dataAttribute}`
       );
 
+      // Shows all the professional section input fields on the left
+      showProfInputs();
+
       // Update based on the current professional input field values
       jobTitleUpdate.innerHTML = position;
       employerUpdate.innerHTML = ", " + employer;
@@ -2178,6 +2207,23 @@ drake.on("drop", function (el, target, source) {
     if (professionalIcon) professionalIcon.style.display = ""; // Resets display property, typically makes it visible
     const profCollapse = document.querySelector("#profTitle");
     if (profCollapse) profCollapse.classList.remove("disabled"); // Removes the 'disabled' class, enabling the elementg
+  
+
+    // Adjusts the top of the professional experience section so that profHistoryEntry's appear with the correct styling
+    const allProf = document.querySelector("#allProf");
+    const profSectionInputs = document.querySelector(".profInputs");
+    if (profExpEntries.length > 0 && profSectionInputs.style.display === "none") {
+      allProf.style.paddingTop = "20px";
+      allProf.style.marginTop = "10px";
+      console.log("scenario 1")
+      console.log(profSectionInputs.style.display)
+    } else {
+      allProf.style.paddingTop = "0px";
+      allProf.style.marginTop = "0px";
+      console.log("scenario 2")
+      console.log(profExpEntries.length)
+      console.log(profSectionInputs.style.display)
+    }
   };
 
   // A function to save all the education section data

@@ -262,6 +262,7 @@
 #allProf {
   background-color: rgb(32, 34, 34);
   border-radius: 10px;
+
 }
 
 #careerSummaryPersonal {
@@ -418,6 +419,11 @@ button:hover {
 
 .editSection {
   overflow: hidden;
+  height: 95px;
+}
+
+.profContainer {
+
 }
 
 .editSection:hover {
@@ -814,8 +820,9 @@ padding-inline-start: 40px;
   padding: 18px;
   padding-top: 0px;
   padding-bottom: 0px;
-  max-height: 110px;
-  transition: all 0.3s ease;
+  margin-top: 10px;
+  height: 135px;
+  transition: all 0.5s ease;
   z-index: 0;
   position: relative;
 }
@@ -847,7 +854,8 @@ padding-inline-start: 40px;
 
 #topLine {
   position: relative;
-  top: 24px;
+  top: 0px;
+  margin-top: 0px;
 }
 
 #newEduExperience {
@@ -869,7 +877,7 @@ padding-inline-start: 40px;
 
 .visible {
   position: relative;
-  bottom: 20px;
+  bottom: 30px;
   height: 40px;
   width: 40px;
   z-index: 1;
@@ -877,7 +885,7 @@ padding-inline-start: 40px;
 
 .hidden {
   position: relative;
-  bottom: 20px;
+  bottom: 30px;
   height: 40px;
   width: 40px;
   z-index: 1;
@@ -1124,11 +1132,10 @@ padding-inline-start: 40px;
 
 .dragIcon {
   position: relative;
-  bottom: 21px;
+  bottom: 31px;
   z-index: 99;
 }
 
 .dragIcon:hover {
   cursor: all-scroll;
 }
-
