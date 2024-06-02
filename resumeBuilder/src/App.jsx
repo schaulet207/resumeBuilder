@@ -1926,9 +1926,15 @@ const drake = dragula([container], {
   },
   mirrorContainer: container, // Ensure the mirror element is within the container
   invalid: function (el, handle) {
-    // Use this function to specify invalid drag handles if needed
-    return false;
+    return false; // No invalid drag handles
   }
+});
+
+// Adjust mirror element position to follow cursor
+drake.on('cloned', function (mirror, target, source) {
+  const offsetX = 20; // Adjust this value to set the horizontal offset
+  const offsetY = 20; // Adjust this value to set the vertical offset
+  mirror.style.transform = `translate(${offsetX}px, ${offsetY}px)`;
 });
 
 drake.on("drop", function (el, target, source) {

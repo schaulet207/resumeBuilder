@@ -1147,6 +1147,9 @@ padding-inline-start: 40px;
 
 .gu-mirror {
   opacity: 0.5; /* Make the mirror element semi-transparent */
+  position: absolute; /* Ensure the mirror follows the cursor */
+  pointer-events: none; /* Allow pointer events to pass through the mirror */
+  right: 10000px;
 }
 
 .gu-transit {
