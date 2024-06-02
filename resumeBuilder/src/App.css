@@ -420,13 +420,6 @@ button:hover {
 .editSection {
   overflow: hidden;
   height: 95px;
-}
-
-.profContainer {
-
-}
-
-.editSection:hover {
   cursor: pointer;
 }
 
@@ -1140,16 +1133,16 @@ padding-inline-start: 40px;
   cursor: all-scroll;
 }
 
-/* Optional: Add some CSS to improve the drag experience */
-.profHistoryEntry {
-  cursor: move; /* Change cursor to indicate draggable items */
+/* Add cursor style during drag */
+.dragging {
+  cursor: grabbing !important; /* Force cursor style to grabbing during drag */
 }
 
 .gu-mirror {
   opacity: 0.5; /* Make the mirror element semi-transparent */
   position: absolute; /* Ensure the mirror follows the cursor */
   pointer-events: none; /* Allow pointer events to pass through the mirror */
-  right: 10000px;
+  display: none;
 }
 
 .gu-transit {

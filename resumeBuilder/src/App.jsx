@@ -1907,7 +1907,6 @@ style.innerHTML = `
     -ms-user-select: none; /* For IE/Edge */
     width: 100%; /* Ensure it covers the whole area */
     height: 100%; /* Ensure it covers the whole area */
-    cursor: move; /* Change cursor to indicate draggable */
   }
 `;
 document.head.appendChild(style);
@@ -1930,11 +1929,28 @@ const drake = dragula([container], {
   }
 });
 
-// Adjust mirror element position to follow cursor
-drake.on('cloned', function (mirror, target, source) {
-  const offsetX = 20; // Adjust this value to set the horizontal offset
-  const offsetY = 20; // Adjust this value to set the vertical offset
-  mirror.style.transform = `translate(${offsetX}px, ${offsetY}px)`;
+drake.on('drag', function (el) {
+  document.body.classList.add('dragging');
+  el.classList.add('dragging-element');
+
+  // Add dragging class to all .profHistoryEntry and .editSection elements
+  const profHistoryEntries = document.querySelectorAll('.profHistoryEntry');
+  const editSections = document.querySelectorAll('.editSection');
+
+  profHistoryEntries.forEach(entry => entry.classList.add('dragging'));
+  editSections.forEach(section => section.classList.add('dragging'));
+});
+
+drake.on('dragend', function (el) {
+  document.body.classList.remove('dragging');
+  el.classList.remove('dragging-element');
+
+  // Remove dragging class from all .profHistoryEntry and .editSection elements
+  const profHistoryEntries = document.querySelectorAll('.profHistoryEntry');
+  const editSections = document.querySelectorAll('.editSection');
+
+  profHistoryEntries.forEach(entry => entry.classList.remove('dragging'));
+  editSections.forEach(section => section.classList.remove('dragging'));
 });
 
 drake.on("drop", function (el, target, source) {
