@@ -2025,7 +2025,6 @@ drake.on("drop", function (el, target, source) {
 
       // Displays the professional history section
       profHistory.style.display = "inline";
-      // This is a hacky way to get the dataAttribute from the previous edit function. I'm sure there's a better way to do this.
       let profEdit = profHistory.getAttribute("data-attribute");
 
       // Get the div that will house the validation error messages
@@ -2100,7 +2099,7 @@ drake.on("drop", function (el, target, source) {
       // Gets the sections again
       const newProfExp = document.querySelector("#newProfExperience");
       const editProfEntryRH = document.querySelector(
-        "#profKey" + dataAttribute
+        `#profKey${dataAttribute}`
       );
       const savedProfExperience = document.querySelector(
         "#savedProfExperience"
@@ -2143,9 +2142,6 @@ drake.on("drop", function (el, target, source) {
         `#professionalAddress${dataAttribute}`
       );
 
-      // Shows all the professional section input fields on the left
-      showProfInputs();
-
       // Update based on the current professional input field values
       jobTitleUpdate.innerHTML = position;
       employerUpdate.innerHTML = ", " + employer;
@@ -2177,8 +2173,11 @@ drake.on("drop", function (el, target, source) {
         employerDescription: employerDescription,
         visibility: true,
       };
+
       // Replace the old profExp object with the new one
       profExpEntries[dataAttribute - 1] = profExpObject;
+      // Reset the edit mode
+      profHistory.removeAttribute("data-attribute");
     }
     // Get the divs that were hidden in showProfInputs and displays them
     const personalCollapsible = document.querySelector("#personalCollapsible");
