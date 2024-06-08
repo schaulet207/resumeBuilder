@@ -1982,18 +1982,9 @@ function updateAfterDrag() {
     child.querySelector(".dragIcon").id = `drag${newAttribute}`;
 
     // Add the reordered entry to the new array
-    const entry = {
-      city: "",
-      employer: child.querySelector(".top-right").textContent.trim().split(",")[1].trim(),
-      employerDescription: "",
-      endMonth: "",
-      endYear: "",
-      position: child.querySelector(".top-left").textContent.trim(),
-      present: false,
-      startMonth: "",
-      startYear: "",
-      visibility: true
-    };
+    const position = child.querySelector(".top-left").textContent.trim();
+    const employer = child.querySelector(".top-right").textContent.trim().split(",")[1].trim();
+    const entry = profExpEntries.find(entry => entry.position === position && entry.employer === employer);
     newProfExpEntries.push(entry);
   });
 
@@ -2013,6 +2004,10 @@ function updateAfterDrag() {
 
   // Log the updated profExpEntries
   console.log("Updated profExpEntries:", newProfExpEntries);
+
+  // Update the original profExpEntries array with the new order
+  profExpEntries.length = 0;
+  newProfExpEntries.forEach(entry => profExpEntries.push(entry));
 }
   // Call updateAfterDrag on drag end
   updateAfterDrag();
