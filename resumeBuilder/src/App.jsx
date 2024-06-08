@@ -1825,79 +1825,79 @@ function showCertInputs() {
       saveProf.innerHTML += showProfessionalExperience;
 
       // Create a new <div> element to hold the professional history information
-      const newProfHistoryEntry = document.createElement("div");
-      newProfHistoryEntry.className = "profHistoryEntry";
-      newProfHistoryEntry.innerHTML =  
-        '<span class="editSection" id="editProfEntry' +
-        profExpEntries.length +
-        '" data-attribute=' +
-        profExpEntries.length +
-        ">" + "<hr id='topLine'>" +
-        '<div id="top-top">' +
-        '<div class="top-left" id="jobTitle' +
-        positions.length +
-        '">' +
-        position +
-        "</div>" +
-        '<div class="top-right" id="employer' +
-        positions.length +
-        '">' +
-        ", " +
-        employer +
-        "</div>" +
-        "</div>" +
-        '<div id="bottom-bottom">' +
-        "</span>" +
-        '<div id="bottom-row">' +
-        '<div class="bottom-left" id="professionalDates' +
-        positions.length +
-        '">' +
-        " " +
-        startMonth +
-        " " +
-        startYear +
-        divider11 +
-        endMonth +
-        " " +
-        endYear +
-        "</div>" +
-        divider12 +
-        '<div class="bottom-right" id="professionalAddress' +
-        positions.length +
-        '">' +
-        city +
-        "</div>" +
-        "</div>" +
-        "<div id=" +
-        '"profSection' +
-        profExpEntries.length +
-        '"' +
-        'class="toggle-button"' +
-        ">" +
-        '<img src="visibility_FILL.svg" alt="Visible" class="visible visiButton" id="visi' +
-        profExpEntries.length +
-        '" data-attribute="' +
-        profExpEntries.length +
-        '" style="display: inline;">' +
-        '<img src="visibility_off.svg" alt="Hidden" class="hidden hidButton" id="hid' +
-        profExpEntries.length +
-        '" data-attribute="' +
-        profExpEntries.length +
-        '" style="display: none;">' +
-        '<img src="visibility_off.svg" alt="Hidden" class="hidden hidButton" id="hid' +
-        profExpEntries.length +
-        '" data-attribute="' +
-        profExpEntries.length +
-        '" style="display: none;">' +
-        '<img src="public/dragReorder.svg" alt="Drag" class="dragIcon" id="drag' +
-        profExpEntries.length +
-        '">' +
-        "</div>" +
-        "</div>" +
-        "<hr>" +
-        "</span>";
+const newProfHistoryEntry = document.createElement("div");
+newProfHistoryEntry.className = "profHistoryEntry";
+newProfHistoryEntry.innerHTML =  
+  '<span class="editSection" id="editProfEntry' +
+  profExpEntries.length +
+  '" data-attribute=' +
+  profExpEntries.length +
+  ">" + "<hr id='topLine'>" +
+  '<div id="top-top">' +
+  '<div class="top-left" id="jobTitle' +
+  positions.length +
+  '">' +
+  position +
+  "</div>" +
+  '<div class="top-right" id="employer' +
+  positions.length +
+  '">' +
+  ", " +
+  employer +
+  "</div>" +
+  "</div>" +
+  '<div id="bottom-bottom">' +
+  "</span>" +
+  '<div id="bottom-row">' +
+  '<div class="bottom-left" id="professionalDates' +
+  positions.length +
+  '">' +
+  " " +
+  startMonth +
+  " " +
+  startYear +
+  divider11 +
+  endMonth +
+  " " +
+  endYear +
+  "</div>" +
+  divider12 +
+  '<div class="bottom-right" id="professionalAddress' +
+  positions.length +
+  '">' +
+  city +
+  "</div>" +
+  "</div>" +
+  "<div id=" +
+  '"profSection' +
+  profExpEntries.length +
+  '"' +
+  'class="toggle-button"' +
+  ">" +
+  '<img src="visibility_FILL.svg" alt="Visible" class="visible visiButton" id="visi' +
+  profExpEntries.length +
+  '" data-attribute="' +
+  profExpEntries.length +
+  '" style="display: inline;">' +
+  '<img src="visibility_off.svg" alt="Hidden" class="hidden hidButton" id="hid' +
+  profExpEntries.length +
+  '" data-attribute="' +
+  profExpEntries.length +
+  '" style="display: none;">' +
+  '<img src="visibility_off.svg" alt="Hidden" class="hidden hidButton" id="hid' +
+  profExpEntries.length +
+  '" data-attribute="' +
+  profExpEntries.length +
+  '" style="display: none;">' +
+  '<img src="public/dragReorder.svg" alt="Drag" class="dragIcon" id="drag' +
+  profExpEntries.length +
+  '">' +
+  "</div>" +
+  "</div>" +
+  "<hr>" +
+  "</span>";
 
-     // CSS to prevent text selection and ensure .editSection covers the entire area
+// CSS to prevent text selection and ensure .editSection covers the entire area
 const style = document.createElement('style');
 style.innerHTML = `
   .editSection {
@@ -1951,6 +1951,72 @@ drake.on('dragend', function (el) {
 
   profHistoryEntries.forEach(entry => entry.classList.remove('dragging'));
   editSections.forEach(section => section.classList.remove('dragging'));
+// Function to update data-attributes and IDs after a drag event
+function updateAfterDrag() {
+  const profHistChildren = document.querySelectorAll("#profHist .profHistoryEntry");
+
+  // Array to hold the new order of profExpEntries
+  const newProfExpEntries = [];
+
+  // Update data-attributes and IDs for each child element of profHist
+  profHistChildren.forEach((child, index) => {
+    const newAttribute = index + 1;
+    child.querySelector(".editSection").dataset.attribute = newAttribute;
+    child.querySelector(".visiButton").dataset.attribute = newAttribute;
+
+    // Update all hidButton elements
+    const hidButtons = child.querySelectorAll(".hidButton");
+    hidButtons.forEach((button) => {
+      button.dataset.attribute = newAttribute;
+      button.id = `hid${newAttribute}`;
+    });
+
+    // Update the IDs
+    child.querySelector(".editSection").id = `editProfEntry${newAttribute}`;
+    child.querySelector(".top-left").id = `jobTitle${newAttribute}`;
+    child.querySelector(".top-right").id = `employer${newAttribute}`;
+    child.querySelector(".bottom-left").id = `professionalDates${newAttribute}`;
+    child.querySelector(".bottom-right").id = `professionalAddress${newAttribute}`;
+    child.querySelector(".toggle-button").id = `profSection${newAttribute}`;
+    child.querySelector(".visiButton").id = `visi${newAttribute}`;
+    child.querySelector(".dragIcon").id = `drag${newAttribute}`;
+
+    // Add the reordered entry to the new array
+    const entry = {
+      city: "",
+      employer: child.querySelector(".top-right").textContent.trim().split(",")[1].trim(),
+      employerDescription: "",
+      endMonth: "",
+      endYear: "",
+      position: child.querySelector(".top-left").textContent.trim(),
+      present: false,
+      startMonth: "",
+      startYear: "",
+      visibility: true
+    };
+    newProfExpEntries.push(entry);
+  });
+
+  // Update savedProfExperience
+  const savedProfExperienceChildren = document.querySelectorAll("#savedProfExperience > div");
+  savedProfExperienceChildren.forEach((child, index) => {
+    const newAttribute = index + 1;
+    child.id = `profKey${newAttribute}`;
+  });
+
+  // Re-order savedProfExperience children
+  const savedProfExperience = document.querySelector("#savedProfExperience");
+  const sortedChildren = Array.from(savedProfExperienceChildren).sort((a, b) => {
+    return parseInt(a.id.replace("profKey", ""), 10) - parseInt(b.id.replace("profKey", ""), 10);
+  });
+  sortedChildren.forEach(child => savedProfExperience.appendChild(child));
+
+  // Log the updated profExpEntries
+  console.log("Updated profExpEntries:", newProfExpEntries);
+}
+  // Call updateAfterDrag on drag end
+  updateAfterDrag();
+  console.log(profExpEntries);
 });
 
 drake.on("drop", function (el, target, source) {
