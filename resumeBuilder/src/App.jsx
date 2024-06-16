@@ -1820,12 +1820,13 @@ function showCertInputs() {
 
       // Create a new <div> element to hold the professional section information in right-half
       const professionalSection = document.querySelector("#newProfExperience");
-      const showProfessionalExperience = `<div id="profKey${profExpEntries.length}">${professionalSection.innerHTML}</div>`;
+      const showProfessionalExperience = `<div id="profKey${profExpEntries.length}" slot="slot${profExpEntries.length}">${professionalSection.innerHTML}</div>`;
       const saveProf = document.querySelector("#savedProfExperience");
       saveProf.innerHTML += showProfessionalExperience;
 
       // Create a new <div> element to hold the professional history information
 const newProfHistoryEntry = document.createElement("div");
+newProfHistoryEntry.slot = "slot" + profExpEntries.length;
 newProfHistoryEntry.className = "profHistoryEntry";
 newProfHistoryEntry.innerHTML =  
   '<span class="editSection" id="editProfEntry' +
@@ -1988,19 +1989,40 @@ function updateAfterDrag() {
     newProfExpEntries.push(entry);
   });
 
-  // Update savedProfExperience
-  const savedProfExperienceChildren = document.querySelectorAll("#savedProfExperience > div");
-  savedProfExperienceChildren.forEach((child, index) => {
-    const newAttribute = index + 1;
-    child.id = `profKey${newAttribute}`;
+  // Create a map to store the order of slots from profHist
+  const slotOrderMap = new Map();
+  profHistChildren.forEach((child, index) => {
+    const slot = child.getAttribute("slot");
+    slotOrderMap.set(slot, index);
   });
 
-  // Re-order savedProfExperience children
+  console.log("Slot order map:", slotOrderMap);
+
+  // Get the elements from savedProfExperience
+  const savedProfExperienceChildren = document.querySelectorAll("#savedProfExperience > div");
+
+  console.log("Initial savedProfExperience children:", savedProfExperienceChildren);
+
+  // Re-order savedProfExperience children based on the slot order in profHist
   const savedProfExperience = document.querySelector("#savedProfExperience");
   const sortedChildren = Array.from(savedProfExperienceChildren).sort((a, b) => {
-    return parseInt(a.id.replace("profKey", ""), 10) - parseInt(b.id.replace("profKey", ""), 10);
+    const slotA = a.getAttribute("slot");
+    const slotB = b.getAttribute("slot");
+    const comparison = slotOrderMap.get(slotA) - slotOrderMap.get(slotB);
+    console.log(`Comparing ${slotA} with ${slotB}: ${comparison}`);
+    return comparison;
   });
-  sortedChildren.forEach(child => savedProfExperience.appendChild(child));
+
+  console.log("Sorted children:", sortedChildren);
+
+  // Clear the existing children in savedProfExperience
+  savedProfExperience.innerHTML = "";
+
+  // Append the sorted children to savedProfExperience
+  sortedChildren.forEach(child => {
+    console.log("Appending child:", child);
+    savedProfExperience.appendChild(child);
+  });
 
   // Log the updated profExpEntries
   console.log("Updated profExpEntries:", newProfExpEntries);
