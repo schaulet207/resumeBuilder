@@ -1616,16 +1616,21 @@ function showCertInputs() {
 
     // Function to handle visibility button click
     function visiButtonClick(event) {
-      const dataAttribute = event.currentTarget.dataset.attribute;
-      let visibleIcon = document.querySelector(`#visi${dataAttribute}`);
-      let hiddenIcon = document.querySelector(`#hid${dataAttribute}`);
-      let rightSection = document.querySelector(`#profKey${dataAttribute}`);
-
-      // Togle visibility true/false for the profExpEntries object at the index of dataAttribute - 1
-      profExpEntries[dataAttribute - 1].visibility =
-        !profExpEntries[dataAttribute - 1].visibility;
-      console.log(profExpEntries[dataAttribute - 1]);
-
+      // Find the parent profHistoryEntry element
+      const parentElement = event.currentTarget.closest('.profHistoryEntry');
+      
+      // Get the slot attribute value from the parent element
+      const slotAttribute = parentElement.getAttribute('slot').replace('slot', '');
+      
+      let visibleIcon = document.querySelector(`#visi${slotAttribute}`);
+      let hiddenIcon = document.querySelector(`#hid${slotAttribute}`);
+      let rightSection = document.querySelector(`#profKey${slotAttribute}`);
+    
+      // Toggle visibility true/false for the profExpEntries object at the index of slotAttribute - 1
+      profExpEntries[slotAttribute - 1].visibility =
+        !profExpEntries[slotAttribute - 1].visibility;
+      console.log(profExpEntries[slotAttribute - 1]);
+    
       // A function to check if all the entries are hidden, and if so, hide the professional experience header
       function checkVisibility() {
         if (profExpEntries.every((entry) => entry.visibility === false)) {
@@ -1640,9 +1645,9 @@ function showCertInputs() {
           professionalExperienceHeader.classList.remove("hide");
         }
       }
-
+    
       checkVisibility();
-
+    
       if (visibleIcon.style.display === "inline") {
         visibleIcon.style.display = "none";
         hiddenIcon.style.display = "inline";
