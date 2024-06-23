@@ -1534,13 +1534,42 @@ function showCertInputs() {
     const professionalSection = document.querySelector("#newProfExperience");
     professionalSection.style.display = "none";
 
+    // Find the slot attribute
+    const findSlotAttribute = (profEdit) => {
+      // Find the matching profHistoryEntry element based on dataAttribute
+      const profHistoryEntries =
+        document.querySelectorAll(".profHistoryEntry");
+      let slotAttribute = null;
+
+      profHistoryEntries.forEach((entry) => {
+        const editSection = entry.querySelector(".editSection");
+        if (
+          editSection &&
+          editSection.getAttribute("data-attribute") === profEdit
+        ) {
+          slotAttribute = entry.getAttribute("slot").replace("slot", "");
+        }
+      });
+
+      if (slotAttribute === null) {
+        console.error("Matching profHistoryEntry not found");
+      } else {
+        console.log("Slot Attribute:", slotAttribute);
+      }
+
+      return slotAttribute;
+    };
+
+    // Get the slot attribute value from the parent element
+    let slotAttribute = findSlotAttribute(profEdit);
+
     // If profEdit variable exists, reverse swaps the live edited section on the right-half from the professional entry you were editing
     if (profEdit !== null) {
-      let dataAttribute = profEdit;
+      // let dataAttribute = profEdit;
       // Gets the sections again
       const newProfExp = document.querySelector("#newProfExperience");
       const editProfEntryRH = document.querySelector(
-        "#profKey" + dataAttribute
+        "#profKey" + slotAttribute
       );
       const savedProfExperience = document.querySelector(
         "#savedProfExperience"
