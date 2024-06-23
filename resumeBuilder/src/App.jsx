@@ -1673,6 +1673,16 @@ function showCertInputs() {
 
       showProfInputs();
 
+       // Get the parent profHistoryEntry element
+    const parentElement = event.currentTarget.closest('.profHistoryEntry');
+
+    if (!parentElement) {
+        console.error('Parent element not found');
+        return;
+    }
+    // Get the slot attribute value from the parent element
+    const slotAttribute = parentElement.getAttribute('slot').replace('slot', '');
+
       const dataAttribute = event.currentTarget.dataset.attribute;
       // This is a hacky way of passing the data-attribute to clearinputfields2. Since doing this, I've realized that I just need to initialize the variable dataAttribute outside of the App function. For now, this works.
       const profHistory = document.getElementById("profHist");
@@ -1693,7 +1703,7 @@ function showCertInputs() {
       // Get the newProfExperience and the editProfEntry sections to swap their positions
       const newProfExp = document.querySelector("#newProfExperience");
       const editProfEntryRH = document.querySelector(
-        "#profKey" + dataAttribute
+        "#profKey" + (slotAttribute)
       );
 
       // Swap the newProfExperience and the editProfEntry sections so you can see your changes in realtime on the right side
@@ -1715,25 +1725,25 @@ function showCertInputs() {
       editProfEntryRH.style.display = "none";
 
       // Fills all the Professional input fields on the left side with the correct data being edited
-      console.log(endYears[dataAttribute - 1]);
-      setPosition(positions[dataAttribute - 1]);
-      setEmployer(employers[dataAttribute - 1]);
-      if (cities[dataAttribute - 1] !== undefined) {
-        setCity(cities[dataAttribute - 1]);
+      console.log(endYears[slotAttribute - 1]);
+      setPosition(positions[slotAttribute - 1]);
+      setEmployer(employers[slotAttribute - 1]);
+      if (cities[slotAttribute - 1] !== undefined) {
+        setCity(cities[slotAttribute - 1]);
       }
-      if (startMonths[dataAttribute - 1] !== undefined) {
-        setStartMonth(startMonths[dataAttribute - 1]);
+      if (startMonths[slotAttribute - 1] !== undefined) {
+        setStartMonth(startMonths[slotAttribute - 1]);
       }
-      if (startYears[dataAttribute - 1] !== undefined) {
-        setStartYear(startYears[dataAttribute - 1]);
+      if (startYears[slotAttribute - 1] !== undefined) {
+        setStartYear(startYears[slotAttribute - 1]);
       }
-      if (endMonths[dataAttribute - 1] !== undefined) {
-        setEndMonth(endMonths[dataAttribute - 1]);
+      if (endMonths[slotAttribute - 1] !== undefined) {
+        setEndMonth(endMonths[slotAttribute - 1]);
       }
-      if (endYears[dataAttribute - 1] !== undefined) {
-        setEndYear(endYears[dataAttribute - 1]);
+      if (endYears[slotAttribute - 1] !== undefined) {
+        setEndYear(endYears[slotAttribute - 1]);
       }
-      if (presents[dataAttribute - 1] === true) {
+      if (presents[slotAttribute - 1] === true) {
         const presentCheckbox = document.querySelector(
           "#professionalPresentField"
         );
@@ -1741,9 +1751,9 @@ function showCertInputs() {
           handleCheckboxChange(true);
         }
       }
-      if (employerDescriptions[dataAttribute - 1] !== undefined) {
+      if (employerDescriptions[slotAttribute - 1] !== undefined) {
         const qleditor = document.querySelector("#employerDescriptionQlEditor");
-        qleditor.innerHTML = employerDescriptions[dataAttribute - 1];
+        qleditor.innerHTML = employerDescriptions[slotAttribute - 1];
       }
     }
 
@@ -2112,6 +2122,36 @@ drake.on("drop", function (el, target, source) {
     } else {
       // Data attribute is NOT null here
 
+      const findSlotAttribute = (dataAttribute) => {
+        // Find the matching profHistoryEntry element based on dataAttribute
+        const profHistoryEntries =
+          document.querySelectorAll(".profHistoryEntry");
+        let slotAttribute = null;
+
+        profHistoryEntries.forEach((entry) => {
+          const editSection = entry.querySelector(".editSection");
+          if (
+            editSection &&
+            editSection.getAttribute("data-attribute") === dataAttribute
+          ) {
+            slotAttribute = entry.getAttribute("slot").replace("slot", "");
+          }
+        });
+
+        if (slotAttribute === null) {
+          console.error("Matching profHistoryEntry not found");
+        } else {
+          console.log("Slot Attribute:", slotAttribute);
+        }
+
+        return slotAttribute;
+      };
+
+      // Get the slot attribute value from the parent element
+      const slotAttribute = findSlotAttribute(dataAttribute);
+      console.log("Slot Attribute:", slotAttribute);
+      console.log("Data Attribute:", dataAttribute);
+
       // Reset the visibility icon to visible when saving, in case the user had previously hidden it. Only do this when editing
       let visibleIcon = document.querySelector(`#visi${dataAttribute}`);
       let hiddenIcon = document.querySelector(`#hid${dataAttribute}`);
@@ -2154,15 +2194,15 @@ drake.on("drop", function (el, target, source) {
       }
 
       // Instead of pushing values to the state arrays, use data-attribute - 1 to update the values in the state arrays
-      positions[dataAttribute - 1] = position;
-      employers[dataAttribute - 1] = employer;
-      cities[dataAttribute - 1] = city;
-      startMonths[dataAttribute - 1] = startMonth;
-      startYears[dataAttribute - 1] = startYear;
-      endMonths[dataAttribute - 1] = endMonth;
-      endYears[dataAttribute - 1] = endYear;
-      presents[dataAttribute - 1] = isProfessionalPresentChecked;
-      employerDescriptions[dataAttribute - 1] = employerDescription;
+      positions[slotAttribute - 1] = position;
+      employers[slotAttribute - 1] = employer;
+      cities[slotAttribute - 1] = city;
+      startMonths[slotAttribute - 1] = startMonth;
+      startYears[slotAttribute - 1] = startYear;
+      endMonths[slotAttribute - 1] = endMonth;
+      endYears[slotAttribute - 1] = endYear;
+      presents[slotAttribute - 1] = isProfessionalPresentChecked;
+      employerDescriptions[slotAttribute - 1] = employerDescription;
 
       // Reset the error messages
       jobRequired.className = "subLabel";
@@ -2194,7 +2234,7 @@ drake.on("drop", function (el, target, source) {
       // Gets the sections again
       const newProfExp = document.querySelector("#newProfExperience");
       const editProfEntryRH = document.querySelector(
-        `#profKey${dataAttribute}`
+        `#profKey${slotAttribute}`
       );
       const savedProfExperience = document.querySelector(
         "#savedProfExperience"
@@ -2240,8 +2280,20 @@ drake.on("drop", function (el, target, source) {
       // Update based on the current professional input field values
       jobTitleUpdate.innerHTML = position;
       employerUpdate.innerHTML = ", " + employer;
-      professionalDatesUpdate.innerHTML =
-        startMonth + " " + startYear + " - " + endMonth + " " + endYear;
+
+      let datesString = "";
+      if (startMonth && startYear) {
+        datesString += `${startMonth} ${startYear}`;
+      }
+
+      if (endMonth && endYear) {
+        if (datesString) {
+          datesString += " - ";
+        }
+        datesString += `${endMonth} ${endYear}`;
+      }
+
+      professionalDatesUpdate.innerHTML = datesString;
       professionalAddressUpdate.innerHTML = city;
 
       // Update the professional arrays based on these changes
@@ -2273,6 +2325,7 @@ drake.on("drop", function (el, target, source) {
       profExpEntries[dataAttribute - 1] = profExpObject;
       // Reset the edit mode
       profHistory.removeAttribute("data-attribute");
+      console.log(profExpEntries);
     }
     // Get the divs that were hidden in showProfInputs and displays them
     const personalCollapsible = document.querySelector("#personalCollapsible");
