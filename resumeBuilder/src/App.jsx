@@ -875,6 +875,7 @@ function App() {
     const eduHistory = document.querySelector("#eduHist");
     const addEduBottom = document.querySelector("#addButtonEdu");
     const educationSection = document.querySelector("#newEduExperience");
+    const education = document.querySelector(".education");
     educationSection.style.display = "inline";
     eduSectionInputs.style.display = "none";
 
@@ -892,6 +893,7 @@ function App() {
         eduHistory.style.display = "none";
         const allEdu = document.querySelector("#edu");
         allEdu.style.paddingBottom = "8px";
+        education.style.paddingTop = "0px";
         sectionsToToggle.forEach(section => section.style.display = "none");
 
         // Hide the education icon and disables the onclick event for the section title
@@ -1044,6 +1046,10 @@ function showCertInputs() {
     // add the class heightAdjust to the eduBottom element
     eduBottom.classList.toggle("heightAdjust");
     education.classList.toggle("heightAdjustEdu");
+    // an if statement for if the education inputs are not displaying
+    if (!eduBottom.classList.contains("heightAdjust")) {
+      education.style.paddingTop = "20px";
+  }
   }
 
   // Create a function to remove the excess height of addButtonCert when the inputs are displayed and bring it back when not
@@ -1621,9 +1627,10 @@ function showCertInputs() {
       
       // Get the slot attribute value from the parent element
       const slotAttribute = parentElement.getAttribute('slot').replace('slot', '');
+      const dataAttribute = event.currentTarget.getAttribute('data-attribute');
       
-      let visibleIcon = document.querySelector(`#visi${slotAttribute}`);
-      let hiddenIcon = document.querySelector(`#hid${slotAttribute}`);
+      let visibleIcon = document.querySelector(`#visi${dataAttribute}`);
+      let hiddenIcon = document.querySelector(`#hid${dataAttribute}`);
       let rightSection = document.querySelector(`#profKey${slotAttribute}`);
     
       // Toggle visibility true/false for the profExpEntries object at the index of slotAttribute - 1
@@ -2316,15 +2323,23 @@ drake.on("drop", function (el, target, source) {
 
     // Function to handle visibility button click
     function visiButtonClick(event) {
-      const dataAttributeEdu = event.currentTarget.dataset.attribute;
-      let visibleIcon = document.querySelector(`#visiEdu${dataAttributeEdu}`);
-      let hiddenIcon = document.querySelector(`#hidEdu${dataAttributeEdu}`);
-      let rightSection = document.querySelector(`#eduKey${dataAttributeEdu}`);
+      // Find the parent eduHistoryEntry element
+      const parentElement = event.currentTarget.closest(".eduHistoryEntry");
 
-      // Toggles the visibility variable true/false for the eduExpEntries object at the index of dataAttributeEdu - 1
-      eduExpEntries[dataAttributeEdu - 1].visibility =
-        !eduExpEntries[dataAttributeEdu - 1].visibility;
-      console.log(eduExpEntries[dataAttributeEdu - 1]);
+      // Get the slot attribute value from the parent element
+      const slotAttribute = parentElement
+        .getAttribute("slot")
+        .replace("slot", "");
+      const dataAttribute = event.currentTarget.getAttribute("data-attribute");
+
+      let visibleIcon = document.querySelector(`#visiEdu${dataAttribute}`);
+      let hiddenIcon = document.querySelector(`#hidEdu${dataAttribute}`);
+      let rightSection = document.querySelector(`#eduKey${slotAttribute}`);
+
+      // Toggle visibility true/false for the eduExpEntries object at the index of slotAttribute - 1
+      eduExpEntries[slotAttribute - 1].visibility =
+        !eduExpEntries[slotAttribute - 1].visibility;
+      console.log(eduExpEntries[slotAttribute - 1]);
 
       // A function to check if all the entries are hidden, and if so, hide the education header
       function checkVisibility() {
@@ -2465,20 +2480,21 @@ drake.on("drop", function (el, target, source) {
 
       // Create a new <div> element to hold the education section information in right-half
       const educationSection = document.querySelector("#newEduExperience");
-      const showEducationExperience = `<div id="eduKey${eduExpEntries.length}">${educationSection.innerHTML}</div>`;
+      const showEducationExperience = `<div id="eduKey${eduExpEntries.length}" slot="slot${eduExpEntries.length}">${educationSection.innerHTML}</div>`;
       const saveEdu = document.querySelector("#savedEducationExperience");
       saveEdu.innerHTML += showEducationExperience;
 
       // Create a new <div> element to hold the education history information
       const newEduHistoryEntry = document.createElement("div");
+      newEduHistoryEntry.slot = "slot" + eduExpEntries.length;
       newEduHistoryEntry.className = "eduHistoryEntry";
       newEduHistoryEntry.innerHTML =
-        "<hr id='topLine'>" +
         '<span class="editSection" id="editEduEntry' +
         eduExpEntries.length +
         '" data-attribute=' +
         eduExpEntries.length +
         ">" +
+        "<hr id='topLine'>" +
         '<div id="top-top">' +
         '<div class="top-left" id="school' +
         schools.length +
@@ -2529,9 +2545,13 @@ drake.on("drop", function (el, target, source) {
         '" data-attribute="' +
         eduExpEntries.length +
         '" style="display: none;">' +
+        '<img src="public/dragReorder.svg" alt="Drag" class="dragIcon" id="dragEdu' +
+        eduExpEntries.length +
+        '">' +
         "</div>" +
         "</div>" +
-        "<hr>";
+        "<hr>" +
+        "</span>";
 
       // Create a variable that stores all the education history information
       eduHistoryInfo = newEduHistoryEntry.innerHTML;
@@ -2552,6 +2572,177 @@ drake.on("drop", function (el, target, source) {
           hiddenIcon.onclick = visiButtonClick;
         }
       }
+
+      // CSS to prevent text selection and ensure .editSection covers the entire are
+      const style = document.createElement("style");
+      style.innerHTML = `
+      .editSection {
+        user-select: none; /* Disable text selection */
+        -webkit-user-select: none; /* For Safari */
+        -moz-user-select: none; /* For Firefox */
+        -ms-user-select: none; /* For IE/Edge */
+        width: 100%; /* Ensure it covers the whole area */
+        height: 100%; /* Ensure it covers the whole area */
+      }
+    `;
+      document.head.appendChild(style);
+
+      // Attach Dragula to the new container and draggables
+      const container = document.querySelector("#eduHist");
+      const drake = dragula([container], {
+        accepts: function (el, target) {
+          return true; // Allow drop in the container
+        },
+        moves: function (el, source, handle, sibling) {
+          return true; // Allow drag by any part of the element
+        },
+        mirrorContainer: container, // Ensure the mirror element is within the container
+        invalid: function (el, handle) {
+          return false; // No invalid drag handles
+        },
+      });
+
+      drake.on("drag", function (el) {
+        document.body.classList.add("dragging");
+        el.classList.add("dragging-element");
+
+        // Add dragging class to all .eduHistoryEntry and .editSection elements
+        const eduHistoryEntries = document.querySelectorAll(".eduHistoryEntry");
+        const editSections = document.querySelectorAll(".editSection");
+
+        eduHistoryEntries.forEach((entry) => entry.classList.add("dragging"));
+        editSections.forEach((section) => section.classList.add("dragging"));
+      });
+
+      drake.on("dragend", function (el) {
+        document.body.classList.remove("dragging");
+        el.classList.remove("dragging-element");
+
+        // Remove dragging class from all .eduHistoryEntry and .editSection elements
+        const eduHistoryEntries = document.querySelectorAll(".eduHistoryEntry");
+        const editSections = document.querySelectorAll(".editSection");
+
+        eduHistoryEntries.forEach((entry) =>
+          entry.classList.remove("dragging")
+        );
+        editSections.forEach((section) => section.classList.remove("dragging"));
+
+        // Function to update data-attributes and IDs after a drag event
+        function updateAfterDrag() {
+          const eduHistChildren = document.querySelectorAll(
+            "#eduHist .eduHistoryEntry"
+          );
+
+          // Array to hold the new order of eduExpEntries
+          const newEduExpEntries = [];
+
+          // Update data-attributes and IDs for each child element of eduHist
+          eduHistChildren.forEach((child, index) => {
+            const newAttribute = index + 1;
+            child.querySelector(".editSection").dataset.attribute =
+              newAttribute;
+            child.querySelector(".visiButton").dataset.attribute = newAttribute;
+
+            // Update all hidButton elements
+            const hidButtons = child.querySelectorAll(".hidButton");
+            hidButtons.forEach((button) => {
+              button.dataset.attribute = newAttribute;
+              button.id = `hidEdu${newAttribute}`;
+            });
+
+            // Update the IDs
+            child.querySelector(
+              ".editSection"
+            ).id = `editEduEntry${newAttribute}`;
+            child.querySelector(".top-left").id = `school${newAttribute}`;
+            child.querySelector(".top-right").id = `degree${newAttribute}`;
+            child.querySelector(".bottom-left").id = `eduDates${newAttribute}`;
+            child.querySelector(
+              ".bottom-right"
+            ).id = `eduAddress${newAttribute}`;
+            child.querySelector(
+              ".toggle-button"
+            ).id = `eduSection${newAttribute}`;
+            child.querySelector(".visiButton").id = `visiEdu${newAttribute}`;
+
+            // Add the reordered entry to the new array
+            const school = child.querySelector(".top-left").textContent.trim();
+            const degreeElement = child
+              .querySelector(".top-right")
+              .textContent.trim();
+            const degree = degreeElement.includes(",")
+              ? degreeElement.split(",")[1].trim()
+              : degreeElement;
+            const entry = eduExpEntries.find(
+              (entry) => entry.school === school && entry.degree === degree
+            );
+            newEduExpEntries.push(entry);
+          });
+
+          // Create a map to store the order of slots from eduHist
+          const slotOrderMap = new Map();
+          eduHistChildren.forEach((child, index) => {
+            const slot = child.getAttribute("slot");
+            slotOrderMap.set(slot, index);
+          });
+
+          console.log("Slot order map:", slotOrderMap);
+
+          // Get the elements from savedEducationExperience
+          const savedEduExperienceChildren = document.querySelectorAll(
+            "#savedEducationExperience > div"
+          );
+
+          console.log(
+            "Initial savedEducationExperience children:",
+            savedEduExperienceChildren
+          );
+
+          // Re-order savedEducationExperience children based on the slot order in eduHist
+          const savedEduExperience = document.querySelector(
+            "#savedEducationExperience"
+          );
+          const sortedChildren = Array.from(savedEduExperienceChildren).sort(
+            (a, b) => {
+              const slotA = a.getAttribute("slot");
+              const slotB = b.getAttribute("slot");
+              const comparison =
+                slotOrderMap.get(slotA) - slotOrderMap.get(slotB);
+              console.log(`Comparing ${slotA} with ${slotB}: ${comparison}`);
+              return comparison;
+            }
+          );
+
+          console.log("Sorted children:", sortedChildren);
+
+          // Clear the existing children in savedEducationExperience
+          savedEduExperience.innerHTML = "";
+
+          // Append the sorted children to savedEducationExperience
+          sortedChildren.forEach((child) => {
+            console.log("Appending child:", child);
+            savedEduExperience.appendChild(child);
+          });
+
+          // Log the updated eduExpEntries
+          console.log("Updated eduExpEntries:", newEduExpEntries);
+
+          // Update the original eduExpEntries array with the new order
+          eduExpEntries.length = 0;
+          newEduExpEntries.forEach((entry) => eduExpEntries.push(entry));
+        }
+
+        // Call updateAfterDrag on drag end
+        updateAfterDrag();
+        console.log(eduExpEntries);
+      });
+
+      drake.on("drop", function (el, target, source) {
+        // Ensure the dragged element is in the target container
+        if (target && !target.contains(el)) {
+          target.appendChild(el);
+        }
+      });
 
       // Attach click event handlers in a loop to the editEduSection buttons
       for (let i = 1; i < eduExpEntries.length + 1; i++) {
@@ -2734,7 +2925,8 @@ drake.on("drop", function (el, target, source) {
     );
     const skillsCollapsible = document.querySelector("#skillsCollapsible");
     if (personalCollapsible) personalCollapsible.style.display = "inline";
-    if (professionalCollapsible) professionalCollapsible.style.display = "inline";
+    if (professionalCollapsible)
+      professionalCollapsible.style.display = "inline";
     if (certificatesCollapsible)
       certificatesCollapsible.style.display = "inline";
     if (skillsCollapsible) skillsCollapsible.style.display = "inline";
@@ -2747,14 +2939,10 @@ drake.on("drop", function (el, target, source) {
 
     // A function that checks if all the entries are hidden, and if so, hide the professional experience header
     if (eduExpEntries.every((entry) => entry.visibility === false)) {
-      const educationHeader = document.querySelector(
-        "#educationHeader"
-      );
+      const educationHeader = document.querySelector("#educationHeader");
       educationHeader.classList.add("hide");
     } else {
-      const educationHeader = document.querySelector(
-        "#educationHeader"
-      );
+      const educationHeader = document.querySelector("#educationHeader");
       educationHeader.classList.remove("hide");
     }
   };

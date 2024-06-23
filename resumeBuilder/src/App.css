@@ -262,7 +262,6 @@
 #allProf {
   background-color: rgb(32, 34, 34);
   border-radius: 10px;
-
 }
 
 #careerSummaryPersonal {
@@ -827,10 +826,17 @@ padding-inline-start: 40px;
   transition: all 0.3s ease;
 }
 
+
+
 .eduHistoryEntry {
   padding: 18px;
+  padding-top: 0px;
+  padding-bottom: 0px;
   margin-top: 10px;
-  max-height: 80px;
+  height: 135px;
+  transition: all 0.5s ease;
+  position: relative;
+  z-index: 99;
 }
 
 .certHistoryEntry {
