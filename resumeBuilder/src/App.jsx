@@ -1195,6 +1195,7 @@ function showCertInputs() {
     // Hacky way to get the dataAttribute from the previous edit function
     const eduHistory = document.querySelector("#eduHist");
     let dataAttributeEdu = eduHistory.getAttribute("data-attribute");
+    console.log(dataAttributeEdu + " is the data attribute for the education entry");
 
     // Get the divs that will house the validation error messages
     const eduCollapsible = document.querySelector(".eduInputs");
@@ -1277,12 +1278,40 @@ function showCertInputs() {
     const educationSection = document.querySelector("#newEduExperience");
     educationSection.style.display = "none";
 
+    const findSlotAttribute = (dataAttributeEdu) => {
+      // Find the matching eduHistoryEntry element based on dataAttributeEdu
+      const eduHistoryEntries = document.querySelectorAll(".eduHistoryEntry");
+      let slotAttribute = null;
+
+      eduHistoryEntries.forEach((entry) => {
+        const editSection = entry.querySelector(".editSection");
+        if (
+          editSection &&
+          editSection.getAttribute("data-attribute") === dataAttributeEdu
+        ) {
+          slotAttribute = entry.getAttribute("slot").replace("slot", "");
+        }
+      });
+
+      if (slotAttribute === null) {
+        console.log("Matching eduHistoryEntry not found");
+      } else {
+        console.log("Slot Attribute:", slotAttribute);
+      }
+
+      return slotAttribute;
+    };
+
+    // Get the slot attribute value from the parent element
+    const slotAttribute = findSlotAttribute(dataAttributeEdu);
+    console.log("Data Attribute:", dataAttributeEdu);
+
     // If dataAttributeEdu exists, reverse swaps the live edited section on the right-half from the education entry you were editing
     if (dataAttributeEdu !== null) {
-      let dataAttribute = dataAttributeEdu;
+;
       // Gets the sections again
       const newEduExp = document.querySelector("#newEduExperience");
-      const editEduEntryRH = document.querySelector("#eduKey" + dataAttribute);
+      const editEduEntryRH = document.querySelector("#eduKey" + slotAttribute);
       editEduEntryRH.style.display = "inline";
       const savedEduExperience = document.querySelector(
         "#savedEducationExperience"
@@ -1453,6 +1482,7 @@ function showCertInputs() {
     profHistory.style.display = "inline";
     // This is a hacky way to get the dataAttribute from the previous edit function. I'm sure there's a better way to do this.
     let profEdit = profHistory.getAttribute("data-attribute");
+    console.log(profEdit + " is the data attribute for the professional entry");
 
     // Get the div that will house the validation error messages
     const profCollapsible = document.querySelector(".profInputs");
@@ -1552,7 +1582,7 @@ function showCertInputs() {
       });
 
       if (slotAttribute === null) {
-        console.error("Matching profHistoryEntry not found");
+        console.log("Matching profHistoryEntry not found");
       } else {
         console.log("Slot Attribute:", slotAttribute);
       }
@@ -2178,7 +2208,6 @@ drake.on("drop", function (el, target, source) {
 
       // Get the slot attribute value from the parent element
       const slotAttribute = findSlotAttribute(dataAttribute);
-      console.log("Slot Attribute:", slotAttribute);
       console.log("Data Attribute:", dataAttribute);
 
       // Reset the visibility icon to visible when saving, in case the user had previously hidden it. Only do this when editing
@@ -2222,7 +2251,7 @@ drake.on("drop", function (el, target, source) {
         return;
       }
 
-      // Instead of pushing values to the state arrays, use data-attribute - 1 to update the values in the state arrays
+      // Instead of pushing values to the state arrays, use slotAttribute - 1 to update the values in the state arrays
       positions[slotAttribute - 1] = position;
       employers[slotAttribute - 1] = employer;
       cities[slotAttribute - 1] = city;
@@ -2272,10 +2301,11 @@ drake.on("drop", function (el, target, source) {
       // Returns newProfExp to the correct position, and returns the edited entry on right-half to the correct order
       if (newProfExp && editProfEntryRH && savedProfExperience) {
         // Swaps newProfExp with editProfEntryRH
+        console.log("Swapping newProfExp with editProfEntryRH:", newProfExp, "with", editProfEntryRH);
         newProfExp.replaceWith(editProfEntryRH);
 
         // Get the parent of savedProfExperience
-        const parent = savedProfExperience.parentNode;
+        const parent = savedProfExperience.parentNode;       
 
         // Move newProfExp to be the sibling immediately after savedProfExperience
         parent.insertBefore(newProfExp, savedProfExperience.nextSibling);
@@ -2452,30 +2482,42 @@ drake.on("drop", function (el, target, source) {
       // Displays the education section header
       showEducationHeader();
 
-      // Hacky way of getting the data attribute of the field being edited from the profHist element. Since doing this, I've realized that I just need to initialize the variable dataAttribute outside of the App function. For now, this works.
-      const dataAttributeEdu = event.currentTarget.dataset.attribute;
+      showEduInputs();
+
+      // Get the parent eduHistoryEntry element
+      const parentElement = event.currentTarget.closest(".eduHistoryEntry");
+
+      if (!parentElement) {
+        console.error("Parent element not found");
+        return;
+      }
+      // Get the slot attribute value from the parent element
+      const slotAttribute = parentElement
+        .getAttribute("slot")
+        .replace("slot", "");
+
+      const dataAttribute = event.currentTarget.dataset.attribute;
+      // This is a hacky way of passing the data-attribute to clearinputfields2. Since doing this, I've realized that I just need to initialize the variable dataAttribute outside of the App function. For now, this works.
       const eduHistory = document.getElementById("eduHist");
 
       // Reset the visibility icon to visible when saving, in case the user had previously hidden it. Only do this when editing
-      let visibleIcon = document.querySelector(`#visiEdu${dataAttributeEdu}`);
-      let hiddenIcon = document.querySelector(`#hidEdu${dataAttributeEdu}`);
+      let visibleIcon = document.querySelector(`#visiEdu${dataAttribute}`);
+      let hiddenIcon = document.querySelector(`#hidEdu${dataAttribute}`);
       visibleIcon.style.display = "inline";
       hiddenIcon.style.display = "none";
 
-      // Toggle visibility true/false for the eduExpEntries object at the index of dataAttributeEdu - 1
-      eduExpEntries[dataAttributeEdu - 1].visibility = true;
+      // Toggle visibility true/false for the eduExpEntries object at the index of dataAttribute - 1
+      eduExpEntries[dataAttribute - 1].visibility = true;
 
       if (eduHistory) {
-        eduHistory.setAttribute("data-attribute", dataAttributeEdu);
+        eduHistory.setAttribute("data-attribute", dataAttribute);
       }
 
       // Get the newEduExperience and the editEduEntry sections to swap their positions
       const newEduExp = document.querySelector("#newEduExperience");
-      const editEduEntryRH = document.querySelector(
-        "#eduKey" + dataAttributeEdu
-      );
+      const editEduEntryRH = document.querySelector("#eduKey" + slotAttribute);
 
-      // Swap the newEduExperience and the editEduEntry sections so you can see your changes in realtime on the right side
+      // Swap the newEduExperience and the editEduEntry sections so you can see your changes in real-time on the right side
       if (newEduExp && editEduEntryRH) {
         const parent1 = editEduEntryRH.parentNode;
         const parent2 = newEduExp.parentNode;
@@ -2496,20 +2538,21 @@ drake.on("drop", function (el, target, source) {
       editEduEntryRH.style.display = "none";
 
       // Fills all the education input fields on the left side with the correct data being edited
-      setDegree(degrees[dataAttributeEdu - 1]);
-      setSchool(schools[dataAttributeEdu - 1]);
-      setSchoolAddress(schoolAddresses[dataAttributeEdu - 1]);
-      setSchoolStartMonth(schoolStartMonths[dataAttributeEdu - 1]);
-      setSchoolStartYear(schoolStartYears[dataAttributeEdu - 1]);
-      setSchoolEndMonth(schoolEndMonths[dataAttributeEdu - 1]);
-      setSchoolEndYear(schoolEndYears[dataAttributeEdu - 1]);
-      setMajor(majors[dataAttributeEdu - 1]);
+      setDegree(degrees[slotAttribute - 1]);
+      setSchool(schools[slotAttribute - 1]);
+      setSchoolAddress(schoolAddresses[slotAttribute - 1]);
+      setSchoolStartMonth(schoolStartMonths[slotAttribute - 1]);
+      setSchoolStartYear(schoolStartYears[slotAttribute - 1]);
+      setSchoolEndMonth(schoolEndMonths[slotAttribute - 1]);
+      setSchoolEndYear(schoolEndYears[slotAttribute - 1]);
+      setMajor(majors[slotAttribute - 1]);
 
       toggleHeightEdu();
     }
 
     // If dataAttributeEdu is null, then the user is adding a new entry
     if (dataAttributeEdu === null) {
+      console.log("Data attribute IS null");
       // Get and trim the value of the school fields
       const schoolValue = school.trim();
 
@@ -2857,6 +2900,34 @@ drake.on("drop", function (el, target, source) {
       // Data attribute is NOT null here
       console.log("Data attribute is NOT null");
 
+      const findSlotAttribute = (dataAttributeEdu) => {
+        // Find the matching eduHistoryEntry element based on dataAttributeEdu
+        const eduHistoryEntries = document.querySelectorAll(".eduHistoryEntry");
+        let slotAttribute = null;
+
+        eduHistoryEntries.forEach((entry) => {
+          const editSection = entry.querySelector(".editSection");
+          if (
+            editSection &&
+            editSection.getAttribute("data-attribute") === dataAttributeEdu
+          ) {
+            slotAttribute = entry.getAttribute("slot").replace("slot", "");
+          }
+        });
+
+        if (slotAttribute === null) {
+          console.error("Matching eduHistoryEntry not found");
+        } else {
+          console.log("Slot Attribute:", slotAttribute);
+        }
+
+        return slotAttribute;
+      };
+
+      // Get the slot attribute value from the parent element
+      const slotAttribute = findSlotAttribute(dataAttributeEdu);
+      console.log("Data Attribute:", dataAttributeEdu);
+
       // Reset the visibility icon to visible when saving, in case the user had previously hidden it. Only do this when editing
       let visibleIcon = document.querySelector(`#visiEdu${dataAttributeEdu}`);
       let hiddenIcon = document.querySelector(`#hidEdu${dataAttributeEdu}`);
@@ -2864,10 +2935,8 @@ drake.on("drop", function (el, target, source) {
       hiddenIcon.style.display = "none";
 
       // Displays the education history section
+      const eduHistory = document.getElementById("eduHist");
       eduHistory.style.display = "inline";
-
-      // This is a hacky way to get the dataAttribute from the previous edit function. I'm sure there's a better way to do this.
-      let eduEdit = eduHistory.getAttribute("data-attribute");
 
       // Get the div that will house the validation error message
       const schoolRequired = document.querySelector("#schoolReq");
@@ -2884,15 +2953,15 @@ drake.on("drop", function (el, target, source) {
         return;
       }
 
-      // Instead of pushing values to the state arrays, use data-attribute - 1 to update the values in the state arrays
-      schools[dataAttributeEdu - 1] = school;
-      degrees[dataAttributeEdu - 1] = degree;
-      schoolAddresses[dataAttributeEdu - 1] = schoolAddress;
-      schoolStartMonths[dataAttributeEdu - 1] = schoolStartMonth;
-      schoolStartYears[dataAttributeEdu - 1] = schoolStartYear;
-      schoolEndMonths[dataAttributeEdu - 1] = schoolEndMonth;
-      schoolEndYears[dataAttributeEdu - 1] = schoolEndYear;
-      majors[dataAttributeEdu - 1] = major;
+      // Instead of pushing values to the state arrays, use slotAttribute - 1 to update the values in the state arrays
+      schools[slotAttribute - 1] = school;
+      degrees[slotAttribute - 1] = degree;
+      schoolAddresses[slotAttribute - 1] = schoolAddress;
+      schoolStartMonths[slotAttribute - 1] = schoolStartMonth;
+      schoolStartYears[slotAttribute - 1] = schoolStartYear;
+      schoolEndMonths[slotAttribute - 1] = schoolEndMonth;
+      schoolEndYears[slotAttribute - 1] = schoolEndYear;
+      majors[slotAttribute - 1] = major;
 
       // Reset the error message
       schoolRequired.className = "subLabel";
@@ -2918,25 +2987,24 @@ drake.on("drop", function (el, target, source) {
 
       // Gets the sections again
       const newEduExp = document.querySelector("#newEduExperience");
-      const editEduEntryRH = document.querySelector(
-        "#eduKey" + dataAttributeEdu
-      );
+      const editEduEntryRH = document.querySelector(`#eduKey${slotAttribute}`);
       const savedEducationExperience = document.querySelector(
         "#savedEducationExperience"
       );
 
       // Returns newEduExp to the correct position, and returns the edited entry on right-half to the correct order
-      if (savedEducationExperience.nextSibling !== newEduExp) {
-        if (newEduExp && editEduEntryRH && savedEducationExperience) {
-          // Swaps newEduExp with editEduEntryRH
-          newEduExp.replaceWith(editEduEntryRH);
+      if (newEduExp && editEduEntryRH && savedEducationExperience) {
+        // None of this is needed because we run clearInputFieldsEdu() which includes this as well
+        
+        // console.log("Swapping newEduExp with editEduEntryRH:", newEduExp, "with", editEduEntryRH);
+        // // Swaps newEduExp with editEduEntryRH
+        // newEduExp.replaceWith(editEduEntryRH);
 
-          // Get the parent of savedEduExperience
-          const parent = savedEducationExperience.parentNode;
+        // // Get the parent of savedEduExperience
+        // const parent = savedEducationExperience.parentNode;
 
-          // Move newEduExp to be the sibling immediately after savedEduExperience
-          parent.insertBefore(newEduExp, savedEducationExperience.nextSibling);
-        }
+        // // Move newEduExp to be the sibling immediately after savedEducationExperience
+        // parent.insertBefore(newEduExp, savedEducationExperience.nextSibling);
       }
 
       // Displays inline the correct eduKey section based on data attribute
@@ -2963,20 +3031,30 @@ drake.on("drop", function (el, target, source) {
       // Update based on the current education input field values
       schoolUpdate.innerHTML = school;
       degreeUpdate.innerHTML = ", " + degree;
-      eduDatesUpdate.innerHTML =
-        schoolStartMonth +
-        " " +
-        schoolStartYear +
-        " - " +
-        schoolEndMonth +
-        " " +
-        schoolEndYear;
+
+      let eduDatesString = "";
+      if (schoolStartMonth && schoolStartYear) {
+        eduDatesString += `${schoolStartMonth} ${schoolStartYear}`;
+      }
+
+      if (schoolEndMonth && schoolEndYear) {
+        if (eduDatesString) {
+          eduDatesString += " - ";
+        }
+        eduDatesString += `${schoolEndMonth} ${schoolEndYear}`;
+      }
+
+      eduDatesUpdate.innerHTML = eduDatesString;
       eduAddressUpdate.innerHTML = schoolAddress;
 
       // Update the education arrays based on these changes
       schools[dataAttributeEdu - 1] = school;
       degrees[dataAttributeEdu - 1] = degree;
       schoolAddresses[dataAttributeEdu - 1] = schoolAddress;
+      schoolStartMonths[dataAttributeEdu - 1] = schoolStartMonth;
+      schoolStartYears[dataAttributeEdu - 1] = schoolStartYear;
+      schoolEndMonths[dataAttributeEdu - 1] = schoolEndMonth;
+      schoolEndYears[dataAttributeEdu - 1] = schoolEndYear;
       majors[dataAttributeEdu - 1] = major;
 
       // Create the new eduExp object
@@ -2991,6 +3069,7 @@ drake.on("drop", function (el, target, source) {
         major: major,
         visibility: true,
       };
+
       // Replace the old eduExp object with the new one
       eduExpEntries[dataAttributeEdu - 1] = eduExpObject;
       eduHistory.removeAttribute("data-attribute");
