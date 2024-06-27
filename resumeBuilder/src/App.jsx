@@ -1359,7 +1359,6 @@ function showCertInputs() {
 
   // Clear all the certification section input fields
   const clearInputFieldsCertification = () => {
-    
     // Resets fields for certificates
     setCertificateName(""); // Clear certificate name field
     setCertificateInstitute(""); // Clear institute field
@@ -1368,66 +1367,133 @@ function showCertInputs() {
     // Hides the input fields and returns to the add button screen
     hideCertInputs(); // Assuming there's a function similar to hideEduInputs for certificates
 
-    // Perform the reverse swap
+    // Hacky way to get the dataAttribute from the previous edit function
     const certHistory = document.getElementById("certHist");
-    const dataAttributeCert = certHistory.getAttribute("data-attribute");
-    const newCertExp = document.querySelector("#newCertExperience");
-    const editCertEntryRH = document.querySelector(`#certKey${dataAttributeCert}`);
+    let dataAttributeCert = certHistory.getAttribute("data-attribute");
+    console.log(dataAttributeCert + " is the data attribute for the certificate entry");
 
-    if (newCertExp && editCertEntryRH) {
-        const originalParent = newCertExp.parentNode;
-        const swapParent = editCertEntryRH.parentNode;
-        const originalNextSibling = newCertExp.nextSibling;
-
-        // Perform the reverse swap
-        swapParent.insertBefore(newCertExp, editCertEntryRH.nextSibling);
-        originalParent.insertBefore(editCertEntryRH, originalNextSibling);
-
-        console.log("9 - Sections swapped back to their original positions");
-        editCertEntryRH.style.display = ""; // Restore the display property
-    }
-
-    // Other operations...
+    // Get the divs that will house the validation error messages
+    const certCollapsible = document.querySelector(".certInputs");
+    const addCertButton = document.querySelector("#addCert");
     const addButtonCert = document.querySelector("#addButtonCert");
-    if (addButtonCert) {
-        if (certificateEntries.length > 0) {
-            addButtonCert.style.paddingBottom = "80px";
-        } else {
-            console.log("6 - No adjustment needed for add button padding, no certificate entries");
-        }
-    } else {
-        console.log("6 - Add button element not found in the DOM");
+    if (certificateEntries.length > 0) {
+      addButtonCert.style.paddingBottom = "80px";
     }
 
-    // Resets all of the sections and elements that were hidden or disabled in showCertInputs
-    const sectionsToToggle = [
-      document.querySelector("#personalCollapsible"),
-      document.querySelector("#educationCollapsible"),
-      document.querySelector("#professionalCollapsible"),
-      document.querySelector("#skillsCollapsible"),
-  ];
+    // Get the div that will house the validation error message
+    const certRequired = document.querySelector("#certReq");
+    // const certBorder = document.querySelector("#certName");
 
-  // Show all the collapsible sections
-  sectionsToToggle.forEach(section => {
-      if (section) section.style.display = "";
-  });
+    // Reset the validation error message
+    certRequired.className = "subLabel";
+    // certBorder.style.border = "1px solid rgb(61, 61, 64)";
 
-  // Restore the certificate icon and enable the onclick event for the section title
-  const certificateIcon = document.querySelector("#certificatesIcon");
-  if (certificateIcon) certificateIcon.style.display = ""; // Restore visibility
+    // Get the divs that were hidden in showCertInputs and displays them
+    const personalCollapsible = document.querySelector("#personalCollapsible");
+    const educationCollapsible = document.querySelector("#educationCollapsible");
+    const professionalCollapsible = document.querySelector("#professionalCollapsible");
+    const skillsCollapsible = document.querySelector("#skillsCollapsible");
+    if (personalCollapsible) personalCollapsible.style.display = "inline";
+    if (educationCollapsible) educationCollapsible.style.display = "inline";
+    if (professionalCollapsible) professionalCollapsible.style.display = "inline";
+    if (skillsCollapsible) skillsCollapsible.style.display = "inline";
 
-  const certCollapse = document.querySelector(".certTitle");
-  if (certCollapse) {
-      certCollapse.classList.remove("disabled"); // Enable the section
-  }
+    // Resets the certification collapse section's onClick function and shows the icon
+    const certificateIcon = document.querySelector("#certificatesIcon");
+    if (certificateIcon) certificateIcon.style.display = ""; // Resets display property, typically makes it visible
+    const certCollapse = document.querySelector(".certTitle");
+    if (certCollapse) certCollapse.classList.remove("disabled"); // Removes the 'disabled' class, enabling the element
 
-    showCertificationHeader();
+    // A function that checks if all the entries are hidden, and if so, hide the certification header
+    if (certificateEntries.every((entry) => entry.visibility === false)) {
+      const certificationHeader = document.querySelector("#certificationHeader");
+      certificationHeader.classList.add("hide");
+    } else {
+      const certificationHeader = document.querySelector("#certificationHeader");
+      certificationHeader.classList.remove("hide");
+    }
 
-    // Hide the new certification section on right-half until the certification inputs are showing again
+    // Create a reverseSwap function to reverse the swap of the newCertExp and editCertEntryRH if dataAttributeCert is not null
+    function reverseSwap() {
+      const newCertExp = document.querySelector("#newCertExperience");
+      const certHistory = document.querySelector("#certHist");
+      let dataAttributeCert = certHistory.getAttribute("data-attribute");
+      const editCertEntryRH = document.querySelector("#certKey" + dataAttributeCert);
+
+      if (newCertExp && editCertEntryRH) {
+        const parent1 = editCertEntryRH.parentNode;
+        const parent2 = newCertExp.parentNode;
+        const nextSibling1 = editCertEntryRH.nextSibling;
+        parent2.insertBefore(editCertEntryRH, newCertExp);
+
+        if (nextSibling1) {
+          parent1.insertBefore(newCertExp, nextSibling1);
+        } else {
+          parent1.appendChild(newCertExp);
+        }
+      }
+    }
+
+    // Hide the certification section on the right
     const certificationSection = document.querySelector("#newCertExperience");
     certificationSection.style.display = "none";
 
+    const findSlotAttribute = (dataAttributeCert) => {
+      // Find the matching certHistoryEntry element based on dataAttributeCert
+      const certHistoryEntries = document.querySelectorAll(".certHistoryEntry");
+      let slotAttribute = null;
 
+      certHistoryEntries.forEach((entry) => {
+        const editSection = entry.querySelector(".editSection");
+        if (
+          editSection &&
+          editSection.getAttribute("data-attribute") === dataAttributeCert
+        ) {
+          slotAttribute = entry.getAttribute("slot").replace("slot", "");
+        }
+      });
+
+      if (slotAttribute === null) {
+        console.log("Matching certHistoryEntry not found");
+      } else {
+        console.log("Slot Attribute:", slotAttribute);
+      }
+
+      return slotAttribute;
+    };
+
+    // Get the slot attribute value from the parent element
+    const slotAttribute = findSlotAttribute(dataAttributeCert);
+    console.log("Data Attribute:", dataAttributeCert);
+
+    // If dataAttributeCert exists, reverse swaps the live edited section on the right-half from the certification entry you were editing
+    if (dataAttributeCert !== null) {
+      // Gets the sections again
+      const newCertExp = document.querySelector("#newCertExperience");
+      const editCertEntryRH = document.querySelector("#certKey" + slotAttribute);
+      editCertEntryRH.style.display = "inline";
+      const savedCertExperience = document.querySelector("#savedCertificationExperience");
+      
+      // Returns newCertExp to the correct position, and returns the edited entry on right-half to the correct order. Only runs if newCertExp not already in the correct position
+      if (savedCertExperience.nextSibling !== newCertExp) {
+        if (newCertExp && editCertEntryRH && savedCertExperience) {
+          // Swaps newCertExp with editCertEntryRH
+          newCertExp.replaceWith(editCertEntryRH);
+
+          // Get the parent of savedCertExperience
+          const parent = savedCertExperience.parentNode;
+
+          // Move newCertExp to be the sibling immediately after savedCertExperience
+          parent.insertBefore(newCertExp, savedCertExperience.nextSibling);
+        }
+      }
+      
+      // If certificateEntries is 0 (ie. cancelled on the first entry), hide the certification header
+      if (certificateEntries.length < 1) {
+        const certificationHeader = document.querySelector("#certificationHeader");
+        certificationHeader.classList.add("hide");
+      }
+    }
 };
 
 
@@ -1519,7 +1585,7 @@ function showCertInputs() {
       certificatesCollapsible.style.display = "inline";
     if (skillsCollapsible) skillsCollapsible.style.display = "inline";
 
-    // Resets the professioanl collapse section's onClick function and shows the icon
+    // Resets the professional collapse section's onClick function and shows the icon
     const professionalIcon = document.querySelector("#professionalIcon");
     if (professionalIcon) professionalIcon.style.display = ""; // Resets display property, typically makes it visible
     const profCollapse = document.querySelector("#profTitle");
@@ -2698,7 +2764,7 @@ drake.on("drop", function (el, target, source) {
         }
       }
 
-      // CSS to prevent text selection and ensure .editSection covers the entire are
+      // CSS to prevent text selection and ensure .editSection covers the entire area
       const style = document.createElement("style");
       style.innerHTML = `
       .editSection {
@@ -3116,87 +3182,130 @@ drake.on("drop", function (el, target, source) {
 
     // Function to handle visibility button click
     function visiButtonClick(event) {
+      // Get the data attribute of the field being edited
       const dataAttributeCert = event.currentTarget.dataset.attribute;
+      
+      // Find the parent certHistoryEntry element
+      const parentElement = event.currentTarget.closest('.certHistoryEntry');
+      
+      if (!parentElement) {
+          console.error('Parent element not found');
+          return;
+      }
+      
+      // Get the slot attribute value from the parent element
+      const slotAttribute = parentElement.getAttribute('slot').replace('slot', '');
+  
       let visibleIcon = document.querySelector(`#visiCert${dataAttributeCert}`);
       let hiddenIcon = document.querySelector(`#hidCert${dataAttributeCert}`);
-      let rightSection = document.querySelector(`#certKey${dataAttributeCert}`);
-
-      // Toggles the visibility variable true/false for the certificateEntries object at the index of dataAttributeCert - 1
-      certificateEntries[dataAttributeCert - 1].visibility =
-        !certificateEntries[dataAttributeCert - 1].visibility;
-    
-      const iconDisplay =
-        visibleIcon.style.display === "inline" ? "none" : "inline";
-      visibleIcon.style.display = iconDisplay;
-      hiddenIcon.style.display = iconDisplay === "inline" ? "none" : "inline";
-      rightSection.style.display = iconDisplay;
-
-      console.log("check cert visibility")
-
-      showCertificationHeader()
-      // console.log(`${certificateEntries.every(entry => entry.visibility)} Visibility of all entries: ${certificateEntries.map(entry => entry.visibility)}`);
+      let rightSection = document.querySelector(`#certKey${slotAttribute}`);
+  
+      // Toggle visibility true/false for the certificateEntries object at the index of slotAttribute - 1
+      certificateEntries[slotAttribute - 1].visibility = !certificateEntries[slotAttribute - 1].visibility;
+      console.log(certificateEntries[slotAttribute - 1]);
+  
+      // A function to check if all the entries are hidden, and if so, hide the certification header
+      function checkVisibility() {
+          if (certificateEntries.every((entry) => entry.visibility === false)) {
+              const certificationHeader = document.querySelector("#certificationHeader");
+              certificationHeader.classList.add("hide");
+          } else {
+              const certificationHeader = document.querySelector("#certificationHeader");
+              certificationHeader.classList.remove("hide");
+          }
+      }
+  
+      checkVisibility();
+  
+      if (visibleIcon.style.display === "inline") {
+          visibleIcon.style.display = "none";
+          hiddenIcon.style.display = "inline";
+          rightSection.style.display = "none";
+      } else {
+          visibleIcon.style.display = "inline";
+          hiddenIcon.style.display = "none";
+          rightSection.style.display = "inline";
+      }
+  
+      console.log("check cert visibility");
+  
+      // Update certification header visibility
+      showCertificationHeader();
+  
+      // Log visibility of each entry for debugging
       certificateEntries.forEach((entry, index) => {
-        console.log(`Entry ${index + 1}: ${JSON.stringify(entry)} - Visibility: ${entry.visibility}`);
-    });
-    
-    }
+          console.log(`Entry ${index + 1}: ${JSON.stringify(entry)} - Visibility: ${entry.visibility}`);
+      });
+  }
 
     // A function to edit the certification sections onclick
     function editCertSection(event) {
-
-      // Hacky way of getting the data attribute of the field being edited from the certHist element. Since doing this, I've realized that I just need to initialize the variable dataAttribute outside of the App function. For now, this works.
+      // Displays the certification section header
+      showCertificationHeader();
+  
+      // Show the certification input fields
+      showCertInputs();
+  
+      // Get the parent certHistoryEntry element
+      const parentElement = event.currentTarget.closest('.certHistoryEntry');
+  
+      if (!parentElement) {
+          console.error('Parent element not found');
+          return;
+      }
+  
+      // Get the slot attribute value from the parent element
+      const slotAttribute = parentElement.getAttribute('slot').replace('slot', '');
+  
+      // Get the data attribute
       const dataAttributeCert = event.currentTarget.dataset.attribute;
+  
+      // Hacky way of passing the data-attribute to clearInputFieldsCertification
       const certHistory = document.getElementById("certHist");
-
-      // Reset the visibility icon to visible when saving, in case the user had previously hidden it. Only do this when editing
+  
+      // Reset the visibility icon to visible when saving, in case the user had previously hidden it
       let visibleIcon = document.querySelector(`#visiCert${dataAttributeCert}`);
       let hiddenIcon = document.querySelector(`#hidCert${dataAttributeCert}`);
       visibleIcon.style.display = "inline";
       hiddenIcon.style.display = "none";
-
+  
       // Toggle visibility true/false for the certExpEntries object at the index of dataAttributeCert - 1
       certificateEntries[dataAttributeCert - 1].visibility = true;
-
-      // Displays the certification section header
-      showCertificationHeader();
-
+  
       if (certHistory) {
-        certHistory.setAttribute("data-attribute", dataAttributeCert);
+          certHistory.setAttribute("data-attribute", dataAttributeCert);
       }
-
+  
       // Get the newCertExperience and the editCertEntry sections to swap their positions
       const newCertExp = document.querySelector("#newCertExperience");
-      const editCertEntryRH = document.querySelector(
-        "#certKey" + dataAttributeCert
-      );
-
-      // Swap the newCertExperience and the editCertEntry sections so you can see your changes in realtime on the right side
+      const editCertEntryRH = document.querySelector(`#certKey${slotAttribute}`);
+  
+      // Swap the newCertExperience and the editCertEntry sections so you can see your changes in real-time on the right side
       if (newCertExp && editCertEntryRH) {
-        const parent1 = editCertEntryRH.parentNode;
-        const parent2 = newCertExp.parentNode;
-        const nextSibling2 = newCertExp.nextSibling;
-
-        parent1.insertBefore(newCertExp, editCertEntryRH);
-
-        if (nextSibling2) {
-          parent2.insertBefore(editCertEntryRH, nextSibling2);
-        } else {
-          parent2.appendChild(editCertEntryRH);
-        }
+          const parent1 = editCertEntryRH.parentNode;
+          const parent2 = newCertExp.parentNode;
+          const nextSibling2 = newCertExp.nextSibling;
+  
+          parent1.insertBefore(newCertExp, editCertEntryRH);
+  
+          if (nextSibling2) {
+              parent2.insertBefore(editCertEntryRH, nextSibling2);
+          } else {
+              parent2.appendChild(editCertEntryRH);
+          }
       }
-
-      // Shows all the certification section input fields on the left
-      showCertInputs();
+  
       // Hides the original field on the right being edited, so that real-time edits are shown in the correct placement of the element being edited
       editCertEntryRH.style.display = "none";
-
+  
       // Fills all the certification input fields on the left side with the correct data being edited
-      setCertificateName(certificateNames[dataAttributeCert - 1]);
-      setCertificationYear(certificateYears[dataAttributeCert - 1]);
-      setCertificateInstitute(certificateInstitutes[dataAttributeCert - 1]);
-
+      setCertificateName(certificateNames[slotAttribute - 1]);
+      setCertificationYear(certificateYears[slotAttribute - 1]);
+      setCertificateInstitute(certificateInstitutes[slotAttribute - 1]);
+  
+      // Adjusts the height of the certification section
       toggleHeightCert();
-    }
+  }
 
     // If dataAttributeCert is null, then the user is adding a new entry
     if (dataAttributeCert === null) {
@@ -3243,12 +3352,13 @@ drake.on("drop", function (el, target, source) {
 
       // Create a new <div> element to hold the certification section information in right-half
       const certificationSection = document.querySelector("#newCertExperience");
-      const showCertificationExperience = `<div id="certKey${certificateEntries.length}">${certificationSection.innerHTML}</div>`;
+      const showCertificationExperience = `<div id="certKey${certificateEntries.length}" slot="slot${certificateEntries.length}">${certificationSection.innerHTML}</div>`;
       const saveCert = document.querySelector("#savedCertificationExperience");
       saveCert.innerHTML += showCertificationExperience;
 
       // Create a new <div> element to hold the certification history information
       const newCertHistoryEntry = document.createElement("div");
+      newCertHistoryEntry.slot = "slot" + certificateEntries.length;
       newCertHistoryEntry.className = "certHistoryEntry";
       newCertHistoryEntry.innerHTML =
         "<hr id='topLine'>" +
@@ -3290,15 +3400,196 @@ drake.on("drop", function (el, target, source) {
         '" data-attribute="' +
         certificateEntries.length +
         '" style="display: none;">' +
+        '<img src="public/dragReorder.svg" alt="Drag" class="dragIcon" id="drag' +
+        certificateEntries.length +
+        '">' +
         "</div>" +
         "</div>" +
         "<hr>";
+
+      // CSS to prevent text selection and ensure .editSection covers the entire area
+      const style = document.createElement("style");
+      style.innerHTML = `
+  .editSection {
+    user-select: none; /* Disable text selection */
+    -webkit-user-select: none; /* For Safari */
+    -moz-user-select: none; /* For Firefox */
+    -ms-user-select: none; /* For IE/Edge */
+    width: 100%; /* Ensure it covers the whole area */
+    height: 100%; /* Ensure it covers the whole area */
+  }
+`;
+
+      document.head.appendChild(style);
 
       // Create a variable that stores all the certification history information
       certHistoryInfo = newCertHistoryEntry.innerHTML;
       // Append the new <div> element to the certification history section
       let certHistory = document.querySelector("#certHist");
       certHistory.appendChild(newCertHistoryEntry);
+
+      // ---
+      // Attach Dragula to the new container and draggables
+      const certContainer = document.querySelector("#certHist");
+      const certDrake = dragula([certContainer], {
+        accepts: function (el, target) {
+          return true; // Allow drop in the container
+        },
+        moves: function (el, source, handle, sibling) {
+          return true; // Allow drag by any part of the element
+        },
+        mirrorContainer: certContainer, // Ensure the mirror element is within the container
+        invalid: function (el, handle) {
+          return false; // No invalid drag handles
+        },
+      });
+
+      certDrake.on("drag", function (el) {
+        document.body.classList.add("dragging");
+        el.classList.add("dragging-element");
+
+        // Add dragging class to all .certHistoryEntry and .editSection elements
+        const certHistoryEntries =
+          document.querySelectorAll(".certHistoryEntry");
+        const editSections = document.querySelectorAll(".editSection");
+
+        certHistoryEntries.forEach((entry) => entry.classList.add("dragging"));
+        editSections.forEach((section) => section.classList.add("dragging"));
+      });
+
+      certDrake.on("dragend", function (el) {
+        document.body.classList.remove("dragging");
+        el.classList.remove("dragging-element");
+
+        // Remove dragging class from all .certHistoryEntry and .editSection elements
+        const certHistoryEntries =
+          document.querySelectorAll(".certHistoryEntry");
+        const editSections = document.querySelectorAll(".editSection");
+
+        certHistoryEntries.forEach((entry) =>
+          entry.classList.remove("dragging")
+        );
+        editSections.forEach((section) => section.classList.remove("dragging"));
+
+        // Function to update data-attributes and IDs after a drag event
+        function updateAfterDrag() {
+          const certHistChildren = document.querySelectorAll(
+            "#certHist .certHistoryEntry"
+          );
+
+          // Array to hold the new order of certificateEntries
+          const newCertEntries = [];
+
+          // Update data-attributes and IDs for each child element of certHist
+          certHistChildren.forEach((child, index) => {
+            const newAttribute = index + 1;
+            child.querySelector(".editSection").dataset.attribute =
+              newAttribute;
+            child.querySelector(".visiButton").dataset.attribute = newAttribute;
+
+            // Update all hidButton elements
+            const hidButtons = child.querySelectorAll(".hidButton");
+            hidButtons.forEach((button) => {
+              button.dataset.attribute = newAttribute;
+              button.id = `hidCert${newAttribute}`;
+            });
+
+            // Update the IDs
+            child.querySelector(
+              ".editSection"
+            ).id = `editCertEntry${newAttribute}`;
+            child.querySelector(
+              ".top-left"
+            ).id = `certificateName${newAttribute}`;
+            child.querySelector(
+              ".bottom-left"
+            ).id = `certInstitute${newAttribute}`;
+            child.querySelector(
+              ".toggle-button"
+            ).id = `certSection${newAttribute}`;
+            child.querySelector(".visiButton").id = `visiCert${newAttribute}`;
+            child.querySelector(".dragIcon").id = `dragCert${newAttribute}`;
+
+            // Add the reordered entry to the new array
+            const certificateName = child
+              .querySelector(".top-left")
+              .textContent.trim();
+            const certInstitute = child
+              .querySelector(".bottom-left")
+              .textContent.trim();
+            const entry = certificateEntries.find(
+              (entry) =>
+                entry.certificateName === certificateName &&
+                entry.certificateInstitute === certInstitute
+            );
+            newCertEntries.push(entry);
+          });
+
+          // Create a map to store the order of slots from certHist
+          const slotOrderMap = new Map();
+          certHistChildren.forEach((child, index) => {
+            const slot = child.getAttribute("slot");
+            slotOrderMap.set(slot, index);
+          });
+
+          console.log("Slot order map:", slotOrderMap);
+
+          // Get the elements from savedCertificationExperience
+          const savedCertExperienceChildren = document.querySelectorAll(
+            "#savedCertificationExperience > div"
+          );
+
+          console.log(
+            "Initial savedCertificationExperience children:",
+            savedCertExperienceChildren
+          );
+
+          // Re-order savedCertificationExperience children based on the slot order in certHist
+          const savedCertExperience = document.querySelector(
+            "#savedCertificationExperience"
+          );
+          const sortedChildren = Array.from(savedCertExperienceChildren).sort(
+            (a, b) => {
+              const slotA = a.getAttribute("slot");
+              const slotB = b.getAttribute("slot");
+              const comparison =
+                slotOrderMap.get(slotA) - slotOrderMap.get(slotB);
+              console.log(`Comparing ${slotA} with ${slotB}: ${comparison}`);
+              return comparison;
+            }
+          );
+
+          console.log("Sorted children:", sortedChildren);
+
+          // Clear the existing children in savedCertificationExperience
+          savedCertExperience.innerHTML = "";
+
+          // Append the sorted children to savedCertificationExperience
+          sortedChildren.forEach((child) => {
+            console.log("Appending child:", child);
+            savedCertExperience.appendChild(child);
+          });
+
+          // Log the updated certificateEntries
+          console.log("Updated certificateEntries:", newCertEntries);
+
+          // Update the original certificateEntries array with the new order
+          certificateEntries.length = 0;
+          newCertEntries.forEach((entry) => certificateEntries.push(entry));
+        }
+
+        // Call updateAfterDrag on drag end
+        updateAfterDrag();
+        console.log(certificateEntries);
+      });
+
+      certDrake.on("drop", function (el, target, source) {
+        // Ensure the dragged element is in the target container
+        if (target && !target.contains(el)) {
+          target.appendChild(el);
+        }
+      });
+      // ---
 
       // Attach click event handlers in a loop to the visibility buttons
       for (let i = 1; i < certificateEntries.length + 1; i++) {
@@ -3344,131 +3635,140 @@ drake.on("drop", function (el, target, source) {
     } else {
       // Data attribute is NOT null here
       console.log("Data attribute is NOT null");
-
+  
+      const findSlotAttribute = (dataAttributeCert) => {
+          // Find the matching certHistoryEntry element based on dataAttributeCert
+          const certHistoryEntries = document.querySelectorAll(".certHistoryEntry");
+          let slotAttribute = null;
+  
+          certHistoryEntries.forEach((entry) => {
+              const editSection = entry.querySelector(".editSection");
+              if (editSection && editSection.getAttribute("data-attribute") === dataAttributeCert) {
+                  slotAttribute = entry.getAttribute("slot").replace("slot", "");
+              }
+          });
+  
+          if (slotAttribute === null) {
+              console.error("Matching certHistoryEntry not found");
+          } else {
+              console.log("Slot Attribute:", slotAttribute);
+          }
+  
+          return slotAttribute;
+      };
+  
+      // Get the slot attribute value from the parent element
+      const slotAttribute = findSlotAttribute(dataAttributeCert);
+      console.log("Data Attribute:", dataAttributeCert);
+  
       // Reset the visibility icon to visible when saving, in case the user had previously hidden it. Only do this when editing
       let visibleIcon = document.querySelector(`#visiCert${dataAttributeCert}`);
       let hiddenIcon = document.querySelector(`#hidCert${dataAttributeCert}`);
       visibleIcon.style.display = "inline";
       hiddenIcon.style.display = "none";
-
+  
       // Displays the certification history section
       certHistory.style.display = "inline";
-
-      // This is a hacky way to get the dataAttribute from the previous edit function. I'm sure there's a better way to do this.
-      let certEdit = certHistory.getAttribute("data-attribute");
-
+  
       // Get the div that will house the validation error message
       const certificateNameRequired = document.querySelector("#certReq");
-      const certificateNameBorder =
-        document.querySelector("#certificationName");
-
+      const certificateNameBorder = document.querySelector("#certificationName");
+  
       // Get and trim the value of the certificate name field
       const certificateNameValue = certificateName.trim();
-
+  
       // Check if the certificate name field is not empty
       if (!certificateNameValue) {
-        certificateNameRequired.className = "error";
-        certificateNameBorder.style.border = "1px solid red";
-        certHistory.style.display = "none";
-        return;
+          certificateNameRequired.className = "error";
+          certificateNameBorder.style.border = "1px solid red";
+          certHistory.style.display = "none";
+          return;
       }
-
-      // Instead of pushing values to the state arrays, use data-attribute - 1 to update the values in the state arrays
-      certificateNames[dataAttributeCert - 1] = certificateName;
-      certificateYears[dataAttributeCert - 1] = certificationYear;
-      certificateInstitutes[dataAttributeCert - 1] = certificateInstitute;
-
+  
+      // Instead of pushing values to the state arrays, use slotAttribute - 1 to update the values in the state arrays
+      certificateNames[slotAttribute - 1] = certificateName;
+      certificateYears[slotAttribute - 1] = certificationYear;
+      certificateInstitutes[slotAttribute - 1] = certificateInstitute;
+  
       // Reset the error message
       certificateNameRequired.className = "subLabel";
       certificateNameBorder.style.border = "1px solid rgb(61, 61, 64)";
-
+  
       // Helper function to toggle the height of the certification section
       toggleHeightCert();
-
+  
       // Adjust button spacing
       const addCertExp = document.querySelector("#addCert");
       const addCertBottom = document.querySelector("#addButtonCert");
       addCertExp.style.top = "60px";
       addCertBottom.style.paddingBottom = "80px";
-
+  
       // Clears all the input fields
       clearInputFieldsCertification();
-
+  
       // Hides the input field and displays the "Add Certification" button
       const certSectionInputs = document.querySelector(".certInputs");
       const addCertButton = document.querySelector("#addCert");
       certSectionInputs.style.display = "none";
       addCertButton.style.display = "inline";
-
+  
       // Gets the sections again
       const newCertExp = document.querySelector("#newCertExperience");
-      const editCertEntryRH = document.querySelector(
-        "#certKey" + dataAttributeCert
-      );
-      const savedCertificationExperience = document.querySelector(
-        "#savedCertificationExperience"
-      );
-
+      const editCertEntryRH = document.querySelector(`#certKey${slotAttribute}`);
+      const savedCertificationExperience = document.querySelector("#savedCertificationExperience");
+  
       // Returns newCertExp to the correct position, and returns the edited entry on right-half to the correct order
       if (savedCertificationExperience.nextSibling !== newCertExp) {
-        if (newCertExp && editCertEntryRH && savedCertificationExperience) {
-          // Swaps newCertExp with editCertEntryRH
-          newCertExp.replaceWith(editCertEntryRH);
-
-          // Get the parent of savedCertificationExperience
-          const parent = savedCertificationExperience.parentNode;
-
-          // Move newCertExp to be the sibling immediately after savedCertificationExperience
-          parent.insertBefore(
-            newCertExp,
-            savedCertificationExperience.nextSibling
-          );
-        }
+          if (newCertExp && editCertEntryRH && savedCertificationExperience) {
+              // Swaps newCertExp with editCertEntryRH
+              newCertExp.replaceWith(editCertEntryRH);
+  
+              // Get the parent of savedCertificationExperience
+              const parent = savedCertificationExperience.parentNode;
+  
+              // Move newCertExp to be the sibling immediately after savedCertificationExperience
+              parent.insertBefore(newCertExp, savedCertificationExperience.nextSibling);
+          }
       }
-
+  
       // Displays inline the correct certKey section based on data attribute
       editCertEntryRH.style.display = "inline";
-
+  
       // Hides the newCertExp section in the RH
       newCertExp.style.display = "none";
-
+  
       // Sets the innerHTML of editCertEntryRH to be equal to that of newCertExp
       if (newCertExp && editCertEntryRH) {
-        editCertEntryRH.innerHTML = newCertExp.innerHTML;
+          editCertEntryRH.innerHTML = newCertExp.innerHTML;
       }
-
+  
       // --- Update the left-hand section based on the edits made ---
-      const certificateNameUpdate = document.querySelector(
-        `#certificateName${dataAttributeCert}`
-      );
-      let certificationYearUpdate = document.querySelector(
-        `#certificationYear${dataAttributeCert}`
-      );
-      const certInstituteUpdate = document.querySelector(
-        `#certInstitute${dataAttributeCert}`
-      );
-
+      const certificateNameUpdate = document.querySelector(`#certificateName${dataAttributeCert}`);
+      // const certificationYearUpdate = document.querySelector(`#certificationYear${dataAttributeCert}`);
+      const certInstituteUpdate = document.querySelector(`#certInstitute${dataAttributeCert}`);
+  
       // Update based on the current certification input field values
       certificateNameUpdate.innerHTML = certificateName;
-      certificationYearUpdate = certificationYear;
+      // certificationYearUpdate.innerHTML = certificationYear;
       certInstituteUpdate.innerHTML = certificateInstitute;
-
+  
       // Update the certification arrays based on these changes
       certificateNames[dataAttributeCert - 1] = certificateName;
       certificateYears[dataAttributeCert - 1] = certificationYear;
       certificateInstitutes[dataAttributeCert - 1] = certificateInstitute;
-
+  
       // Create the new certExp object
       let certExpObject = {
-        certificateName: certificateName,
-        certificationYear: certificationYear,
-        certificateInstitute: certificateInstitute,
-        visibility: true,
+          certificateName: certificateName,
+          certificationYear: certificationYear,
+          certificateInstitute: certificateInstitute,
+          visibility: true,
       };
+  
       // Replace the old certExp object with the new one
       certificateEntries[dataAttributeCert - 1] = certExpObject;
       certHistory.removeAttribute("data-attribute");
-    }
+  }
     // Restore the certificate icon and enable the onclick event for the section title
   const certificateIcon = document.querySelector("#certificatesIcon");
   if (certificateIcon) certificateIcon.style.display = ""; // Restore visibility
