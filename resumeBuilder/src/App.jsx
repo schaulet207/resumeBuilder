@@ -681,118 +681,91 @@ function App() {
     var inputAdd = document.querySelector("#input-add");
     var itemsDiv = document.querySelector(".items");
     var savedSkillsDiv = document.querySelector("#savedSkillsExperience");
-  
+
     // Check if the input field is empty (or just contains whitespace)
     if (!inputAdd.value.trim()) {
       return; // Exit the function early if input is empty
     }
-  
+
     // Increment the counter as a new item is being added
     itemCounter++;
-  
+
     var span = document.createElement("span"),
       times = document.createElement("i");
     times.setAttribute("class", "fas fa-times");
     times.style.cursor = "pointer"; // Add cursor style for better UX
-  
+
     span.textContent = inputAdd.value + " ";
     span.appendChild(times);
     span.setAttribute("skillKey", itemCounter);
     span.setAttribute("class", "skillHistoryEntry");
     itemsDiv.appendChild(span);
-  
+
     var skillListItem = document.createElement("li");
     skillListItem.textContent = inputAdd.value;
     skillListItem.setAttribute("skillKey", itemCounter);
     savedSkillsDiv.appendChild(skillListItem);
-  
+
     // Add the skill to the skillEntries array
     var skillValue = inputAdd.value.trim();
     skillEntries.push(skillValue);
-  
+
     times.onclick = function () {
       var key = this.parentElement.getAttribute("skillKey");
       this.parentElement.remove(); // Remove from itemsDiv
       removeSkillFromSavedSkills(key); // Remove from savedSkillsExperience
       removeSkillFromEntries(skillValue); // Remove from skillEntries array
+      // showSkillsExperienceHeader();
       showCertificationHeader();
     };
-  
+
     inputAdd.value = ""; // Clear input field after adding
     console.log(skillEntries);
+    // showSkillsExperienceHeader();
     showCertificationHeader();
-  
-    // Initialize Dragula for drag-and-drop functionality within itemsContainer
+
+    // Initialize Dragula for drag-and-drop functionality
     const itemsContainer = document.querySelector("#itemsContainer");
     const skillDrake = dragula([itemsContainer], {
-      copySortSource: false, // Disable the mirror element creation
-      removeOnSpill: false,
-      accepts: function (el, target) {
-        return true; // Allow drop in the container
-      },
-      moves: function (el, source, handle, sibling) {
-        return true; // Allow drag by any part of the element
-      },
-      invalid: function (el, handle) {
-        return false; // No invalid drag handles
-      }
+        accepts: function (el, target) {
+            return true; // Allow drop in the container
+        },
+        moves: function (el, source, handle, sibling) {
+            return true; // Allow drag by any part of the element
+        },
+        mirrorContainer: document.createElement('div'), // Mirror container
+        invalid: function (el, handle) {
+            return false; // No invalid drag handles
+        }
     });
-  
-    skillDrake.on('drag', function (el) {
-      document.body.classList.add('dragging');
-      el.classList.add('dragging-element');
-  
-      // Add dragging class to all .skillHistoryEntry elements
-      const skillHistoryEntries = document.querySelectorAll('.skillHistoryEntry');
-      skillHistoryEntries.forEach(entry => entry.classList.add('dragging'));
-    });
-  
-    skillDrake.on('dragend', function (el) {
-      document.body.classList.remove('dragging');
-      el.classList.remove('dragging-element');
-  
-      // Remove dragging class from all .skillHistoryEntry elements
-      const skillHistoryEntries = document.querySelectorAll('.skillHistoryEntry');
-      skillHistoryEntries.forEach(entry => entry.classList.remove('dragging'));
-  
-      // Function to update data-attributes and IDs after a drag event
-      function updateAfterDrag() {
+
+    skillDrake.on('drop', function (el, target, source, sibling) {
         const skillHistChildren = document.querySelectorAll("#itemsContainer .skillHistoryEntry");
-  
-        // Array to hold the new order of skillEntries
-        const newSkillEntries = [];
-  
-        // Update data-attributes and IDs for each child element of skillHist
-        skillHistChildren.forEach((child, index) => {
-          const newAttribute = index + 1;
-          child.setAttribute("skillKey", newAttribute);
-  
-          // Add the reordered entry to the new array
-          const skillName = child.textContent.trim();
-          const entry = skillEntries.find(entry => entry === skillName);
-          newSkillEntries.push(entry);
+        const savedSkillsExperience = document.querySelector("#savedSkillsExperience");
+
+        // Create an array to hold the reordered elements
+        const reorderedSkills = [];
+
+        // Get the skillKeys in the new order
+        skillHistChildren.forEach(child => {
+            const skillKey = child.getAttribute("skillKey");
+            const savedSkillItem = savedSkillsExperience.querySelector(`li[skillKey="${skillKey}"]`);
+            if (savedSkillItem) {
+                reorderedSkills.push(savedSkillItem);
+            }
         });
-  
-        // Log the updated skillEntries
-        console.log("Updated skillEntries:", newSkillEntries);
-  
-        // Update the original skillEntries array with the new order
-        skillEntries.length = 0;
-        newSkillEntries.forEach(entry => skillEntries.push(entry));
-      }
-  
-      // Call updateAfterDrag on drag end
-      updateAfterDrag();
-      console.log(skillEntries);
+
+        // Clear the existing children in savedSkillsExperience
+        savedSkillsExperience.innerHTML = "";
+
+        // Append the reordered elements to savedSkillsExperience
+        reorderedSkills.forEach(skill => {
+            savedSkillsExperience.appendChild(skill);
+        });
+
+        console.log('Reordered skills:', reorderedSkills);
     });
-  
-    skillDrake.on("drop", function (el, target, source) {
-      // Ensure the dragged element is in the target container
-      if (target && !target.contains(el)) {
-        target.appendChild(el);
-      }
-    });
-  }  
+}
 
   // Function to remove skill from savedSkillsExperience by skillKey
   function removeSkillFromSavedSkills(skillKey) {
