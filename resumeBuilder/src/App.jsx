@@ -681,48 +681,118 @@ function App() {
     var inputAdd = document.querySelector("#input-add");
     var itemsDiv = document.querySelector(".items");
     var savedSkillsDiv = document.querySelector("#savedSkillsExperience");
-
+  
     // Check if the input field is empty (or just contains whitespace)
     if (!inputAdd.value.trim()) {
       return; // Exit the function early if input is empty
     }
-
+  
     // Increment the counter as a new item is being added
     itemCounter++;
-
+  
     var span = document.createElement("span"),
       times = document.createElement("i");
     times.setAttribute("class", "fas fa-times");
     times.style.cursor = "pointer"; // Add cursor style for better UX
-
+  
     span.textContent = inputAdd.value + " ";
     span.appendChild(times);
     span.setAttribute("skillKey", itemCounter);
+    span.setAttribute("class", "skillHistoryEntry");
     itemsDiv.appendChild(span);
-
+  
     var skillListItem = document.createElement("li");
     skillListItem.textContent = inputAdd.value;
     skillListItem.setAttribute("skillKey", itemCounter);
     savedSkillsDiv.appendChild(skillListItem);
-
+  
     // Add the skill to the skillEntries array
     var skillValue = inputAdd.value.trim();
     skillEntries.push(skillValue);
-
+  
     times.onclick = function () {
       var key = this.parentElement.getAttribute("skillKey");
       this.parentElement.remove(); // Remove from itemsDiv
       removeSkillFromSavedSkills(key); // Remove from savedSkillsExperience
       removeSkillFromEntries(skillValue); // Remove from skillEntries array
-      // showSkillsExperienceHeader();
       showCertificationHeader();
     };
-
+  
     inputAdd.value = ""; // Clear input field after adding
     console.log(skillEntries);
-    // showSkillsExperienceHeader();
     showCertificationHeader();
-  }
+  
+    // Initialize Dragula for drag-and-drop functionality within itemsContainer
+    const itemsContainer = document.querySelector("#itemsContainer");
+    const skillDrake = dragula([itemsContainer], {
+      copySortSource: false, // Disable the mirror element creation
+      removeOnSpill: false,
+      accepts: function (el, target) {
+        return true; // Allow drop in the container
+      },
+      moves: function (el, source, handle, sibling) {
+        return true; // Allow drag by any part of the element
+      },
+      invalid: function (el, handle) {
+        return false; // No invalid drag handles
+      }
+    });
+  
+    skillDrake.on('drag', function (el) {
+      document.body.classList.add('dragging');
+      el.classList.add('dragging-element');
+  
+      // Add dragging class to all .skillHistoryEntry elements
+      const skillHistoryEntries = document.querySelectorAll('.skillHistoryEntry');
+      skillHistoryEntries.forEach(entry => entry.classList.add('dragging'));
+    });
+  
+    skillDrake.on('dragend', function (el) {
+      document.body.classList.remove('dragging');
+      el.classList.remove('dragging-element');
+  
+      // Remove dragging class from all .skillHistoryEntry elements
+      const skillHistoryEntries = document.querySelectorAll('.skillHistoryEntry');
+      skillHistoryEntries.forEach(entry => entry.classList.remove('dragging'));
+  
+      // Function to update data-attributes and IDs after a drag event
+      function updateAfterDrag() {
+        const skillHistChildren = document.querySelectorAll("#itemsContainer .skillHistoryEntry");
+  
+        // Array to hold the new order of skillEntries
+        const newSkillEntries = [];
+  
+        // Update data-attributes and IDs for each child element of skillHist
+        skillHistChildren.forEach((child, index) => {
+          const newAttribute = index + 1;
+          child.setAttribute("skillKey", newAttribute);
+  
+          // Add the reordered entry to the new array
+          const skillName = child.textContent.trim();
+          const entry = skillEntries.find(entry => entry === skillName);
+          newSkillEntries.push(entry);
+        });
+  
+        // Log the updated skillEntries
+        console.log("Updated skillEntries:", newSkillEntries);
+  
+        // Update the original skillEntries array with the new order
+        skillEntries.length = 0;
+        newSkillEntries.forEach(entry => skillEntries.push(entry));
+      }
+  
+      // Call updateAfterDrag on drag end
+      updateAfterDrag();
+      console.log(skillEntries);
+    });
+  
+    skillDrake.on("drop", function (el, target, source) {
+      // Ensure the dragged element is in the target container
+      if (target && !target.contains(el)) {
+        target.appendChild(el);
+      }
+    });
+  }  
 
   // Function to remove skill from savedSkillsExperience by skillKey
   function removeSkillFromSavedSkills(skillKey) {
@@ -3785,7 +3855,7 @@ drake.on("drop", function (el, target, source) {
   const handleSaveSkills = () => {
     const skillHistory = document.getElementById("skillHist");
     let dataAttributeSkill = skillHistory.getAttribute("data-attribute");
-
+  
     // Function to handle visibility button click for skills
     function visiButtonClickSkill(event) {
       const dataAttributeSkill = event.currentTarget.dataset.attribute;
@@ -3796,11 +3866,11 @@ drake.on("drop", function (el, target, source) {
       let rightSection = document.querySelector(
         `#skillKey${dataAttributeSkill}`
       );
-
+  
       // Toggles the visibility variable true/false for the skillEntries object at the index of dataAttributeSkill - 1
       skillEntries[dataAttributeSkill - 1].visibility =
         !skillEntries[dataAttributeSkill - 1].visibility;
-
+  
       if (visibleIcon.style.display === "inline") {
         visibleIcon.style.display = "none";
         hiddenIcon.style.display = "inline";
@@ -3810,96 +3880,96 @@ drake.on("drop", function (el, target, source) {
         hiddenIcon.style.display = "none";
         rightSection.style.display = "inline";
       }
-
+  
       // Function to check overall visibility and update header accordingly
       function checkVisibility() {
         if (skillEntries.every((entry) => entry.visibility === false)) {
-          const skillHeader = document.querySelector("#certificationHeader");
+          const skillHeader = document.querySelector("#skillsHeader");
           skillHeader.classList.add("hide");
         } else {
-          const skillHeader = document.querySelector("#certificationHeader");
+          const skillHeader = document.querySelector("#skillsHeader");
           skillHeader.classList.remove("hide");
         }
       }
       checkVisibility();
-      console.log(certificateEntries);
+      console.log(skillEntries);
     }
-
+  
     // Function to edit the skill sections onclick
     function editSkillSection(event) {
       const dataAttributeSkill = event.currentTarget.dataset.attribute;
-      const skillHistory = document.getElementById("skillHist");
-
+  
       let visibleIcon = document.querySelector(
         `#visiSkill${dataAttributeSkill}`
       );
       let hiddenIcon = document.querySelector(`#hidSkill${dataAttributeSkill}`);
       visibleIcon.style.display = "inline";
       hiddenIcon.style.display = "none";
-
+  
       skillEntries[dataAttributeSkill - 1].visibility = true;
-
+  
       if (skillHistory) {
         skillHistory.setAttribute("data-attribute", dataAttributeSkill);
       }
-
+  
       const newSkillExp = document.querySelector("#newSkillsExperience");
       const editSkillEntryRH = document.querySelector(
-        "#skillKey" + dataAttributeSkill
+        `#skillKey${dataAttributeSkill}`
       );
-
+  
       if (newSkillExp && editSkillEntryRH) {
         const parent1 = editSkillEntryRH.parentNode;
         const parent2 = newSkillExp.parentNode;
         const nextSibling2 = newSkillExp.nextSibling;
-
+  
         parent1.insertBefore(newSkillExp, editSkillEntryRH);
-
+  
         if (nextSibling2) {
           parent2.insertBefore(editSkillEntryRH, nextSibling2);
         } else {
           parent2.appendChild(editSkillEntryRH);
         }
       }
-
+  
       showSkillsInputs();
       editSkillEntryRH.style.display = "none";
       setSkillName(skillNames[dataAttributeSkill - 1]);
       toggleHeightSkills();
     }
-
+  
     if (dataAttributeSkill === null) {
       const skillNameValue = skillName.trim();
       const skillNameRequired = document.querySelector("#skillReq");
       const skillNameBorder = document.querySelector("#skillName");
-
+  
       if (!skillNameValue) {
         skillNameRequired.className = "error";
         skillNameBorder.style.border = "1px solid red";
         return;
       }
-
+  
       skillNameRequired.className = "subLabel";
       skillNameBorder.style.border = "1px solid rgb(61, 61, 64)";
-
+  
       toggleHeightSkills();
       skillNames.push(skillName);
-
+  
       let skillExpObject = {
         skillName: skillName,
         visibility: true,
       };
-
+  
       skillEntries.push(skillExpObject);
       console.log(skillEntries);
       clearInputFieldsSkills();
-
+  
       const skillSection = document.querySelector("#newSkillsExperience");
-      const showSkillExperience = `<div id="skillKey${skillEntries.length}">${skillSection.innerHTML}</div>`;
+      const showSkillExperience = `<div id="skillKey${skillEntries.length}" class="skillHistoryEntry" slot="slot${skillEntries.length}">${skillSection.innerHTML}</div>`;
       const saveSkill = document.querySelector("#savedSkillsExperience");
       saveSkill.innerHTML += showSkillExperience;
-
+  
       const newSkillHistoryEntry = document.createElement("div");
+      newSkillHistoryEntry.slot = "slot" + skillEntries.length;
       newSkillHistoryEntry.className = "skillHistoryEntry";
       newSkillHistoryEntry.innerHTML =
         "<hr id='topLine'>" +
@@ -3927,31 +3997,34 @@ drake.on("drop", function (el, target, source) {
         '" data-attribute="' +
         skillEntries.length +
         '" style="display: none;">' +
+        '<img src="public/dragReorder.svg" alt="Drag" class="dragIcon" id="dragSkill' +
+        skillEntries.length +
+        '">' +
         "</div>" +
         "<hr>";
-
+  
       skillHistoryInfo = newSkillHistoryEntry.innerHTML;
       let skillHistory = document.querySelector("#skillHist");
       skillHistory.appendChild(newSkillHistoryEntry);
-
+  
       for (let i = 1; i < skillEntries.length + 1; i++) {
         let visibleIcon = document.querySelector(`#visiSkill${i}`);
         let hiddenIcon = document.querySelector(`#hidSkill${i}`);
-
+  
         if (visibleIcon) {
           visibleIcon.onclick = visiButtonClickSkill;
         }
-
+  
         if (hiddenIcon) {
           hiddenIcon.onclick = visiButtonClickSkill;
         }
       }
-
+  
       const addSkillExp = document.querySelector("#addSkill");
       const addSkillBottom = document.querySelector("#addButtonSkill");
       addSkillExp.style.top = "60px";
       addSkillBottom.style.paddingBottom = "80px";
-
+  
       skillSection.style.display = "none";
     } else {
       let visibleIcon = document.querySelector(
@@ -3960,44 +4033,44 @@ drake.on("drop", function (el, target, source) {
       let hiddenIcon = document.querySelector(`#hidSkill${dataAttributeSkill}`);
       visibleIcon.style.display = "inline";
       hiddenIcon.style.display = "none";
-
+  
       skillHistory.style.display = "inline";
       let skillEdit = skillHistory.getAttribute("data-attribute");
       const skillNameValue = skillName.trim();
-
+  
       if (!skillNameValue) {
         skillNameRequired.className = "error";
         skillNameBorder.style.border = "1px solid red";
         skillHistory.style.display = "none";
         return;
       }
-
+  
       skillNames[dataAttributeSkill - 1] = skillName;
       skillNameRequired.className = "subLabel";
       skillNameBorder.style.border = "1px solid rgb(61, 61, 64)";
-
+  
       toggleHeightSkills();
-
+  
       const addSkillExp = document.querySelector("#addSkill");
       const addSkillBottom = document.querySelector("#addButtonSkill");
       addSkillExp.style.top = "60px";
       addSkillBottom.style.paddingBottom = "80px";
-
+  
       clearInputFieldsSkills();
-
+  
       const skillSectionInputs = document.querySelector(".skillInputs");
       const addSkillButton = document.querySelector("#addSkill");
       skillSectionInputs.style.display = "none";
       addSkillButton.style.display = "inline";
-
+  
       const newSkillExp = document.querySelector("#newSkillsExperience");
       const editSkillEntryRH = document.querySelector(
-        "#skillKey" + dataAttributeSkill
+        `#skillKey${dataAttributeSkill}`
       );
       const savedSkillsExperience = document.querySelector(
         "#savedSkillsExperience"
       );
-
+  
       if (savedSkillsExperience.nextSibling !== newSkillExp) {
         if (newSkillExp && editSkillEntryRH && savedSkillsExperience) {
           newSkillExp.replaceWith(editSkillEntryRH);
@@ -4005,20 +4078,20 @@ drake.on("drop", function (el, target, source) {
           parent.insertBefore(newSkillExp, savedSkillsExperience.nextSibling);
         }
       }
-
+  
       editSkillEntryRH.style.display = "inline";
       newSkillExp.style.display = "none";
-
+  
       if (newSkillExp && editSkillEntryRH) {
         editSkillEntryRH.innerHTML = newSkillExp.innerHTML;
       }
-
+  
       const skillNameUpdate = document.querySelector(
         `#skillName${dataAttributeSkill}`
       );
       skillNameUpdate.innerHTML = skillName;
       skillNames[dataAttributeSkill - 1] = skillName;
-
+  
       let skillExpObject = {
         skillName: skillName,
         visibility: true,
@@ -4026,9 +4099,133 @@ drake.on("drop", function (el, target, source) {
       skillEntries[dataAttributeSkill - 1] = skillExpObject;
       skillHistory.removeAttribute("data-attribute");
     }
-    console.log(skillEntries);
-  };
-
+  
+    // Initialize Dragula for drag-and-drop functionality
+    const itemsContainer = document.querySelector("#itemsContainer");
+    const skillDrake = dragula([itemsContainer], {
+      accepts: function (el, target) {
+        return true; // Allow drop in the container
+      },
+      moves: function (el, source, handle, sibling) {
+        return true; // Allow drag by any part of the element
+      },
+      mirrorContainer: itemsContainer, // Ensure the mirror element is within the container
+      invalid: function (el, handle) {
+        return false; // No invalid drag handles
+      }
+    });
+  
+    skillDrake.on('drag', function (el) {
+      document.body.classList.add('dragging');
+      el.classList.add('dragging-element');
+  
+      // Add dragging class to all .skillHistoryEntry and .editSection elements
+      const skillHistoryEntries = document.querySelectorAll('.skillHistoryEntry');
+      const editSections = document.querySelectorAll('.editSection');
+  
+      skillHistoryEntries.forEach(entry => entry.classList.add('dragging'));
+      editSections.forEach(section => section.classList.add('dragging'));
+    });
+  
+    skillDrake.on('dragend', function (el) {
+      document.body.classList.remove('dragging');
+      el.classList.remove('dragging-element');
+  
+      // Remove dragging class from all .skillHistoryEntry and .editSection elements
+      const skillHistoryEntries = document.querySelectorAll('.skillHistoryEntry');
+      const editSections = document.querySelectorAll('.editSection');
+  
+      skillHistoryEntries.forEach(entry => entry.classList.remove('dragging'));
+      editSections.forEach(section => section.classList.remove('dragging'));
+  
+      // Function to update data-attributes and IDs after a drag event
+      function updateAfterDrag() {
+        const skillHistChildren = document.querySelectorAll("#itemsContainer .skillHistoryEntry");
+  
+        // Array to hold the new order of skillEntries
+        const newSkillEntries = [];
+  
+        // Update data-attributes and IDs for each child element of skillHist
+        skillHistChildren.forEach((child, index) => {
+          const newAttribute = index + 1;
+          child.querySelector(".editSection").dataset.attribute = newAttribute;
+          child.querySelector(".visiButton").dataset.attribute = newAttribute;
+  
+          // Update all hidButton elements
+          const hidButtons = child.querySelectorAll(".hidButton");
+          hidButtons.forEach((button) => {
+            button.dataset.attribute = newAttribute;
+            button.id = `hidSkill${newAttribute}`;
+          });
+  
+          // Update the IDs
+          child.querySelector(".editSection").id = `editSkillEntry${newAttribute}`;
+          child.querySelector(".top-left").id = `skillName${newAttribute}`;
+          child.querySelector(".toggle-button").id = `skillSection${newAttribute}`;
+          child.querySelector(".visiButton").id = `visiSkill${newAttribute}`;
+          child.querySelector(".dragIcon").id = `dragSkill${newAttribute}`;
+  
+          // Add the reordered entry to the new array
+          const skillName = child.querySelector(".top-left").textContent.trim();
+          const entry = skillEntries.find(entry => entry.skillName === skillName);
+          newSkillEntries.push(entry);
+        });
+  
+        // Create a map to store the order of slots from skillHist
+        const slotOrderMap = new Map();
+        skillHistChildren.forEach((child, index) => {
+          const slot = child.getAttribute("slot");
+          slotOrderMap.set(slot, index);
+        });
+  
+        console.log("Slot order map:", slotOrderMap);
+  
+        // Get the elements from savedSkillsExperience
+        const savedSkillExperienceChildren = document.querySelectorAll("#savedSkillsExperience > div");
+  
+        console.log("Initial savedSkillsExperience children:", savedSkillExperienceChildren);
+  
+        // Re-order savedSkillsExperience children based on the slot order in skillHist
+        const savedSkillExperience = document.querySelector("#savedSkillsExperience");
+        const sortedChildren = Array.from(savedSkillExperienceChildren).sort((a, b) => {
+          const slotA = a.getAttribute("slot");
+          const slotB = b.getAttribute("slot");
+          const comparison = slotOrderMap.get(slotA) - slotOrderMap.get(slotB);
+          console.log(`Comparing ${slotA} with ${slotB}: ${comparison}`);
+          return comparison;
+        });
+  
+        console.log("Sorted children:", sortedChildren);
+  
+        // Clear the existing children in savedSkillsExperience
+        savedSkillExperience.innerHTML = "";
+  
+        // Append the sorted children to savedSkillsExperience
+        sortedChildren.forEach(child => {
+          console.log("Appending child:", child);
+          savedSkillExperience.appendChild(child);
+        });
+  
+        // Log the updated skillEntries
+        console.log("Updated skillEntries:", newSkillEntries);
+  
+        // Update the original skillEntries array with the new order
+        skillEntries.length = 0;
+        newSkillEntries.forEach(entry => skillEntries.push(entry));
+      }
+  
+      // Call updateAfterDrag on drag end
+      updateAfterDrag();
+      console.log(skillEntries);
+    });
+  
+    skillDrake.on("drop", function (el, target, source) {
+      // Ensure the dragged element is in the target container
+      if (target && !target.contains(el)) {
+        target.appendChild(el);
+      }
+    });
+  };  
 
   return (
     <div className="App">

@@ -1154,3 +1154,17 @@ padding-inline-start: 40px;
 .gu-transit {
   opacity: 0.3; /* Make the placeholder element semi-transparent */
 }
+
+[skillkey]:hover {
+  cursor: all-scroll;
+}
+
+.fas.fa-times:hover {
+  color: red;
+  cursor: pointer;
+}
+
+body.dragging .fas.fa-times:hover {
+  color: white;
+  cursor: grabbing; 
+}
